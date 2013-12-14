@@ -13,7 +13,7 @@ use Module::CoreList;
 
 # Get the directory to look under.
 my $dir  = shift
-    || die "Usage: perl $0 path/to/lib [image] [dump] [ccore] [paths]\n";
+    || die "Usage: perl $0 path/to/lib [image] [dump] [core] [paths]\n";
 # Should we generate an image?
 my $img  = shift || 0;
 # Should we dump the dependencies?
