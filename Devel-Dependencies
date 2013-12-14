@@ -1,0 +1,68 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use Capture::Tiny ':all';
+use File::Find;
+use GraphViz;
+use Module::CoreList;
+
+# Get the directory to look under.
+my $dir = shift || die "Usage: perl $0 path/to/lib\n";
+
+# Recursively locate all the deps.
+my $deps = {};
+my $seen = {};
+find(\&wanted, $dir);
+
+# Make a graph instance.
+my $g = GraphViz->new();
+for my $module (keys %$deps) {
+    for my $dep (@{ $deps->{$module} }) {
+        $g->add_edge($module => $dep);
+    }
+}
+
+# XXX This is less than satisfactory:
+#use GraphViz::Data::Grapher;
+#my $g = GraphViz::Data::Grapher->new($deps);
+
+print $g->as_png;
+
+sub wanted { /\.pm$/ && deps($_) }
+
+sub deps {
+    # The module to investigate.
+    my $module = shift || die "ERROR: No file provided.";
+
+    # Find the file dependencies.
+    my ($out, $err, $exit) = capture {
+        system('perl', '-MDevel::Dependencies', $module);
+    };
+
+    # Remove the header.
+    $out =~ s/Devel::Dependencies finds \d+ dependencies://;
+
+    # Replace file with module syntax.
+    $module =~ s/\//::/g;
+    $module =~ s/\.pm//;
+
+    # Select all the dependencies individually.
+    my @deps = split /\s+/, $out;
+
+    # Remove modules in core.
+    for my $d (@deps) {
+        # Replace file with module syntax.
+        $d =~ s/\//::/g;
+        $d =~ s/\.pm//;
+
+        # Save or toss the module.
+        if ($seen->{$d} || Module::CoreList::is_core($d)) {
+            $seen->{$d}++;
+        }
+        else {
+            push @{ $deps->{$module} }, $d;
+        }
+    }
+}
+
