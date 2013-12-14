@@ -69,7 +69,7 @@ sub deps {
         $package =~ s/\//::/g;
         $package =~ s/\.pm//;
         return $package;
-    }
+    };
 
     # Replace file with module syntax.
     $module = $to_module->($module);
