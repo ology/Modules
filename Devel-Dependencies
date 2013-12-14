@@ -12,7 +12,8 @@ use GraphViz::Data::Structure;
 use Module::CoreList;
 
 # Get the directory to look under.
-my $dir  = shift || die "Usage: perl $0 path/to/lib [i] [d] [c]\n";
+my $dir  = shift
+    || die "Usage: perl $0 path/to/lib [image] [dump] [ccore] [paths]\n";
 # Should we generate an image?
 my $img  = shift || 0;
 # Should we dump the dependencies?
