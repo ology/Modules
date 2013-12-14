@@ -1,4 +1,7 @@
 #!/usr/bin/env perl
+#
+# List or plot module dependencies - gene+github@ology.net
+#
 use strict;
 use warnings;
 
