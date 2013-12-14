@@ -3,35 +3,48 @@ use strict;
 use warnings;
 
 use Capture::Tiny ':all';
+use Data::Dumper;
 use File::Find;
-#use GraphViz;
+#use GraphViz
 use GraphViz::Data::Structure;
 use Module::CoreList;
 
 # Get the directory to look under.
-my $dir = shift || die "Usage: perl $0 path/to/lib\n";
+my $dir  = shift || die "Usage: perl $0 path/to/lib [i] [d] [c]\n";
+# Should we generate an image?
+my $img  = shift || 0;
+# Should we dump the dependencies?
+my $dump = defined $ARGV[0] ? shift : 1;
+# Should we include core modules?
+my $core = shift || 0;
 
 # Recursively locate all the deps.
 my $deps = {};
 my $seen = {};
 find(\&wanted, $dir);
 
-# Make a graph instance.
-#my $g = GraphViz->new();
-#for my $module (keys %$deps) {
-#    for my $dep (@{ $deps->{$module} }) {
-#        $g->add_edge($module => $dep);
+if ($dump) {
+    warn Data::Dumper->new([$deps])->Indent(1)->Terse(1)->Quotekeys(0)->Sortkeys(1)->Dump;
+}
+
+if ($img) {
+    my $g = GraphViz::Data::Structure->new($deps);
+    print $g->graph()->as_png;
+
+    # Make a graph instance.
+#    my $g = GraphViz->new();
+#    for my $module (keys %$deps) {
+#        for my $dep (@{ $deps->{$module} }) {
+#            $g->add_edge($module => $dep);
+#        }
 #    }
-#}
- 
-my $g = GraphViz::Data::Structure->new($deps);
-print $g->graph()->as_png;
 
-# XXX This is less than satisfactory:
-#use GraphViz::Data::Grapher;
-#my $g = GraphViz::Data::Grapher->new($deps);
+    # XXX This is less than satisfactory:
+#    use GraphViz::Data::Grapher;
+#    my $g = GraphViz::Data::Grapher->new($deps);
 
-#print $g->as_png;
+#    print $g->as_png;
+}
 
 sub wanted { /\.pm$/ && deps($_) }
 
@@ -60,8 +73,8 @@ sub deps {
         $d =~ s/\//::/g;
         $d =~ s/\.pm//;
 
-        # Save or toss the module.
-        if ($seen->{$d} || Module::CoreList::is_core($d)) {
+        # Save or skip the module.
+        if ($seen->{$d} || (!$core && Module::CoreList::is_core($d))) {
             $seen->{$d}++;
         }
         else {
