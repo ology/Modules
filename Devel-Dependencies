@@ -1,4 +1,4 @@
-#!/usr/bin/env perl
+!/usr/bin/env perl
 #
 # List or plot module dependencies - gene+github@ology.net
 #
@@ -8,7 +8,7 @@ use warnings;
 use Capture::Tiny ':all';
 use Data::Dumper;
 use File::Find;
-use GraphViz::Data::Structure;
+use GraphViz::Data::Structure; # TODO require this instead of use
 use Module::CoreList;
 
 # Get the directory to look under.
