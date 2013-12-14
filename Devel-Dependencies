@@ -4,7 +4,8 @@ use warnings;
 
 use Capture::Tiny ':all';
 use File::Find;
-use GraphViz;
+#use GraphViz;
+use GraphViz::Data::Structure;
 use Module::CoreList;
 
 # Get the directory to look under.
@@ -16,18 +17,21 @@ my $seen = {};
 find(\&wanted, $dir);
 
 # Make a graph instance.
-my $g = GraphViz->new();
-for my $module (keys %$deps) {
-    for my $dep (@{ $deps->{$module} }) {
-        $g->add_edge($module => $dep);
-    }
-}
+#my $g = GraphViz->new();
+#for my $module (keys %$deps) {
+#    for my $dep (@{ $deps->{$module} }) {
+#        $g->add_edge($module => $dep);
+#    }
+#}
+ 
+my $g = GraphViz::Data::Structure->new($deps);
+print $g->graph()->as_png;
 
 # XXX This is less than satisfactory:
 #use GraphViz::Data::Grapher;
 #my $g = GraphViz::Data::Grapher->new($deps);
 
-print $g->as_png;
+#print $g->as_png;
 
 sub wanted { /\.pm$/ && deps($_) }
 
