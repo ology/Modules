@@ -61,8 +61,15 @@ sub deps {
     $out =~ s/Devel::Dependencies finds \d+ dependencies://;
 
     # Replace file with module syntax.
-    $module =~ s/\//::/g;
-    $module =~ s/\.pm//;
+    my $to_module = sub {
+        my $package = shift;
+        $package =~ s/\//::/g;
+        $package =~ s/\.pm//;
+        return $package;
+    }
+
+    # Replace file with module syntax.
+    $module = $to_module->($module);
 
     # Select all the dependencies individually.
     my @deps = split /\s+/, $out;
@@ -70,8 +77,7 @@ sub deps {
     # Remove modules in core.
     for my $d (@deps) {
         # Replace file with module syntax.
-        $d =~ s/\//::/g;
-        $d =~ s/\.pm//;
+        $d = $to_module->($d);
 
         # Save or skip the module.
         if ($seen->{$d} || (!$core && Module::CoreList::is_core($d))) {
