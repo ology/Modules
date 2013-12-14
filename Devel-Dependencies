@@ -8,7 +8,6 @@ use warnings;
 use Capture::Tiny ':all';
 use Data::Dumper;
 use File::Find;
-#use GraphViz
 use GraphViz::Data::Structure;
 use Module::CoreList;
 
@@ -35,6 +34,7 @@ if ($img) {
     print $g->graph()->as_png;
 
     # Make a graph instance.
+#use GraphViz
 #    my $g = GraphViz->new();
 #    for my $module (keys %$deps) {
 #        for my $dep (@{ $deps->{$module} }) {
@@ -43,7 +43,7 @@ if ($img) {
 #    }
 
     # XXX This is less than satisfactory:
-#    use GraphViz::Data::Grapher;
+#use GraphViz::Data::Grapher;
 #    my $g = GraphViz::Data::Grapher->new($deps);
 
 #    print $g->as_png;
