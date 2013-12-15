@@ -1,6 +1,12 @@
 #!/usr/bin/env perl
 #
 # List or plot module dependencies - gene+github@ology.net
+# Command line options:
+#  path/to/lib : The path to the root of the search directory
+#  core        : Should we include core modules?
+#  lc          : Should we include all-lowercase-named packages?
+#  dump        : Should we dump the dependencies as text?
+#  img         : Should we generate a GraphViz image?
 #
 use strict;
 use warnings;
