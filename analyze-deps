@@ -60,9 +60,6 @@ sub deps {
         system('perl', '-MDevel::Dependencies', $module);
     };
 
-    # Remove the header.
-    $out =~ s/Devel::Dependencies finds \d+ dependencies://;
-
     # Replace file with module syntax.
     my $to_module = sub {
         my $package = shift;
@@ -73,6 +70,9 @@ sub deps {
 
     # Replace file with module syntax.
     $module = $to_module->($module) unless $path;
+
+    # Remove the header.
+    $out =~ s/Devel::Dependencies finds \d+ dependencies://;
 
     # Select all the dependencies individually.
     my @deps = split /\s+/, $out;
