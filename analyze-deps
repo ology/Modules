@@ -8,8 +8,8 @@ use warnings;
 use Capture::Tiny ':all';
 use Data::Dumper;
 use File::Find;
-#use GraphViz;
-use GraphViz::Data::Structure; # TODO require this instead of use
+#use GraphViz; # TODO require this instead of use
+use GraphViz::Data::Structure; # "
 use Module::CoreList;
 
 # Get the directory under which to look.
