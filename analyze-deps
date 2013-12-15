@@ -22,7 +22,7 @@ my $core = shift || 0;
 # Should we include all-lowercase packages?
 my $lc   = shift || 0;
 # Should we dump the dependencies?
-my $dump = defined $ARGV[0] ? shift : 1;
+my $dump = shift || 0;
 # Should we generate an image?
 my $img  = shift || 0;
 
@@ -80,11 +80,14 @@ sub deps {
     # Remove modules in core.
     for my $d (@deps) {
         # Replace file with module syntax.
-        $d = $to_module->($d) unless $path;
+        my $m = $to_module->($d);
+
+        # Change the dependent package name to its module equivalent.
+        $d = $m unless $path;
 
         # Save or skip the module.
         if ($seen->{$d}
-            || (!$core && Module::CoreList::is_core($d))
+            || (!$core && Module::CoreList::is_core($m))
             || (!$lc && $d !~ /[A-Z]/)
         ) {
             $seen->{$d}++;
