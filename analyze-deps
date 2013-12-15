@@ -36,7 +36,7 @@ if ($img) {
     my $g = GraphViz::Data::Structure->new($deps);
     print $g->graph()->as_png;
 
-    # Make a graph instance.
+    # Make a graphviz instance.
 #use GraphViz
 #    my $g = GraphViz->new();
 #    for my $module (keys %$deps) {
@@ -44,11 +44,6 @@ if ($img) {
 #            $g->add_edge($module => $dep);
 #        }
 #    }
-
-    # XXX This is less than satisfactory:
-#use GraphViz::Data::Grapher;
-#    my $g = GraphViz::Data::Grapher->new($deps);
-
 #    print $g->as_png;
 }
 
