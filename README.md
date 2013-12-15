@@ -1,4 +1,4 @@
 Modules
 =======
 
-Miscelaneous tools for module handling
+Miscellaneous tools for module handling
