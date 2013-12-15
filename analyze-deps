@@ -14,9 +14,7 @@ use Module::CoreList;
 
 # Get the directory under which to look.
 my $dir  = shift
-    || die "Usage: perl $0 path/to/lib [path] [core] [lc] [dump] [img]\n";
-# Should we use full pathnames?
-my $path = shift || 0;
+    || die "Usage: perl $0 path/to/lib [core] [lc] [dump] [img]\n";
 # Should we include core modules?
 my $core = shift || 0;
 # Should we include all-lowercase packages?
@@ -49,7 +47,7 @@ if ($img) {
 #    print $g->as_png;
 }
 
-sub wanted { /\.pm$/ && deps($path ? $File::Find::name : $_) }
+sub wanted { /\.pm$/ && deps($File::Find::name) }
 
 sub deps {
     # The module to investigate.
@@ -60,6 +58,9 @@ sub deps {
         system('perl', '-MDevel::Dependencies', $module);
     };
 
+    # Remove the non-module parts of the path.
+    $module =~ s/^.*?\/lib\/(.*)$/$1/;
+
     # Replace file with module syntax.
     my $to_module = sub {
         my $package = shift;
@@ -69,7 +70,7 @@ sub deps {
     };
 
     # Replace file with module syntax.
-    $module = $to_module->($module) unless $path;
+    $module = $to_module->($module);
 
     # Remove the header.
     $out =~ s/Devel::Dependencies finds \d+ dependencies://;
@@ -82,18 +83,15 @@ sub deps {
         # Replace file with module syntax.
         my $m = $to_module->($d);
 
-        # Change the dependent package name to its module equivalent.
-        $d = $m unless $path;
-
         # Save or skip the module.
-        if ($seen->{$d}
+        if ($seen->{$m}
             || (!$core && Module::CoreList::is_core($m))
-            || (!$lc && $d !~ /[A-Z]/)
+            || (!$lc && $m !~ /[A-Z]/)
         ) {
-            $seen->{$d}++;
+            $seen->{$m}++;
         }
         else {
-            push @{ $deps->{$module} }, $d;
+            push @{ $deps->{$module} }, $m;
         }
     }
 }
