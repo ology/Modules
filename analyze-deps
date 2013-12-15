@@ -1,4 +1,4 @@
-!/usr/bin/env perl
+#!/usr/bin/env perl
 #
 # List or plot module dependencies - gene+github@ology.net
 #
@@ -8,20 +8,23 @@ use warnings;
 use Capture::Tiny ':all';
 use Data::Dumper;
 use File::Find;
+#use GraphViz;
 use GraphViz::Data::Structure; # TODO require this instead of use
 use Module::CoreList;
 
-# Get the directory to look under.
+# Get the directory under which to look.
 my $dir  = shift
-    || die "Usage: perl $0 path/to/lib [image] [dump] [core] [paths]\n";
-# Should we generate an image?
-my $img  = shift || 0;
-# Should we dump the dependencies?
-my $dump = defined $ARGV[0] ? shift : 1;
-# Should we include core modules?
-my $core = shift || 0;
+    || die "Usage: perl $0 path/to/lib [path] [core] [lc] [dump] [img]\n";
 # Should we use full pathnames?
 my $path = shift || 0;
+# Should we include core modules?
+my $core = shift || 0;
+# Should we include all-lowercase packages?
+my $lc   = shift || 0;
+# Should we dump the dependencies?
+my $dump = defined $ARGV[0] ? shift : 1;
+# Should we generate an image?
+my $img  = shift || 0;
 
 # Recursively locate all the deps.
 my $deps = {};
@@ -33,11 +36,10 @@ if ($dump) {
 }
 
 if ($img) {
+    # Make a graphviz instance.
     my $g = GraphViz::Data::Structure->new($deps);
     print $g->graph()->as_png;
-
-    # Make a graphviz instance.
-#use GraphViz
+# OR THIS MAYBE:
 #    my $g = GraphViz->new();
 #    for my $module (keys %$deps) {
 #        for my $dep (@{ $deps->{$module} }) {
@@ -81,7 +83,10 @@ sub deps {
         $d = $to_module->($d) unless $path;
 
         # Save or skip the module.
-        if ($seen->{$d} || (!$core && Module::CoreList::is_core($d))) {
+        if ($seen->{$d}
+            || (!$core && Module::CoreList::is_core($d))
+            || (!$lc && $d !~ /[A-Z]/)
+        ) {
             $seen->{$d}++;
         }
         else {
