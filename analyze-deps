@@ -84,13 +84,14 @@ sub deps {
         my $m = $to_module->($d);
 
         # Save or skip the module.
-        if ($seen->{$m}
-            || (!$core && Module::CoreList::is_core($m))
-            || (!$lc && $m !~ /[A-Z]/)
+        if ($seen->{$m}     # Skip if seen
+            || (!$core && Module::CoreList::is_core($m))  # Skip if core
+            || (!$lc && $m !~ /[A-Z]/)  # Skip if lower-case
         ) {
             $seen->{$m}++;
         }
         else {
+            # Save our dependency.
             push @{ $deps->{$module} }, $m;
         }
     }
