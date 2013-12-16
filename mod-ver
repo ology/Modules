@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+die "Usage: perl $0 Module::Name [Another-Module] [path/to/Module.pm]\n"
+    unless @ARGV;
+
+# Module version
+my $ver;
+
+for my $package (@ARGV) {
+    # Find the version from a path.
+    if ( $package =~ /\// ) {
+        if ( -e $package ) {
+            eval "use Module::Metadata";
+            die 'Module::Metadata is required to grok raw code' if $@;
+            my $info = Module::Metadata->new_from_file($package);
+            $ver = $info->version;
+        }
+    }
+    # Find the version from a module name.
+    else {
+        $package =~ s/-/::/g;
+        eval "use $package";
+#        warn $@ if $@; # Standard "Not in @INC" error
+        $ver = eval( '$' . $package . '::VERSION' );
+    }
+
+    print "$package: ", ( $ver ? $ver : 'not found' ), "\n";
+
+    # Show the module path in @INC, if it's not a path already.
+    print qx{ perldoc -l $package } if $ver && $package !~ /\//;
+}
