@@ -52,19 +52,20 @@ if ($img) {
         overlap     => 'false',
     );
 
+    # Consider the nodes of the field...
     for my $module (keys %$node) {
         # Add a vertex for this module.
         my $v = $g->add_node($module);
 
-        # Reset node module value to the vertex.
+        # Reset the node module value to the graph vertex.
         $node->{$module} = $v;
 
         # Add edges for the dependencies.
         for my $dep (@{ $deps->{$module} }) {
-            # Add a vertex for this dependent module unless there already is one.
+            # Add a vertex for this dependent module unless seen.
             $node->{$dep} = $g->add_node($dep) unless ref $node->{$dep};
 
-            # Add an edge for the dependency.
+            # Add an edge for this dependency.
             $g->add_edge($node->{$module} => $node->{$dep});
         }
     }
