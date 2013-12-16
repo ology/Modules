@@ -14,9 +14,9 @@ use warnings;
 
 use Capture::Tiny ':all';
 use Data::Dumper;
+# Devel::Dependencies is used, but in a command below.
 use File::Find;
-#use GraphViz; # TODO require this instead of use
-use GraphViz::Data::Structure; # "
+use GraphViz;
 use Module::CoreList;
 
 # Get the directory under which to look.
@@ -31,27 +31,44 @@ my $dump = shift || 0;
 # Should we generate an image?
 my $img  = shift || 0;
 
+# Make a node table.
+my $node = {};
+
 # Recursively locate all the deps.
-my $deps = {};
-my $seen = {};
+my $deps = {};  # The bucket of module => [dependencies]
+my $seen = {};  # So we don't repeat ourselves.
 find(\&wanted, $dir);
 
+# Show the results.
 if ($dump) {
     warn Data::Dumper->new([$deps])->Indent(1)->Terse(1)->Quotekeys(0)->Sortkeys(1)->Dump;
 }
 
+# Graph the results.
 if ($img) {
     # Make a graphviz instance.
-    my $g = GraphViz::Data::Structure->new($deps);
-    print $g->graph()->as_png;
-# OR THIS MAYBE:
-#    my $g = GraphViz->new();
-#    for my $module (keys %$deps) {
-#        for my $dep (@{ $deps->{$module} }) {
-#            $g->add_edge($module => $dep);
-#        }
-#    }
-#    print $g->as_png;
+    my $g = GraphViz->new(
+        concentrate => 1,
+        overlap     => 'false',
+    );
+
+    for my $module (keys %$node) {
+        # Add a vertex for this module.
+        my $v = $g->add_node($module);
+
+        # Reset node module value to the vertex.
+        $node->{$module} = $v;
+
+        # Add edges for the dependencies.
+        for my $dep (@{ $deps->{$module} }) {
+            # Add a vertex for this dependent module unless there already is one.
+            $node->{$dep} = $g->add_node($dep) unless ref $node->{$dep};
+
+            # Add an edge for the dependency.
+            $g->add_edge($node->{$module} => $node->{$dep});
+        }
+    }
+    print $g->as_png;
 }
 
 sub wanted { /\.pm$/ && deps($File::Find::name) }
@@ -65,10 +82,10 @@ sub deps {
         system('perl', '-MDevel::Dependencies', $module);
     };
 
-    # Remove the non-module parts of the path.
+    # Remove the path parts from the module.
     $module =~ s/^.*?\/lib\/(.*)$/$1/;
 
-    # Replace file with module syntax.
+    # Routine to replace path/file with module::syntax in a package name.
     my $to_module = sub {
         my $package = shift;
         $package =~ s/\//::/g;
@@ -98,6 +115,10 @@ sub deps {
             $seen->{$m}++;
         }
         else {
+            # Add nodes unless already exist.
+            $node->{$module}++ unless exists $node->{$module};
+            $node->{$m}++ unless exists $node->{$m};
+
             # Save our dependency.
             push @{ $deps->{$module} }, $m;
         }
