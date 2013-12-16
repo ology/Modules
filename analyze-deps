@@ -22,59 +22,29 @@ use Module::CoreList;
 # Get the directory under which to look.
 my $dir  = shift
     || die "Usage: perl $0 path/to/lib [core] [lc] [dump] [img]\n";
-# Should we include core modules?
-my $core = shift || 0;
-# Should we include all-lowercase packages?
-my $lc   = shift || 0;
-# Should we dump the dependencies?
-my $dump = shift || 0;
-# Should we generate an image?
-my $img  = shift || 0;
+my $core = shift || 0;  # Include core modules?
+my $lc   = shift || 0;  # Include all-lowercase packages?
+my $dump = shift || 0;  # Dump the modules & dependencies?
+my $img  = shift || 0;  # Generate an image?
 
-# Make a node table.
-my $node = {};
-
-# Recursively locate all the deps.
+# Internal variables:
+my $node = {};  # Keep track of nodes for graphing.
 my $deps = {};  # The bucket of module => [dependencies]
-my $seen = {};  # So we don't repeat ourselves.
+my $seen = {};  # Keep track of what has been seen.
+
+# Locate all the dependencies below the given directory.
 find(\&wanted, $dir);
 
-# Show the results.
-if ($dump) {
-    warn Data::Dumper->new([$deps])->Indent(1)->Terse(1)->Quotekeys(0)->Sortkeys(1)->Dump;
-}
+# Show the results if requested.
+print Data::Dumper->new([$deps])->Indent(1)->Terse(1)->Quotekeys(0)->Sortkeys(1)->Dump
+    if $dump;
 
-# Graph the results.
-if ($img) {
-    # Make a graphviz instance.
-    my $g = GraphViz->new(
-        concentrate => 1,
-        overlap     => 'false',
-    );
-
-    # Consider the nodes of the field...
-    for my $module (keys %$node) {
-        # Add a vertex for this module.
-        my $v = $g->add_node($module);
-
-        # Reset the node module value to the graph vertex.
-        $node->{$module} = $v;
-
-        # Add edges for the dependencies.
-        for my $dep (@{ $deps->{$module} }) {
-            # Add a vertex for this dependent module unless seen.
-            $node->{$dep} = $g->add_node($dep) unless ref $node->{$dep};
-
-            # Add an edge for this dependency.
-            $g->add_edge($node->{$module} => $node->{$dep});
-        }
-    }
-    print $g->as_png;
-}
+# Graph the results if requested.
+make_graphviz() if $img;
 
 sub wanted { /\.pm$/ && deps($File::Find::name) }
 
-sub deps {
+sub deps { # Find the dependencies of the given module.
     # The module to investigate.
     my $module = shift || die "ERROR: No file provided.";
 
@@ -124,5 +94,32 @@ sub deps {
             push @{ $deps->{$module} }, $m;
         }
     }
+}
+
+sub make_graphviz { # Generate the graph visualization.
+    # Make a graphviz instance.
+    my $g = GraphViz->new(
+        concentrate => 1,
+        overlap => 'false',
+    );
+
+    # Consider the nodes of the field...
+    for my $module (keys %$node) {
+        # Add a vertex for this module.
+        my $v = $g->add_node($module);
+
+        # Reset the node module value to the graph vertex.
+        $node->{$module} = $v;
+
+        # Add edges for the dependencies.
+        for my $dep (@{ $deps->{$module} }) {
+            # Add a vertex for this dependent module unless seen.
+            $node->{$dep} = $g->add_node($dep) unless ref $node->{$dep};
+
+            # Add an edge for this dependency.
+            $g->add_edge($node->{$module} => $node->{$dep});
+        }
+    }
+    print $g->as_png;
 }
 
