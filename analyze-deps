@@ -105,11 +105,8 @@ sub make_graphviz { # Generate the graph visualization.
 
     # Consider the nodes of the field...
     for my $module (keys %$node) {
-        # Add a vertex for this module.
-        my $v = $g->add_node($module);
-
-        # Reset the node module value to the graph vertex.
-        $node->{$module} = $v;
+        # Add a vertex for this module & set the node value to it;
+        $node->{$module} = $g->add_node($module);
 
         # Add edges for the dependencies.
         for my $dep (@{ $deps->{$module} }) {
