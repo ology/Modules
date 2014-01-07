@@ -24,7 +24,7 @@ for my $package (@ARGV) {
             $ver = $info->version;
         }
     }
-    # Find the version from a module name.
+    # Find the version from a module or package name.
     else {
         $package =~ s/-/::/g;
         eval "use $package";
@@ -32,9 +32,9 @@ for my $package (@ARGV) {
         $ver = eval( '$' . $package . '::VERSION' );
     }
 
-    # Print the module and version info.
+    # Print the name and version info.
     print "$package: ", ( $ver ? $ver : 'not found' ), "\n";
 
-    # Show the module path in @INC, unless already given as a path.
+    # Show the path in @INC, unless already given as a path.
     print qx{ perldoc -l $package } if $ver && $package !~ /\//;
 }
