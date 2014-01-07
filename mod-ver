@@ -1,13 +1,19 @@
 #!/usr/bin/perl
+#
+# Perl module version lister - gene@ology.net
+#
+# * This program uses Module::Metadata, but only if given a package path.
+#
 use strict;
 use warnings;
 
 die "Usage: perl $0 Module::Name [Another-Module] [path/to/Module.pm]\n"
     unless @ARGV;
 
-# Module version
+# Module version to return.
 my $ver;
 
+# Show the module info for each one given.
 for my $package (@ARGV) {
     # Find the version from a path.
     if ( $package =~ /\// ) {
@@ -26,8 +32,9 @@ for my $package (@ARGV) {
         $ver = eval( '$' . $package . '::VERSION' );
     }
 
+    # Print the module and version info.
     print "$package: ", ( $ver ? $ver : 'not found' ), "\n";
 
-    # Show the module path in @INC, if it's not a path already.
+    # Show the module path in @INC, unless already given as a path.
     print qx{ perldoc -l $package } if $ver && $package !~ /\//;
 }
