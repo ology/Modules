@@ -13,18 +13,18 @@ use strict;
 use warnings;
 
 use Capture::Tiny ':all';
-use Data::Dumper;
-# Devel::Dependencies is used, but in a command below.
+use Data::Dumper::Concise;
+#use Devel::Dependencies;
 use File::Find;
 use GraphViz;
 use Module::CoreList;
 
 # Get the directory under which to look.
 my $dir  = shift
-    || die "Usage: perl $0 path/to/lib [core] [lc] [dump] [img]\n";
+    || die "Usage: perl $0 /fullpath/to/lib [core] [lc] [dump] [img]\n";
+my $dump = shift || 0;  # Dump the modules & dependencies?
 my $core = shift || 0;  # Include core modules?
 my $lc   = shift || 0;  # Include all-lowercase packages?
-my $dump = shift || 0;  # Dump the modules & dependencies?
 my $img  = shift || 0;  # Generate an image?
 
 # Internal variables:
@@ -36,8 +36,7 @@ my $seen = {};  # Keep track of what has been seen.
 find(\&wanted, $dir);
 
 # Show the results if requested.
-print Data::Dumper->new([$deps])->Indent(1)->Terse(1)->Quotekeys(0)->Sortkeys(1)->Dump
-    if $dump;
+print Dumper $deps if $dump;
 
 # Graph the results if requested.
 make_graphviz() if $img;
@@ -47,11 +46,15 @@ sub wanted { /\.pm$/ && deps($File::Find::name) }
 sub deps { # Find the dependencies of the given module.
     # The module to investigate.
     my $module = shift || die "ERROR: No file provided.";
+#warn "M:$module\n";
 
     # Find the file dependencies.
     my ($out, $err, $exit) = capture {
         system('perl', '-MDevel::Dependencies', $module);
     };
+#warn "O:$out\n";
+#warn "E:$err\n";
+#warn "E:$exit\n";
 
     # Remove the path parts from the module.
     $module =~ s/^.*?\/lib\/(.*)$/$1/;
@@ -72,11 +75,15 @@ sub deps { # Find the dependencies of the given module.
 
     # Select all the dependencies individually.
     my @deps = split /\s+/, $out;
+#warn "D:@deps\n";
 
     # Remove modules in core.
     for my $d (@deps) {
+        next unless $d;
+
         # Replace file with module syntax.
         my $m = $to_module->($d);
+#warn "M:$m\n";
 
         # Save or skip the module.
         if ($seen->{$m}     # Skip if seen
@@ -92,6 +99,7 @@ sub deps { # Find the dependencies of the given module.
 
             # Save our dependency.
             push @{ $deps->{$module} }, $m;
+#use Data::Dumper::Concise;warn Dumper$deps->{$module};
         }
     }
 }
