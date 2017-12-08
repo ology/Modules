@@ -109,8 +109,6 @@ sub make_graphviz { # Generate the graph visualization.
 
     # Make a graphviz instance.
     my $g = GraphViz->new(
-        height      => 640,
-        width       => 480,
         concentrate => 1,
         overlap     => 'false',
     );
@@ -118,16 +116,20 @@ sub make_graphviz { # Generate the graph visualization.
     # Consider the nodes of the field...
     for my $module (keys %$node) {
         # Add a vertex for this module & set the node value to it;
-        $node->{$module} = $g->add_node($module);
+        my $v = $g->add_node($module);
+#warn "NM: $v\n";
 
         # Add edges for the dependencies.
         for my $dep (@{ $deps->{$module} }) {
             # Add a vertex for this dependent module unless seen.
-            $node->{$dep} = $g->add_node($dep) unless ref $node->{$dep};
+            my $d = $g->add_node($dep) unless ref $node->{$dep};
+#warn "ND: $d\n";
 
             # Add an edge for this dependency.
-            $g->add_edge($node->{$module} => $node->{$dep});
+            $g->add_edge($v => $d);
+#warn "MD: $v => $d\n";
         }
     }
-    print $g->as_png( $0 . '.png' );
+
+    $g->as_png( $0 . '.png' );
 }
