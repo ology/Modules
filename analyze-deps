@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 #
 # List or plot module dependencies
-# -- gene+github@ology.net
+#
 # Command line options are all Boolean except the path:
 #   path : The path to the root of the search directory
 #   core : Should we include core modules?
@@ -14,7 +14,7 @@ use warnings;
 
 use Capture::Tiny ':all';
 use Data::Dumper::Concise;
-#use Devel::Dependencies;
+use Devel::Dependencies;
 use File::Find;
 use GraphViz;
 use Module::CoreList;
@@ -39,7 +39,7 @@ find(\&wanted, $dir);
 print Dumper $deps if $dump;
 
 # Graph the results if requested.
-make_graphviz() if $img;
+make_graphviz($node) if $img;
 
 sub wanted { /\.pm$/ && deps($File::Find::name) }
 
@@ -105,6 +105,8 @@ sub deps { # Find the dependencies of the given module.
 }
 
 sub make_graphviz { # Generate the graph visualization.
+    my $node = shift;
+
     # Make a graphviz instance.
     my $g = GraphViz->new(
         concentrate => 1,
@@ -125,6 +127,5 @@ sub make_graphviz { # Generate the graph visualization.
             $g->add_edge($node->{$module} => $node->{$dep});
         }
     }
-    print $g->as_png;
+    print $g->as_png( $0 . '.png' );
 }
-
