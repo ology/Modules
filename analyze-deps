@@ -109,8 +109,10 @@ sub make_graphviz { # Generate the graph visualization.
 
     # Make a graphviz instance.
     my $g = GraphViz->new(
+        height      => 640,
+        width       => 480,
         concentrate => 1,
-        overlap => 'false',
+        overlap     => 'false',
     );
 
     # Consider the nodes of the field...
