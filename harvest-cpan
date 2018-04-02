@@ -27,7 +27,6 @@ my @lines = split /\n/, $text;
 for my $line ( @lines ) {
     next unless $line =~ /$string/;
     next unless $line =~ /$extra/;
-    chomp $line;
     print "$line\n";
     $i++;
 }
