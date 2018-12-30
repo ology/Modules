@@ -56,6 +56,7 @@ my $g = GraphViz2->new(
 my %nodes;
 my %edges;
 
+# Build the network graph
 for my $module ( keys %dependencies ) {
     $g->add_node( name => $module )
         unless $nodes{$module}++;
