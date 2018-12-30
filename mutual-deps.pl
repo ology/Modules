@@ -23,6 +23,7 @@ for my $file ( @files ) {
 
 my %dependencies;
 
+# Inspect each module
 for my $module ( keys %modules ) {
     # Get the module dependencies
     my ($stdout, $stderr, $exit) = capture {
