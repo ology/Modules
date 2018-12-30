@@ -2,8 +2,9 @@
 use strict;
 use warnings;
 
-use File::Find::Rule;
 use Capture::Tiny ':all';
+use File::Find::Rule;
+use GraphViz2;
 
 my $path = shift || die "Usage: perl $0 /some/path [pattern]\n";
 my $pattern = shift;
@@ -35,10 +36,32 @@ for my $module ( keys %modules ) {
     my @parts = split /\s*,\s*/, $stdout;
     for my $part ( @parts ) {
         my @strings = split /\s*=>\s*/, $part;
-        push @deps, $strings[0];
+        ( my $dep = $strings[0] ) =~ s/'//g;
+        push @deps, $dep;
     }
 
     # Tally the module dependencies
     $dependencies{$module} = \@deps;
 }
-use Data::Dumper;warn(__PACKAGE__,' ',__LINE__," MARK: ",Dumper\%dependencies);
+#use Data::Dumper;warn(__PACKAGE__,' ',__LINE__," MARK: ",Dumper\%dependencies);
+
+my $g = GraphViz2->new(
+    global => { directed => 1 },
+    node   => { shape => 'oval' },
+    edge   => { color => 'grey' },
+);
+
+my %nodes;
+my %edges;
+
+for my $module ( keys %dependencies ) {
+    $g->add_node( name => $module )
+        unless $nodes{$module}++;
+
+    for my $dep ( @{ $dependencies{$module} } ) {
+        $g->add_edge( from => $module, to => $dep )
+            unless $edges{ $module . ' ' . $dep }++;
+    }
+}
+
+$g->run( format => 'png', output_file => 'mutual-deps.png' );
