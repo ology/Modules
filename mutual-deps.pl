@@ -17,6 +17,7 @@ for my $file ( @files ) {
     (my $module = $file ) =~ s/^.+?\/lib\/([\w\/]+)\.pm/$1/;
     $module =~ s/\//::/g;
 
+    # Skip if there is a pattern and we don't match it
     next if $pattern && $module !~ /$pattern/;
 
     $modules{$module} = $file;
@@ -45,6 +46,7 @@ for my $module ( keys %modules ) {
 }
 #use Data::Dumper;warn(__PACKAGE__,' ',__LINE__," MARK: ",Dumper\%dependencies);
 
+# Instantiate a graphviz object
 my $g = GraphViz2->new(
     global => { directed => 1 },
     node   => { shape => 'oval' },
@@ -65,4 +67,5 @@ for my $module ( keys %dependencies ) {
     }
 }
 
+# Output a PNG
 $g->run( format => 'png', output_file => 'mutual-deps.png' );
