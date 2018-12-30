@@ -5,7 +5,8 @@ use warnings;
 use File::Find::Rule;
 use Capture::Tiny ':all';
 
-my $path = shift || die "Usage: perl $0 /some/path\n";
+my $path = shift || die "Usage: perl $0 /some/path [pattern]\n";
+my $pattern = shift;
 
 my @files = File::Find::Rule->file()->name('*.pm')->in($path);
 
@@ -14,6 +15,9 @@ my %modules;
 for my $file ( @files ) {
     (my $module = $file ) =~ s/^.+?\/lib\/([\w\/]+)\.pm/$1/;
     $module =~ s/\//::/g;
+
+    next if $pattern && $module !~ /$pattern/;
+
     $modules{$module} = $file;
 }
 
