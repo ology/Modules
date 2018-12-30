@@ -11,6 +11,7 @@ use GraphViz2;
 my $path = shift || die "Usage: perl $0 /some/path [pattern]\n";
 my $pattern = shift;
 
+# Gather the important files
 my @files = File::Find::Rule->file()->name('*.pm')->in($path);
 
 # Convert path filenames to modules
