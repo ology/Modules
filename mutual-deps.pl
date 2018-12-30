@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 
+# Output the module dependencies in a directory of modules.
+
 use Capture::Tiny ':all';
 use File::Find::Rule;
 use GraphViz2;
