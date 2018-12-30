@@ -58,6 +58,7 @@ for my $module ( keys %dependencies ) {
     $g->add_node( name => $module )
         unless $nodes{$module}++;
 
+    # Add any edges
     for my $dep ( @{ $dependencies{$module} } ) {
         $g->add_edge( from => $module, to => $dep )
             unless $edges{ $module . ' ' . $dep }++;
