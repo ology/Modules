@@ -61,7 +61,9 @@ my %edges;
 
 # Build the network graph
 for my $module ( keys %dependencies ) {
-    $g->add_node( name => $module )
+    my $color = $pattern && $module =~ /$pattern/ ? 'blue' : 'black';
+
+    $g->add_node( name => $module, color => $color )
         unless $nodes{$module}++;
 
     # Add any edges
