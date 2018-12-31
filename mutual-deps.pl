@@ -17,7 +17,7 @@ my @files = File::Find::Rule->file()->name('*.pm')->in($path);
 # Convert path filenames to modules
 my %modules;
 for my $file ( @files ) {
-    (my $module = $file ) =~ s/^.+?\/lib\/([\w\/]+)\.pm/$1/;
+    (my $module = $file ) =~ s/^.+?\/lib\/([\w\/]+)\.pm$/$1/;
     $module =~ s/\//::/g;
 
     # Skip if there is a pattern and we don't match it
