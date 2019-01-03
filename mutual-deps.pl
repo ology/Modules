@@ -8,8 +8,9 @@ use Capture::Tiny ':all';
 use File::Find::Rule;
 use GraphViz2;
 
-my $path = shift || die "Usage: perl $0 /some/path [pattern]\n";
-my $pattern = shift;
+my $path     = shift || die "Usage: perl $0 /some/path [pattern] [show-all]\n";
+my $pattern  = shift || undef;
+my $show_all = shift || 0;
 
 # Gather the important files
 my @files = File::Find::Rule->file()->name('*.pm')->in($path);
@@ -21,7 +22,7 @@ for my $file ( @files ) {
     $module =~ s/\//::/g;
 
     # Skip if there is a pattern and we don't match it
-    next if $pattern && $module !~ /$pattern/;
+    next if !$show_all && $pattern && $module !~ /$pattern/;
 
     $modules{$module} = $file;
 }
