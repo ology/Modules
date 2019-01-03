@@ -48,7 +48,7 @@ for my $module ( keys %modules ) {
     # Tally the module dependencies
     $dependencies{$module} = \@deps;
 }
-#use Data::Dumper;warn(__PACKAGE__,' ',__LINE__," MARK: ",Dumper\%dependencies);
+#use Data::Dumper;warn(__PACKAGE__,' ',__LINE__," MARK: ",Dumper\%dependencies); exit;
 
 # Instantiate a graphviz object
 my $g = GraphViz2->new(
