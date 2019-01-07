@@ -26,9 +26,9 @@ $exclude = [ split /,/, $exclude ]
 # Gather the important files
 my @pmfiles = File::Find::Rule->file()->name('*.pm')->in($path);
 
-# Exclude any given patterns
 my @files;
 FILE: for my $file ( @pmfiles ) {
+    # Exclude any given patterns
     for my $pat ( @$exclude ) {
         next FILE if $file =~ /$pat/;
     }
