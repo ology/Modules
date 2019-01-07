@@ -20,7 +20,7 @@ my $include  = shift || '';  # Module name to include
 my $show_all = shift // 0;
 my $exclude  = shift;  # CSV of patterns to exclude
 
-$exclude = [ split /\s*,\s*/, $exclude ]
+$exclude = [ split /,/, $exclude ]
     if $exclude;
 
 # Gather the important files
