@@ -15,7 +15,7 @@ use Capture::Tiny ':all';
 use File::Find::Rule;
 use GraphViz2;
 
-my $path     = shift || die "Usage: perl $0 /some/path [pattern] [show-all]\n";
+my $path     = shift || die "Usage: perl $0 /some/path [include_pattern] [show-all] [csv_exclude_patterns]\n";
 my $pattern  = shift || '';  # Module name to include
 my $show_all = shift // 0;
 my $exclude  = shift;  # CSV of patterns to exclude
