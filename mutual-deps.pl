@@ -16,7 +16,7 @@ use File::Find::Rule;
 use GraphViz2;
 
 my $path     = shift || die "Usage: perl $0 /some/path [include_pattern] [show-all] [csv_exclude_patterns]\n";
-my $pattern  = shift || '';  # Module name to include
+my $include  = shift || '';  # Module name to include
 my $show_all = shift // 0;
 my $exclude  = shift;  # CSV of patterns to exclude
 
@@ -41,8 +41,8 @@ for my $file ( @files ) {
     (my $module = $file ) =~ s/^.+?\/lib\/([\w\/]+)\.pm$/$1/;
     $module =~ s/\//::/g;
 
-    # Skip if there is a pattern and we don't match it
-    next if !$show_all && $pattern && $module !~ /$pattern/;
+    # Skip if there is an include_pattern and we don't match it
+    next if !$show_all && $include && $module !~ /$include/;
 
     $modules{$module} = $file;
 }
@@ -82,7 +82,7 @@ my %edges;
 
 # Build the network graph
 for my $module ( keys %dependencies ) {
-    my $color = $pattern && $module =~ /$pattern/ ? 'blue' : 'black';
+    my $color = $include && $module =~ /$include/ ? 'blue' : 'black';
 
     $g->add_node( name => $module, color => $color )
         unless $nodes{$module}++;
