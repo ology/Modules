@@ -3,17 +3,37 @@ use strict;
 use warnings;
 
 # Output the module dependencies in a directory of modules.
+#
+#  perl mutual-deps.pl /include/path include_pattern show_all csv_exclude_patterns
+#
+#  * "show_all" means to show all the modules under the path, or *only* those in the include_pattern.
+#
+# Example:
+#  perl mutual-deps.pl /some/path Xyz 1 foo,bar
 
 use Capture::Tiny ':all';
 use File::Find::Rule;
 use GraphViz2;
 
 my $path     = shift || die "Usage: perl $0 /some/path [pattern] [show-all]\n";
-my $pattern  = shift || undef;
-my $show_all = shift || 0;
+my $pattern  = shift || '';  # To include
+my $show_all = shift // 0;
+my $exclude  = shift;  # CSV of patterns to exclude
+
+$exclude = [ split /\s*,\s*/, $exclude ]
+    if $exclude;
 
 # Gather the important files
-my @files = File::Find::Rule->file()->name('*.pm')->in($path);
+my @pmfiles = File::Find::Rule->file()->name('*.pm')->in($path);
+
+# Exclude any given patterns
+my @files;
+FILE: for my $file ( @pmfiles ) {
+    for my $pat ( @$exclude ) {
+        next FILE if $file =~ /$pat/;
+    }
+    push @files, $file;
+}
 
 # Convert path filenames to modules
 my %modules;
