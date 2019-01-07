@@ -16,7 +16,7 @@ use File::Find::Rule;
 use GraphViz2;
 
 my $path     = shift || die "Usage: perl $0 /some/path [pattern] [show-all]\n";
-my $pattern  = shift || '';  # Module names to include
+my $pattern  = shift || '';  # Module name to include
 my $show_all = shift // 0;
 my $exclude  = shift;  # CSV of patterns to exclude
 
