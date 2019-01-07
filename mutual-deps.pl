@@ -4,7 +4,7 @@ use warnings;
 
 # Output the module dependencies in a directory of modules.
 #
-#  perl mutual-deps.pl /include/path [include_pattern] [show_all] {csv_exclude_patterns]
+#  perl mutual-deps.pl /include/path [include_pattern] [show_all] [csv_exclude_patterns]
 #
 #  * "show_all" means to show all the modules under the path, or *only* those in the include_pattern.
 #
