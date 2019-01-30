@@ -62,7 +62,7 @@ for my $module ( keys %modules ) {
     for my $part ( @parts ) {
         my @strings = split /\s*=>\s*/, $part;
         ( my $dep = $strings[0] ) =~ s/'//g;
-        next if grep { $dep =~ /$_/ } @$exclude;
+        next if $exclude && grep { $dep =~ /$_/ } @$exclude;
         push @deps, $dep;
     }
 
