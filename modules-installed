@@ -63,6 +63,7 @@ $csv->say( $fh, $_ ) for @rows;
 close $fh or die "Can't close $filename: $!";
 
 __END__
+R>
 x = read.csv('modules-installed.csv', header=T)
 plot(sort(x$effort))
 x$file[which(x$effort == max(x$effort))]
