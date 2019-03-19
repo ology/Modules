@@ -70,6 +70,6 @@ __END__
 R>
 x = read.csv('modules-installed.csv', header=T)
 plot(sort(x$effort))
-x$file[which(x$effort == max(x$effort))]
+x$module[which(x$effort == max(x$effort))]
 plot(sort(x$difficulty))
-x$file[which(x$difficulty == max(x$difficulty))]
+x$module[which(x$difficulty == max(x$difficulty))]
