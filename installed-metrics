@@ -15,6 +15,7 @@ my $inst = ExtUtils::Installed->new();
 
 my @modules = $inst->modules();
 
+# Collect the included module program files.
 my %modules;
 for my $module ( @modules ) {
     next unless any { $module =~ /$_/ } @include;
@@ -24,6 +25,7 @@ for my $module ( @modules ) {
 
 my $i = 0;
 
+# Collect the Halstead metrics for the module files.
 my %by_file;
 for my $module ( keys %modules ) {
     for my $file ( @{ $modules{$module} } ) {
@@ -44,6 +46,7 @@ for my $module ( keys %modules ) {
     }
 }
 
+# Build the data rows of the metrics and the module name.
 my @rows;
 for my $file ( keys %by_file ) {
     my $row = [];
@@ -56,6 +59,7 @@ for my $file ( keys %by_file ) {
     push @rows, $row;
 }
 
+# Create a CSV file of the data.
 my $filename = "$0.csv";
 my $csv = Text::CSV_XS->new({ binary => 1, auto_diag => 1 });
 open my $fh, '>:encoding(utf8)', $filename or die "Can't write $filename: $!";
