@@ -68,7 +68,7 @@ close $fh or die "Can't close $filename: $!";
 
 __END__
 R>
-x = read.csv('modules-installed.csv', header=T)
+x = read.csv('installed-metrics.csv', header=T)
 plot(sort(x$effort))
 x$module[which(x$effort == max(x$effort))]
 plot(sort(x$difficulty))
