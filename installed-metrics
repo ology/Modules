@@ -78,5 +78,5 @@ plot(sort(x$effort))
 x$module[which(x$effort == max(x$effort))]
 plot(sort(x$difficulty))
 x$module[which(x$difficulty == max(x$difficulty))]
-plot(x$effort, x$difficulty)
+plot(x$effort, x$difficulty, xlab='Effort', ylab='Difficulty', main='Halstead Complexity')
 text(x$effort, x$difficulty, x$module, cex=0.6, pos=4, col="blue")
