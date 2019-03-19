@@ -74,3 +74,4 @@ x$module[which(x$effort == max(x$effort))]
 plot(sort(x$difficulty))
 x$module[which(x$difficulty == max(x$difficulty))]
 plot(x$effort, x$difficulty)
+text(x$effort, x$difficulty, x$module, cex=0.6, pos=4, col="blue")
