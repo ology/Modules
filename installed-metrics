@@ -9,7 +9,11 @@ use List::Util qw/any/;
 use Syntax::Keyword::Try;
 use Text::CSV_XS qw/csv/;
 
-my @include = @ARGV ? @ARGV : qw/Math/;
+my $include = shift // 'Music';
+my $exclude = shift // 'Tag';
+
+$include = [ split /,/, $include ];
+$exclude = [ split /,/, $exclude ];
 
 my $inst = ExtUtils::Installed->new();
 
@@ -18,7 +22,8 @@ my @modules = $inst->modules();
 # Collect the included module program files.
 my %modules;
 for my $module ( @modules ) {
-    next unless any { $module =~ /$_/ } @include;
+    next unless any { $module =~ /$_/ } @$include;
+    next if any { $module =~ /$_/ } @$exclude;
     my @files = $inst->files( $module, 'prog' );
     $modules{$module} = \@files;
 }
