@@ -28,11 +28,18 @@ my %by_file;
 for my $module ( keys %modules ) {
     for my $file ( @{ $modules{$module} } ) {
         next unless $file =~ /\.pm$/;
+
         try { Perl::Metrics::Halstead->new( file => $file ) }
         catch { warn "$module $file can't be computed: $@\n"; next };
+
         $i++;
         print "$i. Processing $module $file...\n";
         my $pmh = Perl::Metrics::Halstead->new( file => $file );
+
+        $file =~ s/^.*?\/[\d.]+\///;
+        $file =~ s/\//::/g;
+        $file =~ s/\.pm$//;
+
         $by_file{$file} = $pmh->dump if defined $pmh;
     }
 }
@@ -40,7 +47,7 @@ for my $module ( keys %modules ) {
 my @rows;
 for my $file ( keys %by_file ) {
     my $row = [];
-    push @rows, [ sort( keys %{ $by_file{$file} } ), 'file' ]
+    push @rows, [ sort( keys %{ $by_file{$file} } ), 'module' ]
         unless @rows;
     for my $metric ( sort keys %{ $by_file{$file} } ) {
         push @$row, $by_file{$file}->{$metric};
