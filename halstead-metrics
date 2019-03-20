@@ -43,7 +43,8 @@ for my $module ( keys %modules ) {
         print "$i. Processing $module $file...\n";
         my $pmh = Perl::Metrics::Halstead->new( file => $file );
 
-        $file =~ s/^.*?\/[\d.]+\///;
+        # Convert the filename to a module.
+        $file =~ s/^.*?\/[\d.]+\///;  # Remove the starting path bits to a perl version number.
         $file =~ s/\//::/g;
         $file =~ s/\.pm$//;
 
