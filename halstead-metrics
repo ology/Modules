@@ -75,7 +75,8 @@ close $fh or die "Can't close $filename: $!";
 __END__
 R>
 x = read.csv('halstead-metrics.csv', header=T)
-plot(sort(x$effort))
+plot(sort(x$effort), main='Halstead Complexity')
+text(sort(x$effort), labels=x$module, cex=0.5, pos=2, col='blue')
 x$module[which(x$effort == max(x$effort))]
 plot(sort(x$difficulty))
 x$module[which(x$difficulty == max(x$difficulty))]
