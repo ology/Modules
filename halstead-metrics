@@ -10,7 +10,7 @@ use Syntax::Keyword::Try;
 use Text::CSV_XS qw/csv/;
 
 my $include = shift // 'Music';
-my $exclude = shift // 'Tag';
+my $exclude = shift // '';
 
 $include = [ split /,/, $include ];
 $exclude = [ split /,/, $exclude ];
