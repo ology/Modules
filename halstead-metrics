@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 
+# Usage: perl halstead-metrics Include,Foo [Exclude,Bar,Baz]
+
 use lib '/Users/gene/sandbox/Perl-Metrics-Halstead/lib';
 use Perl::Metrics::Halstead;
 use ExtUtils::Installed;
