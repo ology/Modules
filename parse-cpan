@@ -2,12 +2,13 @@
 use strict;
 use warnings;
 
+use Date::Manip;
 use HTML::TreeBuilder 5 -weak; # Ensure weak references in use
 use List::Util qw/any/;
 use HTTP::Simple;
 
 my $include = shift || 'Math';
-my $exclude = shift // '';
+my $exclude = shift // 'Text,Task,Silly,Module,String,PHOENIXL,CryptX,stockmonkey,Bytes,Business,FormValidator,DBIx,Bundle,Nopaste,Acme';
 
 $include = [ split /,/, $include ];
 $exclude = [ split /,/, $exclude ];
@@ -24,14 +25,23 @@ for my $pre ( $tree->look_down( _tag => 'pre' ) ) {
     $text .= $pre->as_text;
 }
 
-my $i = 0;
+my @matches;
 
 my @lines = split /\n/, $text;
 for my $line ( @lines ) {
     next unless any { $line =~ /$_/ } @$include;
     next if any { $line =~ /$_/ } @$exclude;
-    $i++;
-    print "$i. $line\n";
+#    print "$line\n";
+
+    my @parts = $line =~ /^(\w+)\s+([A-Z]+)\s+(\S+)\s+(\d+\w)\s+(.*?)\s*\+?\s*$/g;
+    next unless $parts[0];
+
+    my $date = ParseDate( $parts[4] );
+    push @matches, [ @parts, $date ];
 }
 
-print "\nTotal matches: $i\n";
+my $i = 0;
+for my $match ( sort { $a->[5] cmp $b->[5] } @matches ) {
+    $i++;
+    print $i, '. ', join( ', ', @$match ), "\n";
+}
