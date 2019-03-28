@@ -37,6 +37,7 @@ for my $line ( @lines ) {
     next unless $parts[0];
 
     my $date = ParseDate( $parts[4] );
+    $date =~ s/00:00:00//;
     push @matches, [ @parts, $date ];
 }
 
