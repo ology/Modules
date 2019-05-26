@@ -38,8 +38,13 @@ for my $module ( keys %modules ) {
     for my $file ( @{ $modules{$module} } ) {
         next unless $file =~ /\.pm$/;
 
-        try { Perl::Metrics::Halstead->new( file => $file ) }
-        catch { warn "$module $file can't be computed: $@\n"; next };
+        try {
+            Perl::Metrics::Halstead->new( file => $file );
+        }
+        catch {
+            warn "$module $file can't be computed: $@\n";
+            next;
+        };
 
         $i++;
         print "$i. Processing $module $file...\n";
