@@ -15,9 +15,9 @@ use CPAN::Testers::WWW::Reports::Query::AJAX;
 use CPAN::Dashboard::Distribution;
 use CPAN::Dashboard::Distribution::CPANTesters;
 
-has 'author'             => ( is => 'ro' );
-has 'distribution_names' => ( is => 'ro' );
-has 'distributions'      => ( is => 'lazy' );
+has author             => ( is => 'ro' );
+has distribution_names => ( is => 'ro' );
+has distributions      => ( is => 'lazy' );
 
 sub _build_distributions
 {
