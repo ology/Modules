@@ -11,8 +11,6 @@ use 5.010;
 use Moo;
 use PAUSE::Packages;
 use PAUSE::Permissions;
-use HTTP::Tiny;
-use JSON;
 use CPAN::Testers::WWW::Reports::Query::AJAX;
 use CPAN::Dashboard::Distribution;
 use CPAN::Dashboard::Distribution::CPANTesters;
