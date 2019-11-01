@@ -32,7 +32,7 @@ sub _build_distributions
 
         next unless ( $self->author && $distinfo->cpanid eq $self->author )
             || ( $self->distribution_names
-            && grep { $distinfo->dist eq $_ } @{ $self->distribution_names } );
+                && grep { $distinfo->dist eq $_ } @{ $self->distribution_names } );
 
         $dist = CPAN::Dashboard::Distribution->new(
             name         => $distinfo->dist,
