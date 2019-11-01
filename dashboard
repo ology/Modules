@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 package CPANg::Dashboard;
-$CPAN::Dashboard::VERSION = '0.02_01';
+$CPANg::Dashboard::VERSION = '0.02_01';
 use 5.010;
 use Moo;
 use PAUSE::Packages;
