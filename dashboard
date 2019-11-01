@@ -1,0 +1,120 @@
+#!/usr/bin/env perl
+
+# Modified from https://metacpan.org/release/CPAN-Dashboard
+
+use strict;
+use warnings;
+
+package CPANg::Dashboard;
+$CPAN::Dashboard::VERSION = '0.02_01';
+use 5.010;
+use Moo;
+use PAUSE::Packages;
+use PAUSE::Permissions;
+use HTTP::Tiny;
+use JSON;
+use CPAN::Testers::WWW::Reports::Query::AJAX;
+use CPAN::Dashboard::Distribution;
+use CPAN::Dashboard::Distribution::CPANTesters;
+
+has 'author'             => ( is => 'ro' );
+has 'distribution_names' => ( is => 'ro' );
+has 'distributions'      => ( is => 'lazy' );
+
+sub _build_distributions
+{
+    my $self = shift;
+    my @dist_names;
+    my $iterator = PAUSE::Packages->new()->release_iterator(well_formed => 1);
+    my $ua       = HTTP::Tiny->new();
+    my %distmap;
+    my ($url, $response, $dist);
+    my %owner;
+
+    while (my $release = $iterator->next_release) {
+        my $distinfo = $release->distinfo;
+
+        next unless ( $self->author && $distinfo->cpanid eq $self->author )
+            || ( $self->distribution_names
+            && grep { $distinfo->dist eq $_ } @{ $self->distribution_names } );
+
+        $dist = CPAN::Dashboard::Distribution->new(
+            name         => $distinfo->dist,
+            release_path => $release->path,
+            version      => $distinfo->version,
+            is_developer => $distinfo->maturity eq 'developer',
+            distinfo     => $distinfo,
+            modules      => $release->modules,
+        );
+
+        $distmap{ $distinfo->dist } = $dist;
+
+        # by setting this, we identify all modules associated with this dashboard
+        if ( defined( $release->modules ) ) {
+            $owner{ $_->name } = undef for @{ $release->modules };
+        }
+    }
+
+    for my $distname (keys %distmap) {
+        $dist = $distmap{$distname};
+
+        $dist->bug_count(0);  # XXX Appease the attribute gods
+
+        my $testers = CPAN::Testers::WWW::Reports::Query::AJAX->new(dist => $distname);
+
+        if ( !defined($testers) ) {
+            warn "Failed to get CPAN Testers results for dist '$distname'\n";
+        }
+        else {
+            $dist->cpan_testers( CPAN::Dashboard::Distribution::CPANTesters->new(
+                passes   => $testers->pass,
+                fails    => $testers->fail,
+                na       => $testers->na,
+                unknowns => $testers->unknown,
+            ) );
+        }
+    }
+
+    # First we get the owner for every module we're interested in
+    $iterator = PAUSE::Permissions->new()->module_iterator();
+
+    while ( my $module = $iterator->next_module ) {
+        next unless exists( $owner{ $module->name } );
+        $owner{ $module->name } = $module->owner if defined( $module->owner );
+    }
+
+    for my $distname ( keys %distmap ) {
+        my %seen;
+
+        $dist = $distmap{ $distname };
+
+        for my $module ( @{ $dist->modules } ) {
+            $seen{ $owner{ $module->name } // '__undef' } = 1;
+        }
+
+        # print STDERR "OWNER $distname: ", join(', ', keys %seen), "\n";
+        $dist->owner( [ keys %seen ] );
+    }
+
+    return [sort { $a->rating <=> $b->rating } values %distmap];
+}
+
+1;
+
+
+use CPANg::Dashboard;
+
+my $author = shift || 'GENE';
+ 
+my $dashboard = CPANg::Dashboard->new( author => $author );
+
+my $i = 0;
+
+my $width = length scalar @{ $dashboard->distributions };
+
+for my $dist ( sort { $a->name cmp $b->name } @{ $dashboard->distributions } ) {
+    printf "%0*d. %s: %d / %d / %d / %d\n",
+        $width, ++$i, $dist->name,
+        $dist->cpan_testers->passes, $dist->cpan_testers->fails,
+        $dist->cpan_testers->na, $dist->cpan_testers->unknowns;
+}
