@@ -23,11 +23,9 @@ has distributions      => ( is => 'lazy' );
 sub _build_distributions
 {
     my $self = shift;
-    my @dist_names;
-    my $iterator = PAUSE::Packages->new()->release_iterator(well_formed => 1);
+    my $iterator = PAUSE::Packages->new()->release_iterator( well_formed => 1 );
     my %distmap;
     my $dist;
-    my %owner;
 
     while ( my $release = $iterator->next_release ) {
         my $distinfo = $release->distinfo;
