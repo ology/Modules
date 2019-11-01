@@ -53,10 +53,7 @@ sub _build_distributions
 
         my $testers = CPAN::Testers::WWW::Reports::Query::AJAX->new(dist => $distname);
 
-        if ( !defined($testers) ) {
-            warn "Failed to get CPAN Testers results for dist '$distname'\n";
-        }
-        else {
+        if ( defined $testers ) {
             $dist->cpan_testers(
                 CPAN::Dashboard::Distribution::CPANTesters->new(
                     passes   => $testers->pass,
@@ -65,6 +62,9 @@ sub _build_distributions
                     unknowns => $testers->unknown,
                 )
             );
+        }
+        else {
+            warn "Failed to get CPAN Testers results for dist '$distname'\n";
         }
     }
 
