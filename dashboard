@@ -20,8 +20,7 @@ has author             => ( is => 'ro' );
 has distribution_names => ( is => 'ro' );
 has distributions      => ( is => 'lazy' );
 
-sub _build_distributions
-{
+sub _build_distributions {
     my $self = shift;
     my $iterator = PAUSE::Packages->new()->release_iterator( well_formed => 1 );
     my %distmap;
