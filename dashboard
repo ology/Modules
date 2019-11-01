@@ -50,7 +50,7 @@ sub _build_distributions {
 
         $dist->bug_count(0);  # XXX Appease the attribute gods
 
-        my $testers = CPAN::Testers::WWW::Reports::Query::AJAX->new(dist => $distname);
+        my $testers = CPAN::Testers::WWW::Reports::Query::AJAX->new( dist => $distname );
 
         if ( defined $testers ) {
             $dist->cpan_testers(
