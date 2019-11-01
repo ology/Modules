@@ -29,7 +29,7 @@ sub _build_distributions
     my $dist;
     my %owner;
 
-    while (my $release = $iterator->next_release) {
+    while ( my $release = $iterator->next_release ) {
         my $distinfo = $release->distinfo;
 
         next unless ( $self->author && $distinfo->cpanid eq $self->author )
@@ -48,7 +48,7 @@ sub _build_distributions
         $distmap{ $distinfo->dist } = $dist;
 
         # by setting this, we identify all modules associated with this dashboard
-        if ( defined( $release->modules ) ) {
+        if ( defined $release->modules ) {
             $owner{ $_->name } = undef for @{ $release->modules };
         }
     }
@@ -64,12 +64,14 @@ sub _build_distributions
             warn "Failed to get CPAN Testers results for dist '$distname'\n";
         }
         else {
-            $dist->cpan_testers( CPAN::Dashboard::Distribution::CPANTesters->new(
-                passes   => $testers->pass,
-                fails    => $testers->fail,
-                na       => $testers->na,
-                unknowns => $testers->unknown,
-            ) );
+            $dist->cpan_testers(
+                CPAN::Dashboard::Distribution::CPANTesters->new(
+                    passes   => $testers->pass,
+                    fails    => $testers->fail,
+                    na       => $testers->na,
+                    unknowns => $testers->unknown,
+                )
+            );
         }
     }
 
