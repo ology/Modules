@@ -41,4 +41,5 @@ for my $author ( sort keys %authors ) {
     $authors{$author} = $authors->avatar_url($author);
     my $status = getstore( $authors{$author}, $path . "$author.jpg" );
 last;
+    sleep 4;
 }
