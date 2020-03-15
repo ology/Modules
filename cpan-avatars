@@ -10,7 +10,7 @@ use Imager;
 # Fetch all author modules
 my $url = 'https://www.cpan.org/modules/01modules.index.html';
 my $content = get $url;
-print "URL: $url fetched\n";
+print "Fetched $url\n";
 
 # Parse the content into a tree
 my $tree = HTML::TreeBuilder->new();
@@ -38,6 +38,9 @@ my $authors = Acme::CPANAuthors->new;
 
 my $path = $ENV{HOME} . '/tmp/avatars/';
 
+my $width = 80; # Avatar side pixel size
+my $max = 9; # Number of avatars to fetch
+
 my $i = 0;
 
 # Fetch the author avatars
@@ -46,30 +49,40 @@ for my $author ( sort keys %authors ) {
     $authors{$author} = $authors->avatar_url($author);
     my $file = $path . "$author.jpg";
     my $status = getstore( $authors{$author}, $file );
-    print "$i. Author: $author avatar saved to $file\n";
+    print "$i. Saved $file\n";
     sleep 4;
-last if $i >= 9;
+    last if $i >= $max;
 }
 
-my $width = 80; # Avatar side pixels
-my $size = $width * int sqrt $i;
+my $per_side = int sqrt $max;
+my $size = $width * $per_side;
 
 my $collage = Imager->new(xsize => $size, ysize => $size)
     or die Imager->errstr;
 
 $i = 0;
+my $j = 0;
+my $k = 0;
 
 for my $author ( sort keys %authors ) {
     my $file = $path . "$author.jpg";
     my $img = Imager->new;
     $img->read(file => $file, type => 'jpeg')
         or die "Can't read $file: ", $img->errstr;
-    my $x = $i * $width;
-    $collage->paste(left => $x, top => $x, img => $img);
+    if ($j > ($per_side - 1)) {
+        $j = 0;
+        $k++;
+    }
+    my $x = ($k % $per_side) * $width;
+    my $y = $j * $width;
+warn(__PACKAGE__,' ',__LINE__," MARK: [$i,$j,$k] [$x,$y]",,"\n");
+    $collage->paste(left => $x, top => $y, img => $img);
     $i++;
-last if $i >= 8;
+    $j++;
+    last if $i >= $max;
 }
 
 my $file = $path . 'collage.jpg';
 $collage->write(file => $file) or
       die "Can't write to $file: ", $collage->errstr;
+print "Saved $file\n";
