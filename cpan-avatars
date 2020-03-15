@@ -5,6 +5,7 @@ use warnings;
 use Acme::CPANAuthors;
 use HTTP::Simple;
 use HTML::TreeBuilder;
+use Imager;
 
 # Fetch all author modules
 my $url = 'https://www.cpan.org/modules/01modules.index.html';
@@ -36,10 +37,13 @@ my $authors = Acme::CPANAuthors->new;
 
 my $path = $ENV{HOME} . '/tmp/avatars/';
 
+my $i = 0;
+
 # Fetch the author avatars
 for my $author ( sort keys %authors ) {
+    $i++;
     $authors{$author} = $authors->avatar_url($author);
     my $status = getstore( $authors{$author}, $path . "$author.jpg" );
-last;
     sleep 4;
+last if $i >= 9;
 }
