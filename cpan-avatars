@@ -5,11 +5,12 @@ use warnings;
 use Acme::CPANAuthors;
 use HTTP::Simple;
 use HTML::TreeBuilder;
+use Imager;
 
 # Fetch all author modules
 my $url = 'https://www.cpan.org/modules/01modules.index.html';
 my $content = get $url;
-print "URL: $url fetched.\n";
+print "URL: $url fetched\n";
 
 # Parse the content into a tree
 my $tree = HTML::TreeBuilder->new();
@@ -43,8 +44,32 @@ my $i = 0;
 for my $author ( sort keys %authors ) {
     $i++;
     $authors{$author} = $authors->avatar_url($author);
-    my $status = getstore( $authors{$author}, $path . "$author.jpg" );
-    print "$i. Author: $author avatar saved.\n";
+    my $file = $path . "$author.jpg";
+    my $status = getstore( $authors{$author}, $file );
+    print "$i. Author: $author avatar saved to $file\n";
     sleep 4;
 last if $i >= 9;
 }
+
+my $width = 80; # Avatar side pixels
+my $size = $width * int sqrt $i;
+
+my $collage = Imager->new(xsize => $size, ysize => $size)
+    or die Imager->errstr;
+
+$i = 0;
+
+for my $author ( sort keys %authors ) {
+    my $file = $path . "$author.jpg";
+    my $img = Imager->new;
+    $img->read(file => $file, type => 'jpeg')
+        or die "Can't read $file: ", $img->errstr;
+    my $x = $i * $width;
+    $collage->paste(left => $x, top => $x, img => $img);
+    $i++;
+last if $i >= 8;
+}
+
+my $file = $path . 'collage.jpg';
+$collage->write(file => $file) or
+      die "Can't write to $file: ", $collage->errstr;
