@@ -11,9 +11,9 @@ use Imager;
 my $per_side = shift || 3; # Number of images per side of the collage
 
 # Crucial parameters
-my $path  = $ENV{HOME} . '/tmp/avatars/';
+my $path  = $ENV{HOME} . '/tmp/avatars/'; # Where our transient avatars and the collage live
 my $width = 80; # Avatar side pixel size
-my $size  = $width * $per_side;
+my $size  = $width * $per_side; # The width of the collage
 my $max   = $per_side ** 2; # Number of avatars to fetch
 
 # Fetch the author modules
