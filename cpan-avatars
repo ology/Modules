@@ -48,6 +48,7 @@ for my $line (@lines) {
 
 my $i = 0;
 
+# Remove authors that precede the given start
 for my $author (sort keys %authors) {
     $i++;
     delete $authors{$author}
