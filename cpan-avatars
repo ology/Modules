@@ -4,9 +4,9 @@ use warnings;
 
 use Acme::CPANAuthors;
 use File::Slurper 'write_text';
-use HTML::TreeBuilder;
 use HTTP::Simple;
 use Imager;
+use Mojo::DOM;
 
 my $side  = shift || 3; # Number of images per side of the collage
 my $start = shift || 1; # Where in the alphabetical order to begin the collage
@@ -23,15 +23,10 @@ my $content = get $url;
 print "Fetched $url\n";
 
 # Parse the content into a tree
-my $tree = HTML::TreeBuilder->new;
-$tree->parse($content);
-$tree->eof;
+my $dom = Mojo::DOM->new($content);
 
 # Accumulate the text bits as lines
-my $text = '';
-for my $pre ($tree->look_down(_tag => 'pre')) {
-    $text .= $pre->as_text;
-}
+my $text = $dom->at('pre')->all_text;
 my @lines = split /\n/, $text;
 
 my %authors = (); # Bucket for the authors and their avatars
