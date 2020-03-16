@@ -3,9 +3,9 @@ use strict;
 use warnings;
 
 # Examples:
-# perl cpan-avatars 5
-# perl cpan-avatars 4 1000
-# perl cpan-avatars 3 GENE
+# perl cpan-avatars 10
+# perl cpan-avatars 3 1000
+# perl cpan-avatars 2 GENE
 # perl cpan-avatars 1 1 1
 
 use Acme::CPANAuthors;
