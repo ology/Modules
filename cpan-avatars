@@ -21,13 +21,13 @@ my $content = get $url;
 print "Fetched $url\n";
 
 # Parse the content into a tree
-my $tree = HTML::TreeBuilder->new();
+my $tree = HTML::TreeBuilder->new;
 $tree->parse($content);
 $tree->eof;
 
 # Accumulate the text bits as lines
 my $text = '';
-for my $pre ( $tree->look_down( _tag => 'pre' ) ) {
+for my $pre ($tree->look_down(_tag => 'pre')) {
     $text .= $pre->as_text;
 }
 my @lines = split /\n/, $text;
@@ -35,7 +35,7 @@ my @lines = split /\n/, $text;
 # Bucket for the authors and their avatars
 my %authors = ();
 
-for my $line ( @lines ) {
+for my $line (@lines) {
     # module, author, distribution, size, uploaded
     my @parts = $line =~ /^(\w+)\s+([A-Z]+)\s+(\S+)\s+(\d+\w)\s+(.*?)\s*\+?\s*$/g;
     next unless $parts[0];
@@ -47,7 +47,7 @@ my $authors = Acme::CPANAuthors->new;
 my $i = 0;
 
 # Fetch the author avatars
-for my $author ( sort keys %authors ) {
+for my $author (sort keys %authors) {
     $i++;
     $authors{$author} = $authors->avatar_url($author);
     my $file = $path . "$author.jpg";
@@ -66,7 +66,7 @@ my $j = 0;
 my $k = 0;
 
 # Read the author files and paste them onto the collage
-for my $author ( sort keys %authors ) {
+for my $author (sort keys %authors) {
     my $file = $path . "$author.jpg";
     my $img = Imager->new;
     $img->read(file => $file, type => 'jpeg')
