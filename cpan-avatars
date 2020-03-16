@@ -24,8 +24,7 @@ print "Fetched $url\n";
 
 # Parse the author modules text into lines
 my $dom = Mojo::DOM->new($content);
-my $text = $dom->at('pre')->all_text;
-my @lines = split /\n/, $text;
+my @lines = split /\n/, $dom->at('pre')->all_text;
 
 my %authors = (); # Bucket for the authors and their avatars
 
