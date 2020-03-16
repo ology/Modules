@@ -88,7 +88,6 @@ for my $author (sort keys %authors) {
         $j = 0;
         $k++;
     }
-
     my $x = $j * $width;
     my $y = ($k % $per_side) * $width;
 #    print "[$i,$j,$k] [$x,$y]\n";
