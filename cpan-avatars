@@ -4,8 +4,8 @@ use warnings;
 
 use Acme::CPANAuthors;
 use File::Slurper 'write_text';
-use HTTP::Simple;
 use HTML::TreeBuilder;
+use HTTP::Simple;
 use Imager;
 
 my $per_side = shift || 3; # Number of images per side of the collage
@@ -43,6 +43,7 @@ for my $line (@lines) {
     next unless $parts[0];
     $authors{ $parts[1] }++;
 }
+#warn(__PACKAGE__,' ',__LINE__," MARK: ",scalar(keys %authors),"\n");exit;
 
 my $authors = Acme::CPANAuthors->new;
 
