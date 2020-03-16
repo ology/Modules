@@ -7,7 +7,15 @@ use HTTP::Simple;
 use HTML::TreeBuilder;
 use Imager;
 
-# Fetch all author modules
+my $per_side = shift || 3; # Number of images per side of the collage
+
+# Crucial parameters
+my $path  = $ENV{HOME} . '/tmp/avatars/';
+my $width = 80; # Avatar side pixel size
+my $max   = $per_side ** 2; # Number of avatars to fetch
+my $size  = $width * $per_side;
+
+# Fetch the author modules
 my $url = 'https://www.cpan.org/modules/01modules.index.html';
 my $content = get $url;
 print "Fetched $url\n";
@@ -36,11 +44,6 @@ for my $line ( @lines ) {
 
 my $authors = Acme::CPANAuthors->new;
 
-my $path = $ENV{HOME} . '/tmp/avatars/';
-
-my $width = 80; # Avatar side pixel size
-my $max = 9; # Number of avatars to fetch
-
 my $i = 0;
 
 # Fetch the author avatars
@@ -54,9 +57,6 @@ for my $author ( sort keys %authors ) {
     last if $i >= $max;
 }
 
-my $per_side = int sqrt $max;
-my $size = $width * $per_side;
-
 my $collage = Imager->new(xsize => $size, ysize => $size)
     or die Imager->errstr;
 
@@ -69,13 +69,13 @@ for my $author ( sort keys %authors ) {
     my $img = Imager->new;
     $img->read(file => $file, type => 'jpeg')
         or die "Can't read $file: ", $img->errstr;
-    if ($j > ($per_side - 1)) {
+    if ($j >= $per_side) {
         $j = 0;
         $k++;
     }
-    my $x = ($k % $per_side) * $width;
-    my $y = $j * $width;
-warn(__PACKAGE__,' ',__LINE__," MARK: [$i,$j,$k] [$x,$y]",,"\n");
+    my $x = $j * $width;
+    my $y = ($k % $per_side) * $width;
+#    print "[$i,$j,$k] [$x,$y]\n";
     $collage->paste(left => $x, top => $y, img => $img);
     $i++;
     $j++;
