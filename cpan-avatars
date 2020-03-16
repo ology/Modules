@@ -9,7 +9,7 @@ use HTTP::Simple;
 use Imager;
 
 my $per_side = shift || 3; # Number of images per side of the collage
-my $start    = shift || 1;
+my $start    = shift || 1; # Where in the alphabetical order to begin the collage
 
 # Crucial parameters
 my $path  = $ENV{HOME} . '/tmp/avatars/'; # Where our transient avatars and the collage live
