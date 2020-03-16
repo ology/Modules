@@ -47,7 +47,8 @@ my $i = 0; # Generic loop counter and author index
 
 # Inspect the indices of the authors
 if ($dump) {
-    for my $author (sort keys %authors) {
+    for my $author (sort keys %authors) { # Sort alphabetically by author name
+#    for my $author (sort { $authors{$a} <=> $authors{$b} } keys %authors) { # Sort by number of distributions
         $i++;
         print "$i. $author: $authors{$author}\n";
     }
