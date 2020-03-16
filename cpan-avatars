@@ -109,7 +109,7 @@ for my $author (sort keys %authors) {
     my $y1 = $y + $width;
 #    print "[$i,$j,$k] [$x,$y] [$x1,$y1]\n";
 
-    $html .= qq|\n<area shape="rect" coords="$x,$y,$x1,$y1" alt="$author" href="https://metacpan.org/author/$author">\n|;
+    $html .= qq|<area shape="rect" coords="$x,$y,$x1,$y1" alt="$author" href="https://metacpan.org/author/$author">\n|;
 
     $collage->paste(left => $x, top => $y, img => $img);
 
