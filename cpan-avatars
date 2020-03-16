@@ -6,7 +6,6 @@ use warnings;
 # perl cpan-avatars 10      # A 10x10 collage starting at author 1
 # perl cpan-avatars 3 1000  # A 3x3 collage starting at author 1000
 # perl cpan-avatars 2 GENE  # A 2x2 collage starting at author GENE
-# perl cpan-avatars 1 1 1   # Dump out the author list and exit
 
 use Acme::CPANAuthors;
 use File::Slurper 'write_text';
@@ -17,7 +16,6 @@ use Mojo::DOM;
 
 my $side  = shift || 3; # Number of images per side of the collage
 my $start = shift || 1; # Where in the alphabetical order to begin the collage - number or author name
-my $dump  = shift || 0; # Optional flag to dump the author list and exit
 
 my $path  = $ENV{HOME} . '/tmp/avatars/'; # Where our transient avatars and the collage live
 my $width = 80; # Avatar side pixel size
@@ -43,17 +41,6 @@ for my $line (@lines) {
     $authors{ $parts[1] }++;
 }
 
-my $i = 0; # Generic loop counter and author index
-
-# Inspect the indices of the authors
-if ($dump) {
-    for my $author (sort keys %authors) {
-        $i++;
-        print "$i. $author: $authors{$author}\n";
-    }
-    exit;
-}
-
 # Find the index of the given author name
 if ($start =~ /^[A-Za-z]+$/) {
     $start = first_index { CORE::fc($_) eq CORE::fc($start) } sort keys %authors;
@@ -61,6 +48,8 @@ if ($start =~ /^[A-Za-z]+$/) {
         if $start == -1;
     $start++;
 }
+
+my $i = 0; # Generic loop counter and author index
 
 # Remove authors that precede the given start
 for my $author (sort keys %authors) {
