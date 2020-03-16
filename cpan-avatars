@@ -84,7 +84,7 @@ for my $author (sort keys %authors) {
         print "$i. Saved $file\n";
     }
     else {
-        print "$i. WARNING: Could not save $file\n";
+        print "WARNING: Could not save $file\n";
     }
 
     sleep 4; # Play nice
