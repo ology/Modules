@@ -2,10 +2,17 @@
 use strict;
 use warnings;
 
+# Examples:
+# perl cpan-avatars 5
+# perl cpan-avatars 4 1000
+# perl cpan-avatars 3 GENE
+# perl cpan-avatars 1 1 1
+
 use Acme::CPANAuthors;
 use File::Slurper 'write_text';
 use HTTP::Simple;
 use Imager;
+use List::SomeUtils 'first_index';
 use Mojo::DOM;
 
 my $side  = shift || 3; # Number of images per side of the collage
@@ -45,6 +52,11 @@ if ($dump) {
         print "$i. $author: $authors{$author}\n";
     }
     exit;
+}
+
+if ($start =~ /^[A-Z]+$/) {
+    $start = first_index { $_ eq $start } sort keys %authors;
+    $start++;
 }
 
 # Remove authors that precede the given start
