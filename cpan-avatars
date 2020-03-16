@@ -8,14 +8,14 @@ use HTML::TreeBuilder;
 use HTTP::Simple;
 use Imager;
 
-my $per_side = shift || 3; # Number of images per side of the collage
-my $start    = shift || 1; # Where in the alphabetical order to begin the collage
-my $dump     = shift || 0; # Optional flag to dump the author list and exit
+my $side  = shift || 3; # Number of images per side of the collage
+my $start = shift || 1; # Where in the alphabetical order to begin the collage
+my $dump  = shift || 0; # Optional flag to dump the author list and exit
 
 my $path  = $ENV{HOME} . '/tmp/avatars/'; # Where our transient avatars and the collage live
 my $width = 80; # Avatar side pixel size
-my $size  = $width * $per_side; # The width of the collage
-my $max   = $per_side ** 2; # Number of avatars to fetch
+my $size  = $width * $side; # The width of the collage
+my $max   = $side ** 2; # Number of avatars to fetch
 
 # Fetch the author modules
 my $url = 'https://www.cpan.org/modules/01modules.index.html';
@@ -122,7 +122,7 @@ for my $author (sort keys %authors) {
     $img->read(file => $file)
         or die "Can't read $file: ", $img->errstr;
 
-    if ($j >= $per_side) {
+    if ($j >= $side) {
         $j = 0;
         $k++;
     }
