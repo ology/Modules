@@ -58,10 +58,12 @@ if ($dump) {
 # Remove authors that precede the given start
 for my $author (sort keys %authors) {
     $i++;
-    delete $authors{$author}
-        if $i < $start;
-    last
-        if $i >= $start;
+    if ($i < $start) {
+        delete $authors{$author};
+    }
+    else {
+        last;
+    }
 }
 
 my $authors = Acme::CPANAuthors->new;
