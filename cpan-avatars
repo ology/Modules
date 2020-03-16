@@ -46,7 +46,7 @@ for my $line (@lines) {
     $authors{ $parts[1] }++;
 }
 
-my $i = 0;
+my $i = 0; # Generic loop counter and author index
 
 # Inspect the indices of the authors
 if ($dump) {
