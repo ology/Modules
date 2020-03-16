@@ -51,7 +51,7 @@ for my $author (sort keys %authors) {
     $i++;
     $authors{$author} = $authors->avatar_url($author);
     my $file = $path . "$author.jpg";
-    my $status = getstore($authors{$author}, $file);
+    getstore($authors{$author}, $file);
     print "$i. Saved $file\n";
     sleep 4;
     last if $i >= $max;
