@@ -43,7 +43,7 @@ for my $line (@lines) {
     next unless $parts[0];
     $authors{ $parts[1] }++;
 }
-#warn(__PACKAGE__,' ',__LINE__," MARK: ",scalar(keys %authors),"\n");exit;
+#print scalar(keys %authors),"\n";exit;
 
 my $authors = Acme::CPANAuthors->new;
 
@@ -123,6 +123,12 @@ for my $author (sort keys %authors) {
     last if $i >= $max;
 }
 
+# Save the collage
+$file = $path . 'collage.jpg';
+$collage->write(file => $file) or
+      die "Can't write to $file: ", $collage->errstr;
+print "Saved $file\n";
+
 # Finish the HTML image map
 $html .=<<'HTML';
 </map>
@@ -132,10 +138,4 @@ HTML
 
 my $file = $path . 'collage.html';
 write_text($file, $html);
-print "Saved $file\n";
-
-# Save the collage
-$file = $path . 'collage.jpg';
-$collage->write(file => $file) or
-      die "Can't write to $file: ", $collage->errstr;
 print "Saved $file\n";
