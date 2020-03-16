@@ -57,6 +57,7 @@ for my $author ( sort keys %authors ) {
     last if $i >= $max;
 }
 
+# Instantiate a blank collage image
 my $collage = Imager->new(xsize => $size, ysize => $size)
     or die Imager->errstr;
 
@@ -64,6 +65,7 @@ $i = 0;
 my $j = 0;
 my $k = 0;
 
+# Read the author files and paste them onto the collage
 for my $author ( sort keys %authors ) {
     my $file = $path . "$author.jpg";
     my $img = Imager->new;
@@ -82,6 +84,7 @@ for my $author ( sort keys %authors ) {
     last if $i >= $max;
 }
 
+# Save the collage
 my $file = $path . 'collage.jpg';
 $collage->write(file => $file) or
       die "Can't write to $file: ", $collage->errstr;
