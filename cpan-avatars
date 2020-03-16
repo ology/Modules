@@ -12,7 +12,6 @@ my $per_side = shift || 3; # Number of images per side of the collage
 my $start    = shift || 1; # Where in the alphabetical order to begin the collage
 my $dump     = shift || 0; # Optional flag to dump the author list and exit
 
-# Crucial parameters
 my $path  = $ENV{HOME} . '/tmp/avatars/'; # Where our transient avatars and the collage live
 my $width = 80; # Avatar side pixel size
 my $size  = $width * $per_side; # The width of the collage
