@@ -54,8 +54,8 @@ if ($dump) {
     exit;
 }
 
-if ($start =~ /^[A-Z]+$/) {
-    $start = first_index { $_ eq $start } sort keys %authors;
+if ($start =~ /^[A-Za-z]+$/) {
+    $start = first_index { CORE::fc($_) eq CORE::fc($start) } sort keys %authors;
     $start++;
 }
 
