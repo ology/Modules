@@ -54,6 +54,7 @@ if ($dump) {
     exit;
 }
 
+# Find the index of the given author name
 if ($start =~ /^[A-Za-z]+$/) {
     $start = first_index { CORE::fc($_) eq CORE::fc($start) } sort keys %authors;
     die "Author not found\n"
