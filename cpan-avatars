@@ -36,6 +36,7 @@ my @lines = split /\n/, $text;
 # Bucket for the authors and their avatars
 my %authors = ();
 
+# Parse the author module lines
 for my $line (@lines) {
     # module, author, distribution, size, uploaded
     my @parts = $line =~ /^(\w+)\s+([A-Z]+)\s+(\S+)\s+(\d+\w)\s+(.*?)\s*\+?\s*$/g;
