@@ -22,10 +22,8 @@ my $url = 'https://www.cpan.org/modules/01modules.index.html';
 my $content = get $url;
 print "Fetched $url\n";
 
-# Parse the content into a tree
+# Parse the author modules text into lines
 my $dom = Mojo::DOM->new($content);
-
-# Accumulate the text bits as lines
 my $text = $dom->at('pre')->all_text;
 my @lines = split /\n/, $text;
 
