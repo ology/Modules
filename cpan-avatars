@@ -124,7 +124,7 @@ for my $author (sort keys %authors) {
 }
 
 # Save the collage
-$file = $path . 'collage.jpg';
+my $file = $path . 'collage.jpg';
 $collage->write(file => $file) or
       die "Can't write to $file: ", $collage->errstr;
 print "Saved $file\n";
@@ -136,6 +136,6 @@ $html .=<<'HTML';
 </html>
 HTML
 
-my $file = $path . 'collage.html';
+$file = $path . 'collage.html';
 write_text($file, $html);
 print "Saved $file\n";
