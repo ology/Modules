@@ -72,6 +72,9 @@ for my $author (sort keys %authors) {
     }
 }
 
+die "No authors\n"
+    if keys(%authors) < 1;
+
 my $authors = Acme::CPANAuthors->new;
 
 $i = 0;
