@@ -49,8 +49,11 @@ my $i = 0;
 # Fetch the author avatars
 for my $author (sort keys %authors) {
     $i++;
+
     $authors{$author} = $authors->avatar_url($author);
+
     my $file = $path . "$author.jpg";
+
     my $status = getstore($authors{$author}, $file)
         or warn "Can't getstore for $file: $!\n";
     if ($status == 200) {
@@ -59,7 +62,9 @@ for my $author (sort keys %authors) {
     else {
         print "$i. WARNING: Could not save $file\n";
     }
+
     sleep 4;
+
     last if $i >= $max;
 }
 
@@ -74,19 +79,25 @@ my $k = 0;
 # Read the author files and paste them onto the collage
 for my $author (sort keys %authors) {
     my $file = $path . "$author.jpg";
+
     my $img = Imager->new;
     $img->read(file => $file, type => 'jpeg')
         or die "Can't read $file: ", $img->errstr;
+
     if ($j >= $per_side) {
         $j = 0;
         $k++;
     }
+
     my $x = $j * $width;
     my $y = ($k % $per_side) * $width;
 #    print "[$i,$j,$k] [$x,$y]\n";
+
     $collage->paste(left => $x, top => $y, img => $img);
+
     $i++;
     $j++;
+
     last if $i >= $max;
 }
 
