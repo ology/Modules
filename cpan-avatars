@@ -47,6 +47,7 @@ for my $line (@lines) {
 
 my $i = 0;
 
+# Inspect the index of the authors
 #for my $author (sort keys %authors) {
 #    $i++;
 #    print "$i. $author: $authors{$author}\n";
