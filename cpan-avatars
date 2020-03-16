@@ -44,9 +44,14 @@ for my $line (@lines) {
     next unless $parts[0];
     $authors{ $parts[1] }++;
 }
-#print scalar(keys %authors),"\n";exit;
 
 my $i = 0;
+
+#for my $author (sort keys %authors) {
+#    $i++;
+#    print "$i. $author: $authors{$author}\n";
+#}
+#exit;
 
 # Remove authors that precede the given start
 for my $author (sort keys %authors) {
