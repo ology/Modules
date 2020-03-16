@@ -59,7 +59,7 @@ for my $author (sort keys %authors) {
 
 # Instantiate a blank collage image
 my $collage = Imager->new(xsize => $size, ysize => $size)
-    or die Imager->errstr;
+    or die "Can't create image: ", Imager->errstr;
 
 $i = 0;
 my $j = 0;
