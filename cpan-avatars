@@ -9,6 +9,7 @@ use HTTP::Simple;
 use Imager;
 
 my $per_side = shift || 3; # Number of images per side of the collage
+my $start    = shift || 1;
 
 # Crucial parameters
 my $path  = $ENV{HOME} . '/tmp/avatars/'; # Where our transient avatars and the collage live
@@ -45,9 +46,19 @@ for my $line (@lines) {
 }
 #print scalar(keys %authors),"\n";exit;
 
+my $i = 0;
+
+for my $author (sort keys %authors) {
+    $i++;
+    delete $authors{$author}
+        if $i < $start;
+    last
+        if $i >= $start;
+}
+
 my $authors = Acme::CPANAuthors->new;
 
-my $i = 0;
+$i = 0;
 
 # Fetch the author avatars
 for my $author (sort keys %authors) {
