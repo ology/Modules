@@ -94,6 +94,8 @@ for my $author (sort keys %authors) {
 
     $collage->paste(left => $x, top => $y, img => $img);
 
+    unlink $file;
+
     $i++;
     $j++;
 
