@@ -124,15 +124,15 @@ for my $author (sort keys %authors) {
         $j = 0;
         $k++;
     }
-    my $x  = $j * $width;
-    my $x1 = $x + $width;
-    my $y  = ($k % $per_side) * $width;
-    my $y1 = $y + $width;
+    my $x0 = $j * $width;
+    my $x1 = $x0 + $width;
+    my $y0 = ($k % $per_side) * $width;
+    my $y1 = $y0 + $width;
 #    print "[$i,$j,$k] [$x,$y] [$x1,$y1]\n";
 
-    $html .= qq|<area shape="rect" coords="$x,$y,$x1,$y1" alt="$author" href="https://metacpan.org/author/$author">\n|;
+    $html .= qq|<area shape="rect" coords="$x0,$y0,$x1,$y1" alt="$author" href="https://metacpan.org/author/$author">\n|;
 
-    $collage->paste(left => $x, top => $y, img => $img);
+    $collage->paste(left => $x0, top => $y0, img => $img);
 
     unlink $file;
 
