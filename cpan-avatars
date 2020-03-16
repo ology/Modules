@@ -38,7 +38,7 @@ my %authors = (); # Bucket for the authors and their avatars
 
 # Parse the author module lines
 for my $line (@lines) {
-    # module, author, etc.
+    # module author etc.
     my @parts = $line =~ /^(\w+)\s+([A-Z]+)\s+.*$/;
     next unless $parts[0];
     $authors{ $parts[1] }++;
