@@ -16,7 +16,7 @@ use List::SomeUtils 'first_index';
 use Mojo::DOM;
 
 my $side  = shift || 3; # Number of images per side of the collage
-my $start = shift || 1; # Where in the alphabetical order to begin the collage
+my $start = shift || 1; # Where in the alphabetical order to begin the collage - number or author name
 my $dump  = shift || 0; # Optional flag to dump the author list and exit
 
 my $path  = $ENV{HOME} . '/tmp/avatars/'; # Where our transient avatars and the collage live
