@@ -3,10 +3,10 @@ use strict;
 use warnings;
 
 # Examples:
-# perl cpan-avatars 10
-# perl cpan-avatars 3 1000
-# perl cpan-avatars 2 GENE
-# perl cpan-avatars 1 1 1
+# perl cpan-avatars 10      # A 10x10 collage starting at author 1
+# perl cpan-avatars 3 1000  # A 3x3 collage starting at author 1000
+# perl cpan-avatars 2 GENE  # A 2x2 collage starting at author GENE
+# perl cpan-avatars 1 1 1   # Dump out the author list and exit
 
 use Acme::CPANAuthors;
 use File::Slurper 'write_text';
