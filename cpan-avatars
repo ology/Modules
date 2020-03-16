@@ -52,7 +52,7 @@ for my $author (sort keys %authors) {
 
     $authors{$author} = $authors->avatar_url($author);
 
-    my $file = $path . "$author.jpg";
+    my $file = $path . $author;
 
     my $status = getstore($authors{$author}, $file)
         or warn "Can't getstore for $file: $!\n";
@@ -78,10 +78,10 @@ my $k = 0;
 
 # Read the author files and paste them onto the collage
 for my $author (sort keys %authors) {
-    my $file = $path . "$author.jpg";
+    my $file = $path . $author;
 
     my $img = Imager->new;
-    $img->read(file => $file, type => 'jpeg')
+    $img->read(file => $file)
         or die "Can't read $file: ", $img->errstr;
 
     if ($j >= $per_side) {
