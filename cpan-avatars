@@ -52,7 +52,7 @@ for my $author (sort keys %authors) {
     $authors{$author} = $authors->avatar_url($author);
     my $file = $path . "$author.jpg";
     my $status = getstore($authors{$author}, $file)
-        or warn "Can't getstore: $!\n";
+        or warn "Can't getstore for $file: $!\n";
     if ($status == 200) {
         print "$i. Saved $file\n";
     }
