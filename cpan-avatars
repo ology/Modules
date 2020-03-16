@@ -34,8 +34,7 @@ for my $pre ($tree->look_down(_tag => 'pre')) {
 }
 my @lines = split /\n/, $text;
 
-# Bucket for the authors and their avatars
-my %authors = ();
+my %authors = (); # Bucket for the authors and their avatars
 
 # Parse the author module lines
 for my $line (@lines) {
