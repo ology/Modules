@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use Acme::CPANAuthors;
+use File::Slurper 'write_text';
 use HTTP::Simple;
 use HTML::TreeBuilder;
 use Imager;
@@ -68,6 +69,20 @@ for my $author (sort keys %authors) {
     last if $i >= $max;
 }
 
+# Build an HTML image map
+my $html =<<'HTML';
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <title>CPAN Author Collage</title>
+</head>
+<body>
+<img src="collage.jpg" alt="CPAN Author Collage" usemap="#collage">
+<map name="collage">
+HTML
+
 # Instantiate a blank collage image
 my $collage = Imager->new(xsize => $size, ysize => $size)
     or die "Can't create image: ", Imager->errstr;
@@ -88,9 +103,13 @@ for my $author (sort keys %authors) {
         $j = 0;
         $k++;
     }
-    my $x = $j * $width;
-    my $y = ($k % $per_side) * $width;
-#    print "[$i,$j,$k] [$x,$y]\n";
+    my $x  = $j * $width;
+    my $x1 = $x + $width;
+    my $y  = ($k % $per_side) * $width;
+    my $y1 = $y + $width;
+#    print "[$i,$j,$k] [$x,$y] [$x1,$y1]\n";
+
+    $html .= qq|\n<area shape="rect" coords="$x,$y,$x1,$y1" alt="$author" href="https://metacpan.org/author/$author">\n|;
 
     $collage->paste(left => $x, top => $y, img => $img);
 
@@ -102,8 +121,19 @@ for my $author (sort keys %authors) {
     last if $i >= $max;
 }
 
+# Finish the HTML image map
+$html .=<<'HTML';
+</map>
+</body>
+</html>
+HTML
+
+my $file = $path . 'collage.html';
+write_text($file, $html);
+print "Saved $file\n";
+
 # Save the collage
-my $file = $path . 'collage.jpg';
+$file = $path . 'collage.jpg';
 $collage->write(file => $file) or
       die "Can't write to $file: ", $collage->errstr;
 print "Saved $file\n";
