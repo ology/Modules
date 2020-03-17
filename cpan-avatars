@@ -111,7 +111,6 @@ for my $author (sort keys %authors) {
         }
 
         $cmp->set_image2(img => $file);
-
         if ($cmp->compare) {
             sleep 4; # Play nice
 
