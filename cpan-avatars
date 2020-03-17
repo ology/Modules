@@ -98,7 +98,7 @@ for my $author (sort keys %authors) {
         print "$i. Saved $file\n";
     }
     else {
-        die "Could not save $file\n";
+        die "Could not get $file\n";
     }
 
     $cmp->set_image2(img => $file);
@@ -112,7 +112,7 @@ for my $author (sort keys %authors) {
             print "\tResaved as identicon\n";
         }
         else {
-            die "Could not save $file\n";
+            die "Could not get $file\n";
         }
     }
 
