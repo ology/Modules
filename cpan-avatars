@@ -107,12 +107,12 @@ for my $author (sort keys %authors) {
         sleep 4; # Play nice
 
         my $status = getstore($authors{$author} . '?d=identicon', $file)
-            or warn "Can't getstore for $file: $!\n";
+            or die "Can't getstore for $file: $!\n";
         if ($status == 200) {
             print "\tResaved as identicon\n";
         }
         else {
-            print "WARNING: Could not save $file\n";
+            die "Could not save $file\n";
         }
     }
 
