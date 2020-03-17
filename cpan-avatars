@@ -98,7 +98,7 @@ for my $author (sort keys %authors) {
 
     if ($authors{$author} eq $unknown) {
         copy($default, $file);
-        print "$i. Copied unknown $file\n";
+        print "$i. Copied unknown to $file\n";
     }
     else {
     my $status = getstore($authors{$author}, $file)
