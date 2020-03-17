@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 
+# Write-up: http://techn.ology.net/making-an-image-map-of-cpan-authors/
+
 # Examples:
 # perl cpan-avatars 10      # A 10x10 collage starting at author 1
 # perl cpan-avatars 3 1000  # A 3x3 collage starting at author 1000
