@@ -101,31 +101,31 @@ for my $author (sort keys %authors) {
         print "$i. Copied unknown to $file\n";
     }
     else {
-    my $status = getstore($authors{$author}, $file)
-        or die "Can't getstore for $file: $!\n";
-    if ($status == 200) {
-        print "$i. Saved $file\n";
-    }
-    else {
-        die "Could not get $file\n";
-    }
-
-    $cmp->set_image2(img => $file);
-
-    if ($cmp->compare) {
-        sleep 4; # Play nice
-
-        my $status = getstore($authors{$author} . '?d=identicon', $file)
+        my $status = getstore($authors{$author}, $file)
             or die "Can't getstore for $file: $!\n";
         if ($status == 200) {
-            print "\tResaved as identicon\n";
+            print "$i. Saved $file\n";
         }
         else {
             die "Could not get $file\n";
         }
-    }
 
-    sleep 4; # Play nice
+        $cmp->set_image2(img => $file);
+
+        if ($cmp->compare) {
+            sleep 4; # Play nice
+
+            my $status = getstore($authors{$author} . '?d=identicon', $file)
+                or die "Can't getstore for $file: $!\n";
+            if ($status == 200) {
+                print "\tResaved as identicon\n";
+            }
+            else {
+                die "Could not get $file\n";
+            }
+        }
+
+        sleep 4; # Play nice
     }
 
     last if $i >= $max;
