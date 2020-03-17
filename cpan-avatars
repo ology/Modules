@@ -43,7 +43,6 @@ if ($status == 200) {
 else {
     die "Could not get $file\n";
 }
-print "Fetched $url\n";
 
 my %authors = (); # Bucket for the authors and their avatars
 
