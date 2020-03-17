@@ -22,6 +22,9 @@ my $width = 80; # Avatar side pixel size
 my $size  = $width * $side; # The width of the collage
 my $max   = $side ** 2; # Number of avatars to fetch
 
+die "Path $path does not exist"
+    unless -d $path;
+
 # Fetch the author modules
 my $url = 'https://www.cpan.org/modules/01modules.index.html';
 my $content = get $url;
