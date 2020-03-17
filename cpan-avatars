@@ -9,13 +9,14 @@ use warnings;
 # perl cpan-avatars 3 1000  # A 3x3 collage starting at author 1000
 # perl cpan-avatars 2 gene  # A 2x2 collage starting at author GENE
 
-use Acme::CPANAuthors;
+use File::Copy;
 use File::Slurper 'write_text';
+use Gravatar::URL;
 use HTTP::Simple;
 use Image::Compare;
 use Imager;
 use List::SomeUtils 'first_index';
-use Mojo::DOM;
+use Parse::CPAN::Authors;
 
 my $side  = shift || 3; # Number of images per side of the collage
 my $start = shift || 1; # Where in the alphabetical order to begin the collage - number or author name
@@ -25,26 +26,34 @@ my $width = 80; # Avatar side pixel size
 my $size  = $width * $side; # The width of the collage
 my $max   = $side ** 2; # Number of avatars to fetch
 
+my $unknown = 'http://www.gravatar.com/avatar/5660261bf7fc03555e8d0f27b09dc6e5';
+my $default = $path . 'default.jpg';
+
 die "Path '$path' does not exist"
     unless -d $path;
 
 # Fetch the author modules
-my $url = 'https://www.cpan.org/modules/01modules.index.html';
-my $content = get $url;
+my $url = 'http://www.cpan.org/authors/01mailrc.txt.gz';
+my $file = $path . '01mailrc.txt.gz';
+my $status = getstore($url, $file)
+    or die "Can't getstore for $file: $!\n";
+if ($status == 200) {
+    print "Saved $file\n";
+}
+else {
+    die "Could not get $file\n";
+}
 print "Fetched $url\n";
-
-# Parse the author modules text into lines
-my $dom = Mojo::DOM->new($content);
-my @lines = split /\n/, $dom->at('pre')->all_text;
 
 my %authors = (); # Bucket for the authors and their avatars
 
+my $p = Parse::CPAN::Authors->new($file);
+
+unlink $file; # Remove the 01mailrc file
+
 # Parse the author module lines
-for my $line (@lines) {
-    # module author etc.
-    my @parts = $line =~ /^(\w+)\s+([A-Z]+)\s+.*$/;
-    next unless $parts[0];
-    $authors{ $parts[1] }++;
+for my $author ($p->authors) {
+    $authors{ $author->pauseid } = gravatar_url(email => $author->email);
 }
 
 # Find the index of the given author name
@@ -71,15 +80,13 @@ for my $author (sort keys %authors) {
 die "No authors\n"
     if keys(%authors) < 1;
 
-my $authors = Acme::CPANAuthors->new;
-
 # Set-up image comparison
 my $cmp = Image::Compare->new;
 $cmp->set_method(
     method => &Image::Compare::THRESHOLD,
     args   => 25,
 );
-$cmp->set_image1(img => $path . 'default.jpg', type => 'jpeg');
+$cmp->set_image1(img => $default, type => 'jpeg');
 
 $i = 0;
 
@@ -87,11 +94,13 @@ $i = 0;
 for my $author (sort keys %authors) {
     $i++;
 
-    $authors{$author} = $authors->avatar_url($author);
-    $authors{$author} =~ s/^(.+)\?d=.*$/$1/; # XXX Why does ->avatar_url duplicate the URL??
-
     my $file = $path . $author;
 
+    if ($authors{$author} eq $unknown) {
+        copy($default, $file);
+        print "$i. Copied unknown $file\n";
+    }
+    else {
     my $status = getstore($authors{$author}, $file)
         or die "Can't getstore for $file: $!\n";
     if ($status == 200) {
@@ -117,6 +126,7 @@ for my $author (sort keys %authors) {
     }
 
     sleep 4; # Play nice
+    }
 
     last if $i >= $max;
 }
@@ -159,7 +169,7 @@ for my $author (sort keys %authors) {
     my $x1 = $x0 + $width;
     my $y0 = $k * $width;
     my $y1 = $y0 + $width;
-#    print "[$i,$j,$k] [$x,$y] [$x1,$y1]\n";
+#    print "[$i,$j,$k] [$x0,$y0] [$x1,$y1]\n";
 
     $html .= qq|<area shape="rect" coords="$x0,$y0,$x1,$y1" alt="$author" href="https://metacpan.org/author/$author">\n|;
 
@@ -174,7 +184,7 @@ for my $author (sort keys %authors) {
 }
 
 # Save the collage
-my $file = $path . 'collage.jpg';
+$file = $path . 'collage.jpg';
 $collage->write(file => $file) or
     die "Can't write to $file: ", $collage->errstr;
 print "Saved $file\n";
