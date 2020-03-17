@@ -73,12 +73,12 @@ die "No authors\n"
 
 my $authors = Acme::CPANAuthors->new;
 
+# Set-up image comparison
 my $cmp = Image::Compare->new;
 $cmp->set_method(
     method => &Image::Compare::THRESHOLD,
     args   => 25,
 );
-
 $cmp->set_image1(img => $path . 'default.jpg', type => 'jpeg');
 
 $i = 0;
