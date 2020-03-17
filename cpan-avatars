@@ -93,12 +93,12 @@ for my $author (sort keys %authors) {
     my $file = $path . $author;
 
     my $status = getstore($authors{$author}, $file)
-        or warn "Can't getstore for $file: $!\n";
+        or die "Can't getstore for $file: $!\n";
     if ($status == 200) {
         print "$i. Saved $file\n";
     }
     else {
-        print "WARNING: Could not save $file\n";
+        die "Could not save $file\n";
     }
 
     $cmp->set_image2(img => $file);
