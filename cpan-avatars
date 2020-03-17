@@ -108,7 +108,7 @@ my $html =<<'HTML';
 <map name="collage">
 HTML
 
-# Instantiate a blank collage image
+# Instantiate a blank, square collage image
 my $collage = Imager->new(xsize => $size, ysize => $size)
     or die "Can't create image: ", Imager->errstr;
 
