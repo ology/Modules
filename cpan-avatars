@@ -10,9 +10,9 @@ use warnings;
 # perl cpan-avatars 2 gene  # A 2x2 collage starting at author GENE
 
 use Acme::CPANAuthors;
-use Image::Compare;
 use File::Slurper 'write_text';
 use HTTP::Simple;
+use Image::Compare;
 use Imager;
 use List::SomeUtils 'first_index';
 use Mojo::DOM;
