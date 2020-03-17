@@ -10,6 +10,7 @@ use warnings;
 # perl cpan-avatars 2 gene  # A 2x2 collage starting at author GENE
 
 use Acme::CPANAuthors;
+use Image::Compare;
 use File::Slurper 'write_text';
 use HTTP::Simple;
 use Imager;
@@ -72,6 +73,14 @@ die "No authors\n"
 
 my $authors = Acme::CPANAuthors->new;
 
+my $cmp = Image::Compare->new;
+$cmp->set_method(
+    method => &Image::Compare::THRESHOLD,
+    args   => 25,
+);
+
+$cmp->set_image1(img => $path . 'default.jpg', type => 'jpeg');
+
 $i = 0;
 
 # Fetch the author avatars
@@ -79,6 +88,7 @@ for my $author (sort keys %authors) {
     $i++;
 
     $authors{$author} = $authors->avatar_url($author);
+    $authors{$author} =~ s/^(.+)\?d=.*$/$1/; # XXX Why does ->avatar_url duplicate the URL??
 
     my $file = $path . $author;
 
@@ -89,6 +99,21 @@ for my $author (sort keys %authors) {
     }
     else {
         print "WARNING: Could not save $file\n";
+    }
+
+    $cmp->set_image2(img => $file);
+
+    if ($cmp->compare) {
+        sleep 4; # Play nice
+
+        my $status = getstore($authors{$author} . '?d=identicon', $file)
+            or warn "Can't getstore for $file: $!\n";
+        if ($status == 200) {
+            print "$i. Saved identicon $file\n";
+        }
+        else {
+            print "WARNING: Could not save $file\n";
+        }
     }
 
     sleep 4; # Play nice
