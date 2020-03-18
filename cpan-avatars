@@ -31,7 +31,7 @@ my $default = $path . 'default.jpg';
 
 die "Path '$path' does not exist"
     unless -d $path;
-die "Default file '$default' does not exist"
+die "Default gravatar file '$default' does not exist"
     unless -e $default;
 
 # Fetch the author modules
