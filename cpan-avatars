@@ -50,7 +50,7 @@ my $p = Parse::CPAN::Authors->new($file);
 
 unlink $file; # Remove the 01mailrc file
 
-# Parse the author module lines
+# Get each author gravatar
 for my $author ($p->authors) {
     $authors{ $author->pauseid } = gravatar_url(email => $author->email);
 }
@@ -89,7 +89,7 @@ $cmp->set_image1(img => $default, type => 'jpeg');
 
 $i = 0;
 
-# Fetch the author avatars
+# Fetch the author avatar images
 for my $author (sort keys %authors) {
     $i++;
 
