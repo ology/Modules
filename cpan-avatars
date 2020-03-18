@@ -33,9 +33,8 @@ die "Path '$path' does not exist"
     unless -d $path;
 
 # Fetch the author modules
-my $url = 'http://www.cpan.org/authors/01mailrc.txt.gz';
 my $file = $path . '01mailrc.txt.gz';
-get_file($url, $file, "Saved $file");
+get_file('http://www.cpan.org/authors/01mailrc.txt.gz', $file, "Saved $file");
 
 my $p = Parse::CPAN::Authors->new($file);
 
