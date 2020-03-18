@@ -44,11 +44,11 @@ else {
     die "Could not get $file\n";
 }
 
-my %authors = (); # Bucket for the authors and their avatars
-
 my $p = Parse::CPAN::Authors->new($file);
 
 unlink $file; # Remove the 01mailrc file
+
+my %authors = (); # Bucket for the authors and their avatars
 
 # Get each author gravatar
 for my $author ($p->authors) {
