@@ -35,7 +35,7 @@ die "Path '$path' does not exist"
 # Fetch the author modules
 my $url = 'http://www.cpan.org/authors/01mailrc.txt.gz';
 my $file = $path . '01mailrc.txt.gz';
-get_or_choke($url, $file, "Saved $file");
+get_file($url, $file, "Saved $file");
 
 my $p = Parse::CPAN::Authors->new($file);
 
@@ -93,12 +93,12 @@ for my $author (sort keys %authors) {
         print "$i. Copied unknown to $file\n";
     }
     else {
-        get_or_choke($authors{$author}, $file, "$i. Saved $file");
+        get_file($authors{$author}, $file, "$i. Saved $file");
 
         $cmp->set_image2(img => $file);
         if ($cmp->compare) {
             sleep 4; # Play nice
-            get_or_choke($authors{$author} . '?d=identicon', $file, "\tResaved as identicon");
+            get_file($authors{$author} . '?d=identicon', $file, "\tResaved as identicon");
         }
 
         sleep 4; # Play nice
@@ -176,7 +176,7 @@ $file = $path . 'collage.html';
 write_text($file, $html);
 print "Saved $file\n";
 
-sub get_or_choke {
+sub get_file {
     my ($url, $file, $msg) = @_;
     my $status = getstore($url, $file)
         or die "Can't getstore for $file: $!\n";
