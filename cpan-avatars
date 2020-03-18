@@ -35,14 +35,7 @@ die "Path '$path' does not exist"
 # Fetch the author modules
 my $url = 'http://www.cpan.org/authors/01mailrc.txt.gz';
 my $file = $path . '01mailrc.txt.gz';
-my $status = getstore($url, $file)
-    or die "Can't getstore for $file: $!\n";
-if ($status == 200) {
-    print "Saved $file\n";
-}
-else {
-    die "Could not get $file\n";
-}
+get_or_choke($url, $file, "Saved $file");
 
 my $p = Parse::CPAN::Authors->new($file);
 
@@ -100,27 +93,12 @@ for my $author (sort keys %authors) {
         print "$i. Copied unknown to $file\n";
     }
     else {
-        my $status = getstore($authors{$author}, $file)
-            or die "Can't getstore for $file: $!\n";
-        if ($status == 200) {
-            print "$i. Saved $file\n";
-        }
-        else {
-            die "Could not get $file\n";
-        }
+        get_or_choke($authors{$author}, $file, "$i. Saved $file");
 
         $cmp->set_image2(img => $file);
         if ($cmp->compare) {
             sleep 4; # Play nice
-
-            my $status = getstore($authors{$author} . '?d=identicon', $file)
-                or die "Can't getstore for $file: $!\n";
-            if ($status == 200) {
-                print "\tResaved as identicon\n";
-            }
-            else {
-                die "Could not get $file\n";
-            }
+            get_or_choke($authors{$author} . '?d=identicon', $file, "\tResaved as identicon");
         }
 
         sleep 4; # Play nice
@@ -197,3 +175,15 @@ HTML
 $file = $path . 'collage.html';
 write_text($file, $html);
 print "Saved $file\n";
+
+sub get_or_choke {
+    my ($url, $file, $msg) = @_;
+    my $status = getstore($url, $file)
+        or die "Can't getstore for $file: $!\n";
+    if ($status == 200) {
+        print "$msg\n";
+    }
+    else {
+        die "Could not get $file\n";
+    }
+}
