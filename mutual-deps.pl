@@ -38,7 +38,7 @@ FILE: for my $file ( @pmfiles ) {
 # Convert path filenames to modules
 my %modules;
 for my $file ( @files ) {
-    (my $module = $file ) =~ s/^.+?\/lib\/([\w\/]+)\.pm$/$1/;
+    (my $module = $file) =~ s/^.+?\/lib\/([\w\/]+)\.pm$/$1/;
     $module =~ s/\//::/g;
 
     # Skip if there is an include_pattern and we don't match it
