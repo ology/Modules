@@ -139,6 +139,8 @@ for my $author (sort keys %authors) {
     $img->read(file => $file)
         or die "Can't read $file: ", $img->errstr;
 
+    unlink $file;
+
     if ($j >= $side) {
         $j = 0;
         $k++;
@@ -152,8 +154,6 @@ for my $author (sort keys %authors) {
     $html .= qq|<area shape="rect" coords="$x0,$y0,$x1,$y1" alt="$author" href="https://metacpan.org/author/$author">\n|;
 
     $collage->paste(left => $x0, top => $y0, img => $img);
-
-    unlink $file;
 
     $i++;
     $j++;
