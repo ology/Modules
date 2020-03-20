@@ -103,7 +103,7 @@ for my $author (sort keys %authors) {
             get_file($authors{$author} . '?d=identicon', $file, "\tResaved as identicon");
         }
 
-        sleep 4; # Play nice
+        sleep 4 if $i < $max; # Play nice
     }
 
     last if $i >= $max;
