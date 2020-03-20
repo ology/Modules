@@ -26,7 +26,7 @@ my $width = 80; # Avatar side pixel size
 my $size  = $width * $side; # The width of the collage
 my $max   = $side ** 2; # Number of avatars to fetch
 
-my $unknown = 'http://www.gravatar.com/avatar/5660261bf7fc03555e8d0f27b09dc6e5'; # XXX Some author email marked CENSORED?
+my $unknown = 'http://www.gravatar.com/avatar/5660261bf7fc03555e8d0f27b09dc6e5'; # XXX Some author email CENSORED?
 my $default = $path . 'default.jpg';
 
 die "Path '$path' does not exist"
