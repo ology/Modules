@@ -110,7 +110,7 @@ for my $author (sort keys %authors) {
     last if $i >= $max;
 }
 
-unlink $default;
+unlink $default; # Remove the no longer needed default gravatar
 
 # Build an HTML image map
 my $html =<<'HTML';
