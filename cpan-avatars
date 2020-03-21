@@ -183,11 +183,11 @@ print "Saved $file\n";
 sub get_file {
     my ($url, $file, $msg) = @_;
     my $status = getstore($url, $file)
-        or die "Can't getstore for $file: $!\n";
+        or die "Can't getstore $url to $file: $!\n";
     if ($status == 200) {
         print "$msg\n";
     }
     else {
-        die "Could not get $file\n";
+        die "Could not get $file from $url\n";
     }
 }
