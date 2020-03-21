@@ -20,7 +20,7 @@ use Parse::CPAN::Authors;
 
 my $side  = shift || 3; # Number of images per side of the collage
 my $start = shift || 1; # Where in the alphabetical order to begin the collage - number or author name
-my $path  = shift || $ENV{HOME} . '/tmp/avatars/'; # Where our transient avatars and the collage live
+my $path  = shift || $ENV{HOME} . '/tmp/avatars/'; # Where our avatars, default, and the collage live
 
 my $width = 80; # Avatar side pixel size
 my $size  = $width * $side; # The width of the collage
