@@ -92,7 +92,7 @@ for my $author (sort keys %authors) {
 
     if ($authors{$author} eq $censored) {
         copy($default, $file)
-            or die "Copy $default to $file failed: $!";
+            or die "Can't copy $default to $file: $!";
         print "$i. Copied default to $file\n";
     }
     else {
