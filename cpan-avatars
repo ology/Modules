@@ -31,8 +31,8 @@ my $default  = $path . 'default.jpg';
 
 die "Path '$path' does not exist"
     unless -d $path;
-die "Default gravatar file '$default' does not exist"
-    unless -e $default;
+
+get_file($censored, $default, "Saved default gravatar: $default");
 
 # Fetch the authors
 my $file = $path . '01mailrc.txt.gz';
@@ -92,7 +92,7 @@ for my $author (sort keys %authors) {
 
     if ($authors{$author} eq $censored) {
         copy($default, $file);
-        print "$i. Copied censored to $file\n";
+        print "$i. Copied default to $file\n";
     }
     else {
         get_file($authors{$author}, $file, "$i. Saved $file");
@@ -108,6 +108,8 @@ for my $author (sort keys %authors) {
 
     last if $i >= $max;
 }
+
+unlink $default;
 
 # Build an HTML image map
 my $html =<<'HTML';
