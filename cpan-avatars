@@ -32,7 +32,7 @@ my $default  = $path . 'default.jpg';
 die "Path '$path' does not exist"
     unless -d $path;
 
-get_file($censored, $default, "Saved default gravatar: $default");
+get_file($censored, $default, "Saved default gravatar $default");
 
 # Fetch the authors
 my $file = $path . '01mailrc.txt.gz';
