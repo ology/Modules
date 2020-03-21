@@ -2,6 +2,7 @@
 use strict;
 use warnings;
 
+# Construct a collage of CPAN author gravatars.
 # Write-up: http://techn.ology.net/making-an-image-map-of-cpan-authors/
 
 # Examples:
