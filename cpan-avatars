@@ -91,7 +91,8 @@ for my $author (sort keys %authors) {
     my $file = $path . $author;
 
     if ($authors{$author} eq $censored) {
-        copy($default, $file);
+        copy($default, $file)
+            or die "Copy $default to $file failed: $!";
         print "$i. Copied default to $file\n";
     }
     else {
