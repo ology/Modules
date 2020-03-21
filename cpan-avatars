@@ -34,7 +34,7 @@ die "Path '$path' does not exist"
 die "Default gravatar file '$default' does not exist"
     unless -e $default;
 
-# Fetch the author modules
+# Fetch the authors
 my $file = $path . '01mailrc.txt.gz';
 get_file('http://www.cpan.org/authors/01mailrc.txt.gz', $file, "Saved $file");
 
