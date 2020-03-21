@@ -95,6 +95,7 @@ for my $author (sort keys %authors) {
         print "$i. Copied default to $file\n";
     }
     else {
+        sleep 4; # Play nice
         get_file($authors{$author}, $file, "$i. Saved $file");
 
         $cmp->set_image2(img => $file);
@@ -102,8 +103,6 @@ for my $author (sort keys %authors) {
             sleep 4; # Play nice
             get_file($authors{$author} . '?d=identicon', $file, "\tResaved as identicon");
         }
-
-        sleep 4 if $i < $max; # Play nice
     }
 
     last if $i >= $max;
