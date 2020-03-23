@@ -51,7 +51,7 @@ for my $match ( sort { $a->[5] cmp $b->[5] || $a->[2] cmp $b->[2] } @matches ) {
     else {
         printf "%*d. %s\n",
             length(scalar(@matches)), $i,
-            join(', ', @{$match}[2 .. 4, 1]);
+            join(', ', @{$match}[2,3,4,1]);
     }
 }
 
