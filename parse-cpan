@@ -39,10 +39,18 @@ for my $line ( @lines ) {
 
 my $i = 0;
 for my $match ( sort { $a->[5] cmp $b->[5] || $a->[2] cmp $b->[2] } @matches ) {
-    printf "%*d. %s %s (%s) on %s by %s\n",
-        length(scalar(@matches)), ++$i,
-        to_module($match->[2]),
-        $match->[3], $match->[4], $match->[1];
+    my ($module, $version) = to_module($match->[2]);
+    if ($module && $version) {
+        printf "%*d. %s %s (%s) on %s by %s\n",
+            length(scalar(@matches)), ++$i,
+            $module, $version,
+            $match->[3], $match->[4], $match->[1];
+    }
+    else {
+        printf "%*d. %s\n",
+            length(scalar(@matches)), ++$i,
+            join(', ', @$match);
+    }
 }
 
 sub to_module {
