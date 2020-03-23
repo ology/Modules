@@ -18,6 +18,7 @@ my $longs = qr/(?:ActiveRecord|ConfigReader|DataWarehouse|FormValidator|GoogleID
 
 my $url = 'https://www.cpan.org/modules/01modules.index.html';
 my $content = get $url;
+print "Fetched $url\n";
 
 my $dom = Mojo::DOM->new($content);
 my @lines = split /\n/, $dom->at('pre')->all_text;
