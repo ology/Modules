@@ -8,13 +8,13 @@ use List::Util 'any';
 use Mojo::DOM;
 
 my $include = shift || 'Math';
-my $exclude = shift // 'Text,Task,Silly,Module,String,PHOENIXL,CryptX,stockmonkey,Bytes,Business,FormValidator,DBIx,Bundle,Nopaste,Acme';
+my $exclude = shift || '';
 
 $include = [ split /,/, $include ];
 $exclude = [ split /,/, $exclude ];
 
 # These modules have no space separating the module and the author name
-my $longs = qr/(?:ActiveRecord|ConfigReader|DataWarehouse|FormValidator|GoogleIDToken|KeywordsSpider|MetasploitExpress|NexposeSimpleXML|ProjectBuilder|RandomJungle|ReleaseAction|\w+?)/;
+my $longs = qr/(?:ActiveRecord|ConfigReader|DataWarehouse|FormValidator|GoogleIDToken|KeywordsSpider|MetasploitExpress|NexposeSimpleXML|ProjectBuilder|RandomJungle|ReleaseAction|\w+)/;
 
 my $url = 'https://www.cpan.org/modules/01modules.index.html';
 my $content = get $url;
