@@ -17,8 +17,8 @@ $exclude = [ split /,/, $exclude ];
 my $longs = qr/(?:ActiveRecord|ConfigReader|DataWarehouse|FormValidator|GoogleIDToken|KeywordsSpider|MetasploitExpress|NexposeSimpleXML|ProjectBuilder|RandomJungle|ReleaseAction|\w+)/;
 
 my $url = 'https://www.cpan.org/modules/01modules.index.html';
+print "Fetching $url ...\n";
 my $content = get $url;
-print "Fetched $url\n";
 
 my $dom = Mojo::DOM->new($content);
 my @lines = split /\n/, $dom->at('pre')->all_text;
