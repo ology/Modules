@@ -2,10 +2,10 @@
 use strict;
 use warnings;
 
-use Date::Manip;
 use HTTP::Simple;
 use List::Util 'any';
 use Mojo::DOM;
+use Time::Piece;
 
 my $include = shift || 'Math';
 my $exclude = shift || '';
@@ -33,8 +33,9 @@ for my $line (@lines) {
     my @parts = $line =~ /^($longs)\s*([A-Z]+)\s+(\S+)\s+([\d.]+\w)\s+(.*?)\s*\+?\s*$/;
     next unless $parts[0];
 
-    my $date = ParseDate($parts[4]);
-    $date =~ s/00:00:00//;
+    my $t = Time::Piece->strptime($parts[4], '%d %b %Y');
+    my $date = $t->strftime('%Y%m%d');
+
     push @matches, [@parts, $date];
 }
 
