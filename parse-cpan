@@ -26,7 +26,7 @@ for my $line ( @lines ) {
     next if any { $line =~ /$_/ } @$exclude;
 
                          # module, author,    dist,   size,        uploaded
-    my @parts = $line =~ /^(\w+)\s+([A-Z]+)\s+(\S+)\s+([\d.]+\w)\s+(.*?)\s*\+?\s*$/g;
+    my @parts = $line =~ /^(\w+?)\s+([A-Z]+)\s+(\S+)\s+([\d.]+\w)\s+(.*?)\s*\+?\s*$/;
     next unless $parts[0];
 
     my $date = ParseDate( $parts[4] );
