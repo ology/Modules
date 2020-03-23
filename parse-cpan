@@ -13,6 +13,9 @@ my $exclude = shift // 'Text,Task,Silly,Module,String,PHOENIXL,CryptX,stockmonke
 $include = [ split /,/, $include ];
 $exclude = [ split /,/, $exclude ];
 
+# These modules have no space separating the module and the author name
+my $longs = qr/(?:ActiveRecord|ConfigReader|DataWarehouse|FormValidator|GoogleIDToken|KeywordsSpider|MetasploitExpress|NexposeSimpleXML|ProjectBuilder|RandomJungle|ReleaseAction|\w+?)/;
+
 my $url = 'https://www.cpan.org/modules/01modules.index.html';
 my $content = get $url;
 
@@ -26,7 +29,7 @@ for my $line ( @lines ) {
     next if any { $line =~ /$_/ } @$exclude;
 
                          # module, author,    dist,   size,        uploaded
-    my @parts = $line =~ /^(\w+?)\s+([A-Z]+)\s+(\S+)\s+([\d.]+\w)\s+(.*?)\s*\+?\s*$/;
+    my @parts = $line =~ /^($longs)\s*([A-Z]+)\s+(\S+)\s+([\d.]+\w)\s+(.*?)\s*\+?\s*$/;
     next unless $parts[0];
 
     my $date = ParseDate( $parts[4] );
