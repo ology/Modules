@@ -51,6 +51,7 @@ sub to_module {
     if ($dist =~ /^(.*?)-([\w.]+)\.(?:tar\.gz|tgz|zip)$/) {
         $module  = $1;
         $version = $2;
+        $module =~ s/-/::/g;
     }
     return $module, $version;
 }
