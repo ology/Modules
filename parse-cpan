@@ -28,7 +28,7 @@ for my $line ( @lines ) {
     next unless any { $line =~ /$_/ } @$include;
     next if any { $line =~ /$_/ } @$exclude;
 
-                         # module, author,    dist,   size,        uploaded
+                         # module,    author,    dist,   size,        uploaded
     my @parts = $line =~ /^($longs)\s*([A-Z]+)\s+(\S+)\s+([\d.]+\w)\s+(.*?)\s*\+?\s*$/;
     next unless $parts[0];
 
