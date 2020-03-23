@@ -14,7 +14,7 @@ $include = [ split /,/, $include ];
 $exclude = [ split /,/, $exclude ];
 
 # These modules have no space separating the module and the author name
-my $longs = qr/(?:ActiveRecord|ConfigReader|DataWarehouse|FormValidator|GoogleIDToken|KeywordsSpider|MetasploitExpress|NexposeSimpleXML|ProjectBuilder|RandomJungle|ReleaseAction|\w+)/;
+my $modules = qr/(?:ActiveRecord|ConfigReader|DataWarehouse|FormValidator|GoogleIDToken|KeywordsSpider|MetasploitExpress|NexposeSimpleXML|ProjectBuilder|RandomJungle|ReleaseAction|\w+)/;
 
 my $url = 'https://www.cpan.org/modules/01modules.index.html';
 print "Fetching $url ...\n";
@@ -30,7 +30,7 @@ for my $line (@lines) {
     next if any { $line =~ /$_/ } @$exclude;
 
     #                      module,    author,    dist,   size,        uploaded
-    my @parts = $line =~ /^($longs)\s*([A-Z]+)\s+(\S+)\s+([\d.]+\w)\s+(.*?)\s*\+?\s*$/;
+    my @parts = $line =~ /^($modules)\s*([A-Z]+)\s+(\S+)\s+([\d.]+\w)\s+(.*?)\s*\+?\s*$/;
     next unless $parts[0];
 
     my $t = Time::Piece->strptime($parts[4], '%d %b %Y');
