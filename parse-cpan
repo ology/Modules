@@ -3,9 +3,9 @@ use strict;
 use warnings;
 
 use Date::Manip;
-use HTML::TreeBuilder 5 -weak; # Ensure weak references in use
-use List::Util qw/any/;
 use HTTP::Simple;
+use List::Util 'any';
+use Mojo::DOM;
 
 my $include = shift || 'Math';
 my $exclude = shift // 'Text,Task,Silly,Module,String,PHOENIXL,CryptX,stockmonkey,Bytes,Business,FormValidator,DBIx,Bundle,Nopaste,Acme';
@@ -16,18 +16,11 @@ $exclude = [ split /,/, $exclude ];
 my $url = 'https://www.cpan.org/modules/01modules.index.html';
 my $content = get $url;
 
-my $tree = HTML::TreeBuilder->new();
-$tree->parse($content);
-$tree->eof;
-
-my $text = '';
-for my $pre ( $tree->look_down( _tag => 'pre' ) ) {
-    $text .= $pre->as_text;
-}
+my $dom = Mojo::DOM->new($content);
+my @lines = split /\n/, $dom->at('pre')->all_text;
 
 my @matches;
 
-my @lines = split /\n/, $text;
 for my $line ( @lines ) {
     next unless any { $line =~ /$_/ } @$include;
     next if any { $line =~ /$_/ } @$exclude;
