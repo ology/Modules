@@ -56,7 +56,7 @@ for my $match ( sort { $a->[5] cmp $b->[5] || $a->[2] cmp $b->[2] } @matches ) {
 sub to_module {
     my ($dist) = @_;
     my ($module, $version);
-    if ($dist =~ /^(.*?)-([\w.]+)\.(?:tar\.gz|tgz|zip)$/) {
+    if ($dist =~ /^(.*?)-([abv\d.]+)\.(?:tar\.gz|tgz|zip)$/) {
         $module  = $1;
         $version = $2;
         $module =~ s/-/::/g;
