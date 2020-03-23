@@ -25,7 +25,7 @@ my @lines = split /\n/, $dom->at('pre')->all_text;
 
 my @matches;
 
-for my $line ( @lines ) {
+for my $line (@lines) {
     next unless any { $line =~ /$_/ } @$include;
     next if any { $line =~ /$_/ } @$exclude;
 
@@ -33,16 +33,16 @@ for my $line ( @lines ) {
     my @parts = $line =~ /^($longs)\s*([A-Z]+)\s+(\S+)\s+([\d.]+\w)\s+(.*?)\s*\+?\s*$/;
     next unless $parts[0];
 
-    my $date = ParseDate( $parts[4] );
+    my $date = ParseDate($parts[4]);
     $date =~ s/00:00:00//;
-    push @matches, [ @parts, $date ];
+    push @matches, [@parts, $date];
 }
 
 my $width = length scalar @matches;
 
 my $i = 0;
 
-for my $match ( sort { $a->[5] cmp $b->[5] || $a->[2] cmp $b->[2] } @matches ) {
+for my $match (sort { $a->[5] cmp $b->[5] || $a->[2] cmp $b->[2] } @matches) {
     $i++;
     my ($module, $version) = to_module($match->[2]);
     if ($module && $version) {
