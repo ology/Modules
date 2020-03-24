@@ -3,12 +3,13 @@ use strict;
 use warnings;
 
 use HTTP::Simple;
-use List::Util 'any';
+use List::Util qw/all any/;
 use Mojo::DOM;
 use Time::Piece;
 
 my $include = shift || 'Math';
 my $exclude = shift || '';
+my $or      = shift || 0;
 
 $include = [ split /,/, $include ];
 $exclude = [ split /,/, $exclude ];
@@ -26,7 +27,12 @@ my @lines = split /\n/, $dom->at('pre')->all_text;
 my @matches;
 
 for my $line (@lines) {
-    next unless any { $line =~ /$_/ } @$include;
+    if ($or) {
+        next unless any { $line =~ /$_/ } @$include;
+    }
+    else {
+        next unless all { $line =~ /$_/ } @$include;
+    }
     next if any { $line =~ /$_/ } @$exclude;
 
     #                      module,    author,    dist,   size,        uploaded
