@@ -6,8 +6,8 @@ use warnings;
 
 # Examples:
 # perl parse-cpan MP3            # Include MP3
-# perl parse-cpan MP3 Tag,Info   # Exclude Tag OR Info
-# perl parse-cpan MP3 Tag,Info 1 # Exclude Tag AND Info
+# perl parse-cpan MP3 Tag,Info   # Exclude lines with either Tag OR Info
+# perl parse-cpan MP3 Tag,Info 1 # Exclude lines with both Tag AND Info
 # perl parse-cpan GENE           # All GENE's modules
 # perl parse-cpan ' 4k'          # All the size=4k modules
 
