@@ -5,11 +5,11 @@ use warnings;
 # Search CPAN by any part of the 01modules.index lines and sort by date
 
 # Examples:
-# perl parse-cpan MP3            # Include MP3
-# perl parse-cpan MP3 Tag,Info   # Exclude lines with either Tag OR Info
-# perl parse-cpan MP3 Tag,Info 1 # Exclude lines with both Tag AND Info
-# perl parse-cpan GENE           # All GENE's modules
-# perl parse-cpan ' 4k'          # All the size=4k modules
+# perl parse-cpan MP3             # Include MP3
+# perl parse-cpan MP3 Tag,Utils   # Exclude lines with either Tag OR Utils
+# perl parse-cpan MP3 Tag,Utils 1 # Exclude lines with both Tag AND Utils
+# perl parse-cpan GENE            # All GENE's modules
+# perl parse-cpan ' 4k'           # All the size=4k modules
 
 use HTTP::Simple;
 use List::Util qw/all any/;
