@@ -8,6 +8,7 @@ use warnings;
 # perl parse-cpan MP3             # Include MP3
 # perl parse-cpan MP3 Tag,Utils   # Exclude lines with either Tag OR Utils
 # perl parse-cpan MP3 Tag,Utils 1 # Exclude lines with both Tag AND Utils
+# perl parse-cpan 'MP\d'          # All MP3 and MP4 modules (regular expression search)
 # perl parse-cpan GENE            # All GENE's modules
 # perl parse-cpan ' 4k'           # All the size = 4k modules
 # perl parse-cpan '\d+M '         # All the size >= 1M modules
