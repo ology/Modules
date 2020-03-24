@@ -29,11 +29,12 @@ my @matches;
 for my $line (@lines) {
     if ($or) {
         next unless any { $line =~ /$_/ } @$include;
+        next if any { $line =~ /$_/ } @$exclude;
     }
     else {
         next unless all { $line =~ /$_/ } @$include;
+        next if all { $line =~ /$_/ } @$exclude;
     }
-    next if any { $line =~ /$_/ } @$exclude;
 
     #                      module,    author,    dist,   size,        uploaded
     my @parts = $line =~ /^($modules)\s*([A-Z]+)\s+(\S+)\s+([\d.]+\w)\s+(.*?)\s*\+?\s*$/;
