@@ -30,7 +30,7 @@ $exclude = [ split /,/, $exclude ];
 my $modules = qr/(?:ActiveRecord|ConfigReader|DataWarehouse|FormValidator|GoogleIDToken|KeywordsSpider|MetasploitExpress|NexposeSimpleXML|ProjectBuilder|RandomJungle|ReleaseAction|\w+)/;
 
 my $url = 'https://www.cpan.org/modules/01modules.index.html';
-print "Fetching $url ...\n";
+print "Fetching $url...\n";
 my $content = get $url;
 
 my $dom = Mojo::DOM->new($content);
