@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 
+# Search CPAN by any part of the 01modules.index lines and sort by date
+
 use HTTP::Simple;
 use List::Util qw/all any/;
 use Mojo::DOM;
