@@ -72,11 +72,11 @@ for my $match (sort { $a->[5] cmp $b->[5] || $a->[2] cmp $b->[2] } @matches) {
     my ($module, $version) = to_module($match->[2]);
 
     if ($module && $version) {
-        printf "%*d. %s %s (%s) on %s by %s\n\t%s\n",
+        printf "%*d. %s %s (%s) on %s by %s\n",
             $width, $i,
-            $module, $version,
-            @{$match}[3,4,1],
-            "https://metacpan.org/pod/$module";
+            "https://metacpan.org/pod/$module",
+            $version,
+            @{$match}[3,4,1];
     }
     else {
         printf "%*d. %s\n",
