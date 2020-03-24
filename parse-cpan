@@ -9,7 +9,7 @@ use Time::Piece;
 
 my $include = shift || 'Math';
 my $exclude = shift || '';
-my $and     = shift || 0;
+my $and     = shift || 0; # Use AND logic of terms to determine search matches
 
 $include = [ split /,/, $include ];
 $exclude = [ split /,/, $exclude ];
