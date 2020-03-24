@@ -33,7 +33,7 @@ for my $line (@lines) {
     }
     else {
         next unless all { $line =~ /$_/ } @$include;
-        next if all { $line =~ /$_/ } @$exclude;
+        next if @$exclude && all { $line =~ /$_/ } @$exclude;
     }
 
     #                      module,    author,    dist,   size,        uploaded
