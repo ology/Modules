@@ -1,6 +1,4 @@
 #!/usr/bin/env perl
-use strict;
-use warnings;
 
 # Search CPAN by any part of the 01modules.index lines and sort by date
 
@@ -12,6 +10,9 @@ use warnings;
 # perl parse-cpan GENE            # All GENE's modules
 # perl parse-cpan ' 4k'           # All the size = 4k modules
 # perl parse-cpan '\d+M '         # All the modules with a size in megabyes
+
+use strict;
+use warnings;
 
 use HTTP::Simple;
 use List::Util qw/all any/;
