@@ -4,6 +4,13 @@ use warnings;
 
 # Search CPAN by any part of the 01modules.index lines and sort by date
 
+# Examples:
+# perl parse-cpan MP3            # Include MP3
+# perl parse-cpan MP3 Tag,Info   # Exclude Tag OR Info
+# perl parse-cpan MP3 Tag,Info 1 # Exclude Tag AND Info
+# perl parse-cpan GENE           # All GENE's modules
+# perl parse-cpan ' 4k'          # All the size=4k modules
+
 use HTTP::Simple;
 use List::Util qw/all any/;
 use Mojo::DOM;
