@@ -59,11 +59,17 @@ for my $line (@lines) {
 
 my $width = length scalar @matches;
 
+my %seen;
+
 my $i = 0;
 
 for my $match (sort { $a->[5] cmp $b->[5] || $a->[2] cmp $b->[2] } @matches) {
+    next if $seen{$match->[2]}++;
+
     $i++;
+
     my ($module, $version) = to_module($match->[2]);
+
     if ($module && $version) {
         printf "%*d. %s %s (%s) on %s by %s\n",
             $width, $i,
