@@ -14,6 +14,8 @@
 # perl parse-cpan ' App-'         # Modules that begin with App::*
 # ^^^ The include/exclude options regard raw 01modules.index lines. ^^^
 
+# * Apparently fancy regular expressions, like negative lookbehinds don't work. YMMV
+
 use strict;
 use warnings;
 
