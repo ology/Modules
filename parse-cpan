@@ -10,6 +10,7 @@
 # perl parse-cpan GENE            # All GENE's modules
 # perl parse-cpan ' 4k'           # All the size = 4k modules
 # perl parse-cpan '\d+M '         # All the modules with a size in megabyes
+# perl parse-cpan ' App-'         # Modules that begin with App::*
 
 use strict;
 use warnings;
