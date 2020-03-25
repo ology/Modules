@@ -12,6 +12,7 @@
 # perl parse-cpan ' 4k'           # Size = 4k modules
 # perl parse-cpan '\d+M '         # Modules with a size in megabyes
 # perl parse-cpan ' App-'         # Modules that begin with App::*
+# ^^^ The include/exclude options regard raw 01modules.index lines. ^^^
 
 use strict;
 use warnings;
