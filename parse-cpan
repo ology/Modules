@@ -27,7 +27,13 @@ $include = [ split /,/, $include ];
 $exclude = [ split /,/, $exclude ];
 
 # These modules have no space separating the module and the author name
-my $modules = qr/(?:ActiveRecord|ConfigReader|DataWarehouse|FormValidator|GoogleIDToken|KeywordsSpider|MetasploitExpress|NexposeSimpleXML|ProjectBuilder|RandomJungle|ReleaseAction|\w+)/;
+my @modules;
+for my $module (readline(DATA)) {
+    chomp $module;
+    push @modules, $module;
+}
+my $modules = join '|', @modules;
+$modules = qr/(?:$modules|\w+)/;
 
 my $url = 'https://www.cpan.org/modules/01modules.index.html';
 print "Fetching $url...\n";
@@ -95,3 +101,16 @@ sub to_module {
     }
     return $module, $version;
 }
+
+__DATA__
+ActiveRecord
+ConfigReader
+DataWarehouse
+FormValidator
+GoogleIDToken
+KeywordsSpider
+MetasploitExpress
+NexposeSimpleXML
+ProjectBuilder
+RandomJungle
+ReleaseAction
