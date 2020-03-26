@@ -85,8 +85,6 @@ for my $match (sort { $a->[5] cmp $b->[5] || $a->[2] cmp $b->[2] } @matches) {
 
     my $url = $module ? "https://metacpan.org/pod/$module" : '';
 
-    sleep 3; # Play nice
-
     if ($module && $version && $url && get_file($url, $file)) {
         printf "%*d. %s %s (%s) on %s by %s\n",
             $width, $i,
