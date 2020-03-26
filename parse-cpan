@@ -72,6 +72,7 @@ for my $line (@lines) {
 my $width = length scalar @matches;
 
 my %seen;
+my $file = 'module.html';
 
 my $i = 0;
 
@@ -82,11 +83,12 @@ for my $match (sort { $a->[5] cmp $b->[5] || $a->[2] cmp $b->[2] } @matches) {
 
     my ($module, $version) = to_module($match->[2]);
 
-    if ($module && $version) {
+    my $url = "https://metacpan.org/pod/$module";
+
+    if ($module && $version && is_success(getstore($url, $file))) {
         printf "%*d. %s %s (%s) on %s by %s\n",
             $width, $i,
-            "https://metacpan.org/pod/$module",
-            $version,
+            $url, $version,
             @{$match}[3,4,1];
     }
     else {
@@ -95,6 +97,8 @@ for my $match (sort { $a->[5] cmp $b->[5] || $a->[2] cmp $b->[2] } @matches) {
             join(', ', @{$match}[2,3,4,1]);
     }
 }
+
+unlink $file;
 
 sub to_module {
     my ($dist) = @_;
