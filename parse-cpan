@@ -85,7 +85,7 @@ for my $match (sort { $a->[5] cmp $b->[5] || $a->[2] cmp $b->[2] } @matches) {
 
     my $url = $module ? "https://metacpan.org/pod/$module" : '';
 
-    if ($module && $version && $url && get_file($url, $file)) {
+    if ($module && $version && $url && can_get($url, $file)) {
         printf "%*d. %s %s (%s) on %s by %s\n",
             $width, $i,
             $url, $version,
@@ -100,7 +100,7 @@ for my $match (sort { $a->[5] cmp $b->[5] || $a->[2] cmp $b->[2] } @matches) {
 
 unlink $file;
 
-sub get_file {
+sub can_get {
     my ($url, $file) = @_;
     sleep 3; # Play nice
     return is_success(getstore($url, $file));
