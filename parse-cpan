@@ -76,6 +76,8 @@ my $file = 'module.html';
 
 my $i = 0;
 
+printf "Matches: %d\n", scalar @matches;
+
 for my $match (sort { $a->[5] cmp $b->[5] || $a->[2] cmp $b->[2] } @matches) {
     next if $seen{$match->[2]}++;
 
