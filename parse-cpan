@@ -6,12 +6,12 @@
 # perl parse-cpan MP3               # Include MP3
 # perl parse-cpan MP3 Tag,Utils     # Exclude lines with either Tag OR Utils
 # perl parse-cpan MP3 Tag,Utils 1   # Exclude lines with both Tag AND Utils
-# perl parse-cpan ' App-' PERLANCAR # Modules that begin with App:: but not by that author
 # perl parse-cpan 'MP\d'            # MP3 and MP4 modules (regular expression search)
 # perl parse-cpan GENE              # GENE's modules
 # perl parse-cpan 1998              # Modules that haven't been updated since 1998
 # perl parse-cpan ' 4k'             # Size = 4k modules
 # perl parse-cpan '\d+M '           # Modules with a size in megabyes
+# perl parse-cpan ' App-' PERLANCAR # Modules that begin with App:: but not by that author
 
 # * Remember: The include/exclude options regard raw 01modules.index lines.
 # * Fancy regular expressions, like negative lookbehinds don't work. YMMV
