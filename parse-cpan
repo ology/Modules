@@ -10,7 +10,7 @@
 # perl parse-cpan GENE              # GENE's modules
 # perl parse-cpan 1998              # Modules that haven't been updated since 1998
 # perl parse-cpan ' 4k'             # Size = 4k modules
-# perl parse-cpan '\d+M '           # Modules with a size in megabyes
+# perl parse-cpan '\d+M '           # Modules with a size given in megabytes
 # perl parse-cpan ' App-' PERLANCAR # Modules that begin with App:: but not by that author
 
 # * Remember: The include/exclude options regard raw 01modules.index lines.
