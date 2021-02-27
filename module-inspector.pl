@@ -60,7 +60,8 @@ __DATA__
 % title 'Module Inspector';
 <h1>Module Inspector</h1>
 <form>
-<input type="text" name="module" value="<%= $module %>"/>
+<label for="module">Module name:</label>
+<input type="text" id="module" name="module" value="<%= $module %>"/>
 <input type="submit" name="submit" value="Submit"/>
 </form>
 <pre><%= $subs %></pre>
