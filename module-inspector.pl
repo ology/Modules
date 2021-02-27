@@ -3,6 +3,10 @@
 use Mojolicious::Lite -signatures;
 
 use Data::Dumper;
+$Data::Dumper::Varname = 'Module';
+$Data::Dumper::Indent = 1;
+$Data::Dumper::Quotekeys = 0;
+$Data::Dumper::Sortkeys = 1;
 use Data::Dumper::Compact qw(ddc);
 use Package::Stash ();
 use Sub::Identify qw(stash_name);
@@ -53,8 +57,8 @@ __DATA__
 
 @@ index.html.ep
 % layout 'default';
-% title 'Package Inspector';
-<h1>Package Inspector</h1>
+% title 'Module Inspector';
+<h1>Module Inspector</h1>
 <form>
 <input type="text" name="module" value="<%= $module %>"/>
 <input type="submit" name="submit" value="Submit"/>
