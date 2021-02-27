@@ -6,6 +6,7 @@ use Data::Dumper;
 use Data::Dumper::Compact qw(ddc);
 use Package::Stash ();
 use Sub::Identify qw(stash_name);
+use Text::Trim qw(trim);
 
 get '/' => sub ($c) {
     my $module = $c->param('module') || 'GD';
@@ -36,7 +37,7 @@ sub gather_subs {
         if ($packagename eq $module) {
             my $code = ddc($subs->{$sub});
             while ($code =~ /^(.*)\n/mg) {
-                my $line = $1;
+                my $line = trim $1;
                 push @{ $subs{$sub} }, $line
                     if $line =~ /=\s*\@_/ || $line =~ /=\s*shift/;
             }
