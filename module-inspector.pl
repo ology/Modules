@@ -7,7 +7,7 @@ $Data::Dumper::Varname = 'Module';
 $Data::Dumper::Indent = 1;
 $Data::Dumper::Quotekeys = 0;
 $Data::Dumper::Sortkeys = 1;
-use Data::Dumper::Compact qw(ddc);
+use Data::Dumper::Compact qw(ddc); # For strinification of coderefs
 use Package::Stash ();
 use Sub::Identify qw(stash_name);
 use Text::Trim qw(trim);
