@@ -13,7 +13,7 @@ use Sub::Identify qw(stash_name);
 use Text::Trim qw(trim);
 
 get '/' => sub ($c) {
-    my $module = $c->param('module') || 'GD';
+    my $module = $c->param('module') || 'Test::More';
 
     my $subs = gather_subs($module);
 
