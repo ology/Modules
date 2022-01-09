@@ -40,8 +40,6 @@ get_file($cpan . $file, $file, "Saved $file");
 
 my $pca = Parse::CPAN::Authors->new($file);
 
-my $i = 0;
-
 # Get each author metacpan url
 for my $author ($pca->authors) {
     $authors{ $author->pauseid } = $base . $author->pauseid;
@@ -56,7 +54,7 @@ if ($start =~ /^[A-Za-z]+$/) {
     $start++;
 }
 
-$i = 0; # reset the incrementer
+my $i = 0;
 
 # Remove authors that precede the given start
 for my $author (sort keys %authors) {
@@ -107,7 +105,7 @@ HTML
 my $collage = Imager->new(xsize => $size, ysize => $size)
     or die "Can't create image: ", Imager->errstr;
 
-$i = 0;
+$i = 0; # reset the incrementer
 my $j = 0; # x coordinate iterator
 my $k = 0; # y coordinate iterator
 
