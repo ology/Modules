@@ -12,7 +12,6 @@ use warnings;
 
 use File::Copy;
 use File::Slurper 'write_text';
-use Gravatar::URL;
 use HTTP::Simple;
 use Imager;
 use List::SomeUtils 'first_index';
