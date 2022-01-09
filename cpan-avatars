@@ -122,6 +122,7 @@ for my $author ($start == -1 ? keys %authors : sort keys %authors) {
 
     unlink $img_file;
 
+    # Compute the next coordinates
     if ($j >= $side) {
         $j = 0;
         $k++;
