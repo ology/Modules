@@ -8,12 +8,14 @@ use warnings;
 # perl cpan-avatars 10      # A 10x10 collage starting at author 1
 # perl cpan-avatars 3 1000  # A 3x3 collage starting at author 1000
 # perl cpan-avatars 2 gene  # A 2x2 collage starting at author GENE
+# perl cpan-avatars 2 -1    # A 2x2 collage of random authors
 
 use File::Copy;
 use File::Slurper 'write_text';
 use HTTP::Simple;
 use Imager;
 use List::SomeUtils 'first_index';
+use List::Util 'shuffle';
 use Mojo::DOM;
 use Mojo::UserAgent;
 use Parse::CPAN::Authors;
@@ -45,7 +47,7 @@ for my $author ($pca->authors) {
 }
 
 # Find the index of the given author name
-if ($start =~ /[A-Za-z]/) {
+if ($start ne '-1' && $start =~ /[A-Za-z]/) {
     my $author = $start;
     $start = first_index { CORE::fc($_) eq CORE::fc($start) } sort keys %authors;
     die "Author '$author' not found\n"
@@ -53,26 +55,27 @@ if ($start =~ /[A-Za-z]/) {
     $start++;
 }
 
-my $i = 0;
-
-# Remove authors that precede the given start
-for my $author (sort keys %authors) {
-    $i++;
-    if ($i < $start) {
-        delete $authors{$author};
-    }
-    else {
-        last;
+if ($start > -1) {
+    # Remove authors that precede the given start
+    my $i = 0;
+    for my $author (sort keys %authors) {
+        $i++;
+        if ($i < $start) {
+            delete $authors{$author};
+        }
+        else {
+            last;
+        }
     }
 }
 
 die "No authors\n"
     if keys(%authors) < 1;
 
-$i = 0; # reset the incrementer
+my $i = 0;
 
 # Fetch the author avatar images
-for my $author (sort keys %authors) {
+for my $author ($start == -1 ? shuffle keys %authors : sort keys %authors) {
     $i++;
     sleep 4 unless $i == 1; # play nice
 
@@ -109,8 +112,10 @@ my $j = 0; # x coordinate iterator
 my $k = 0; # y coordinate iterator
 
 # Read the author files and paste them onto the collage
-for my $author (sort keys %authors) {
+for my $author ($start == -1 ? keys %authors : sort keys %authors) {
     my $img_file = $path . $author;
+    next unless -e $img_file;
+
     my $img = Imager->new;
     $img->read(file => $img_file)
         or die "Can't read $img_file: ", $img->errstr;
