@@ -10,7 +10,6 @@ use warnings;
 # perl cpan-avatars 2 gene  # A 2x2 collage starting at author GENE
 # perl cpan-avatars 2 -1    # A 2x2 collage of random authors
 
-use File::Copy;
 use File::Slurper 'write_text';
 use HTTP::Simple;
 use Imager;
