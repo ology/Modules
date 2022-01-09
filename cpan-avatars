@@ -36,6 +36,7 @@ my %authors;
 die "Path '$path' does not exist"
     unless -d $path;
 
+# Save the cpan authors file
 get_file($cpan . $file, $file, "Saved $file");
 
 my $pca = Parse::CPAN::Authors->new($file);
