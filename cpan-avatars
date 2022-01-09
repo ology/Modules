@@ -46,6 +46,9 @@ for my $author ($pca->authors) {
     $authors{ $author->pauseid } = $base . $author->pauseid;
 }
 
+# Remove the cpan author file
+unlink $file;
+
 # Find the index of the given author name
 if ($start ne '-1' && $start =~ /[A-Za-z]/) {
     my $author = $start;
