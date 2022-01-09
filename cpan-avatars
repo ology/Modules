@@ -108,8 +108,8 @@ my $collage = Imager->new(xsize => $size, ysize => $size)
     or die "Can't create image: ", Imager->errstr;
 
 $i = 0; # reset the incrementer
-my $x = 0; # x coordinate iterator
-my $y = 0; # y coordinate iterator
+my $x = 0;
+my $y = 0;
 
 # Read the author files and paste them onto the collage
 for my $author ($start == -1 ? keys %authors : sort keys %authors) {
