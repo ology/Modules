@@ -3,7 +3,6 @@ use strict;
 use warnings;
 
 # Construct a collage of CPAN author gravatars.
-# Write-up: http://techn.ology.net/making-an-image-map-of-cpan-authors/
 
 # Examples:
 # perl cpan-avatars 10      # A 10x10 collage starting at author 1
