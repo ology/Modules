@@ -51,20 +51,19 @@ if ($start ne '-1' && $start =~ /[A-Za-z]/) {
     $start = first_index { CORE::fc($_) eq CORE::fc($start) } sort keys %authors;
     die "Author '$author' not found\n"
         if $start < 0;
-    $start++;
 }
 
 if ($start > -1) {
     # Remove authors that precede the given start
     my $i = 0;
     for my $author (sort keys %authors) {
-        $i++;
         if ($i < $start) {
             delete $authors{$author};
         }
         else {
             last;
         }
+        $i++;
     }
 }
 
