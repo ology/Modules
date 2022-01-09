@@ -142,7 +142,7 @@ for my $author ($start == -1 ? keys %authors : sort keys %authors) {
     last if $i >= $max;
 }
 
-# Save the collage
+# Save the collage image
 $file = $path . 'collage.jpg';
 $collage->write(file => $file) or
     die "Can't write to $file: ", $collage->errstr;
@@ -155,6 +155,7 @@ $html .=<<'HTML';
 </html>
 HTML
 
+# Save the collage html
 $file = $path . 'collage.html';
 write_text($file, $html);
 print "Saved $file\n";
