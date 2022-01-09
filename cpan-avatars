@@ -16,9 +16,9 @@ use Gravatar::URL;
 use HTTP::Simple;
 use Imager;
 use List::SomeUtils 'first_index';
-use Parse::CPAN::Authors;
 use Mojo::DOM;
 use Mojo::UserAgent;
+use Parse::CPAN::Authors;
 
 my $side  = shift || 3; # Number of images per side of the collage
 my $start = shift || 1; # Where in the alphabetical order to begin the collage - number or author name
