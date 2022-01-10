@@ -130,7 +130,7 @@ my $x = 0;
 my $y = 0;
 
 # Read the author files and paste them onto the collage
-for my $author ($start == -1 ? keys %authors : sort keys %authors) {
+for my $author (sort keys %authors) {
     my $img_file = $path->child($author);
     next unless -e $img_file;
 
