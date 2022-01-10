@@ -18,7 +18,7 @@ Writeup: L<https://ology.github.io/2022/01/09/an-image-collage-of-cpan-authors/>
 avatars directory.
 
 * Initially I used L<https://metacpan.org/pod/Gravatar::URL> to
-"fetch" metacpan author images. But this was *not* always the metacpan
+harvest metacpan author images. But this was *not* always the metacpan
 image!
 
 =cut
