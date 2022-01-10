@@ -102,7 +102,7 @@ for my $author ($start == -1 ? shuffle keys %authors : sort keys %authors) {
 }
 
 # Build an HTML image map
-my $html =<<'HTML';
+my $html = <<'HTML';
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -162,7 +162,7 @@ $collage->write(file => $file) or
 print "Saved $file\n";
 
 # Finish the HTML image map
-$html .=<<'HTML';
+$html .= <<'HTML';
 </map>
 </body>
 </html>
