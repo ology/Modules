@@ -2,22 +2,24 @@
 use strict;
 use warnings;
 
-# Construct a collage of CPAN author gravatars.
-# Writeup:
-# https://ology.github.io/2022/01/09/an-image-collage-of-cpan-authors/
+=head1 SYNOPSIS
 
-# Examples:
-# perl cpan-avatars 10      # A 10x10 collage starting at author 0
-# perl cpan-avatars 2 1000  # A 2x2 collage starting at author 1000
-# perl cpan-avatars 3 gene  # A 3x3 collage starting at author GENE
-# perl cpan-avatars 4 -1    # A 4x4 collage of random authors
+Construct a collage of CPAN author gravatars.
 
-# ***
-# * If you CTRL-C out of a run, you will have to manually clean-up
-# * the avatars directory. If there are any author files in the
-# * avatars directory, they will possibly be mistakenly used in the
-# * generated collage.
-# ***
+Writeup: L<https://ology.github.io/2022/01/09/an-image-collage-of-cpan-authors/>
+
+  # Examples:
+  perl cpan-avatars 10      # A 10x10 collage starting at author 0
+  perl cpan-avatars 2 1000  # A 2x2 collage starting at author 1000
+  perl cpan-avatars 3 gene  # A 3x3 collage starting at author GENE
+  perl cpan-avatars 4 -1    # A 4x4 collage of random authors
+
+* If you CTRL-C out of a run, you will have to manually clean-up
+* the avatars directory. If there are any author files in the
+* avatars directory, they will possibly be mistakenly used in the
+* generated collage.
+
+=cut
 
 use File::Slurper 'write_text';
 use HTTP::Simple;
