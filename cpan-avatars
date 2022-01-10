@@ -70,23 +70,6 @@ if ($start ne '-1' && $start =~ /[A-Za-z]/) {
         if $start < 0;
 }
 
-if ($start > -1) {
-    # Remove authors that precede the given start
-    my $i = 0;
-    for my $author (sort keys %authors) {
-        if ($i < $start) {
-            delete $authors{$author};
-        }
-        else {
-            last;
-        }
-        $i++;
-    }
-}
-
-die "No authors\n"
-    unless keys %authors;
-
 my $i = 0;
 
 my @displayed; # Bucket for the displayed authors
@@ -94,6 +77,9 @@ my @displayed; # Bucket for the displayed authors
 # Fetch the author avatar images
 for my $author ($start == -1 ? shuffle keys %authors : sort keys %authors) {
     $i++;
+
+    next if $start > -1 && ($i - 1) < $start;
+
     sleep 4 unless $i == 1; # play nice
 
     my $content = get($authors{$author});
@@ -105,7 +91,7 @@ for my $author ($start == -1 ? shuffle keys %authors : sort keys %authors) {
 
     push @displayed, $author;
 
-    last if $i >= $max;
+    last if @displayed >= $max;
 }
 
 # Build an HTML image map
