@@ -5,7 +5,7 @@ use warnings;
 # Construct a collage of CPAN author gravatars.
 
 # Examples:
-# perl cpan-avatars 10      # A 10x10 collage starting at author 1
+# perl cpan-avatars 10      # A 10x10 collage starting at author 0
 # perl cpan-avatars 2 1000  # A 2x2 collage starting at author 1000
 # perl cpan-avatars 3 gene  # A 3x3 collage starting at author GENE
 # perl cpan-avatars 4 -1    # A 4x4 collage of random authors
