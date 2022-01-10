@@ -40,7 +40,7 @@ my $base = 'https://metacpan.org/author/';
 my $cpan = 'http://www.cpan.org/authors/';
 my $file = '01mailrc.txt.gz';
 
-my %authors;
+my @authors;
 
 # Make a new path if one doesn't exist
 $path = Mojo::File->new($path);
@@ -56,7 +56,7 @@ my $pca = Parse::CPAN::Authors->new($file);
 
 # Get each author metacpan url
 for my $author ($pca->authors) {
-    $authors{ $author->pauseid } = $base . $author->pauseid;
+    push @authors, $author->pauseid;
 }
 
 # Remove the cpan author file
@@ -65,7 +65,7 @@ unlink $file;
 # Find the index of the given author name
 if ($start ne '-1' && $start =~ /[A-Za-z]/) {
     my $author = $start;
-    $start = first_index { CORE::fc($_) eq CORE::fc($author) } sort keys %authors;
+    $start = first_index { CORE::fc($_) eq CORE::fc($author) } sort @authors;
     die "Author '$author' not found\n"
         if $start < 0;
 }
@@ -75,7 +75,7 @@ my $i = 0;
 my @displayed; # Bucket for the displayed authors
 
 # Fetch the author avatar images
-for my $author ($start == -1 ? shuffle keys %authors : sort keys %authors) {
+for my $author ($start == -1 ? shuffle @authors : sort @authors) {
     $i++;
 
     # Skip if not random and the count is below the first id
@@ -83,7 +83,7 @@ for my $author ($start == -1 ? shuffle keys %authors : sort keys %authors) {
 
     sleep 4 if @displayed; # play nice
 
-    my $content = get($authors{$author});
+    my $content = get($base . $author);
     my $dom = Mojo::DOM->new($content);
     my $img = $dom->find('img[alt="Author image"]')->[0]->attr('src');
 
