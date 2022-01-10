@@ -100,6 +100,7 @@ for my $author ($start == -1 ? shuffle keys %authors : sort keys %authors) {
     my $tx = $ua->get($authors{$author});
     my $dom = Mojo::DOM->new($tx->res->body);
     my $img = $dom->find('img[alt="Author image"]')->[0]->attr('src');
+
     my $img_file = $path->child($author);
     get_file($img, $img_file, sprintf('%*d. Saved %s', $field, $i, $img_file));
 
