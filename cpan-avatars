@@ -20,12 +20,12 @@ directory, they may mistakenly be used in the generated collage.
 
 =cut
 
-use File::Slurper 'write_text';
 use HTTP::Simple;
 use Imager;
 use List::SomeUtils 'first_index';
 use List::Util 'shuffle';
 use Mojo::DOM;
+use Mojo::File;
 use Mojo::UserAgent;
 use Parse::CPAN::Authors;
 
@@ -43,11 +43,11 @@ my $file = '01mailrc.txt.gz';
 
 my %authors;
 
-# Make sure that the avatar path ends with a directory separator
-$path =~ s|^(.+[^/])$|$1/|;
-
-die "Path '$path' does not exist"
-    unless -d $path;
+# Make a new path if one doesn't exist
+$path = Mojo::File->new($path);
+unless (-d $path) {
+    $path->make_path;
+}
 
 # Save the cpan authors file
 get_file($cpan . $file, $file, "Saved $file");
@@ -98,7 +98,7 @@ for my $author ($start == -1 ? shuffle keys %authors : sort keys %authors) {
     my $tx = $ua->get($authors{$author});
     my $dom = Mojo::DOM->new($tx->res->body);
     my $img = $dom->find('img[alt="Author image"]')->[0]->attr('src');
-    my $img_file = $path . $author;
+    my $img_file = $path->child($author);
     get_file($img, $img_file, "$i. Saved $img_file");
 
     last if $i >= $max;
@@ -128,7 +128,7 @@ my $y = 0;
 
 # Read the author files and paste them onto the collage
 for my $author ($start == -1 ? keys %authors : sort keys %authors) {
-    my $img_file = $path . $author;
+    my $img_file = $path->child($author);
     next unless -e $img_file;
 
     my $img = Imager->new;
@@ -159,7 +159,7 @@ for my $author ($start == -1 ? keys %authors : sort keys %authors) {
 }
 
 # Save the collage image
-$file = $path . 'collage.jpg';
+$file = $path->child('collage.jpg');
 $collage->write(file => $file) or
     die "Can't write to $file: ", $collage->errstr;
 print "Saved $file\n";
@@ -172,8 +172,8 @@ $html .= <<'HTML';
 HTML
 
 # Save the collage html
-$file = $path . 'collage.html';
-write_text($file, $html);
+$file = $path->child('collage.html');
+$file->spurt($html);
 print "Saved $file\n";
 
 sub get_file {
