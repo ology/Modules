@@ -90,6 +90,8 @@ die "No authors\n"
 
 my $i = 0;
 
+my @displayed; # Bucket for the displayed authors
+
 # Fetch the author avatar images
 for my $author ($start == -1 ? shuffle keys %authors : sort keys %authors) {
     $i++;
@@ -101,6 +103,8 @@ for my $author ($start == -1 ? shuffle keys %authors : sort keys %authors) {
 
     my $img_file = $path->child($author);
     get_file($img, $img_file, sprintf('%*d. Saved %s', $field, $i, $img_file));
+
+    push @displayed, $author;
 
     last if $i >= $max;
 }
@@ -128,7 +132,7 @@ my $x = 0;
 my $y = 0;
 
 # Read the author files and paste them onto the collage
-for my $author (sort keys %authors) {
+for my $author (sort @displayed) {
     my $img_file = $path->child($author);
     next unless -e $img_file;
 
