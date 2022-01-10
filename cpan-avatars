@@ -15,9 +15,9 @@ Writeup: L<https://ology.github.io/2022/01/09/an-image-collage-of-cpan-authors/>
   perl cpan-avatars 4 -1    # A 4x4 collage of random authors
 
 * If you CTRL-C out of a run, you will have to manually clean-up
-* the avatars directory. If there are any author files in the
-* avatars directory, they will possibly be mistakenly used in the
-* generated collage.
+the avatars directory. If there are any author files in the
+avatars directory, they will possibly be mistakenly used in the
+generated collage.
 
 =cut
 
