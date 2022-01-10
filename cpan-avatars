@@ -36,6 +36,7 @@ my $path  = shift || $ENV{HOME} . '/tmp/avatars/'; # Where our avatars and the c
 my $width = 130;            # Fixed avatar side pixel size
 my $size  = $width * $side; # The width of the collage
 my $max   = $side * $side;  # Number of avatars to fetch
+my $field = length $max;    # The field width for printing the increment
 
 my $base = 'https://metacpan.org/author/';
 my $cpan = 'http://www.cpan.org/authors/';
@@ -100,7 +101,7 @@ for my $author ($start == -1 ? shuffle keys %authors : sort keys %authors) {
     my $dom = Mojo::DOM->new($tx->res->body);
     my $img = $dom->find('img[alt="Author image"]')->[0]->attr('src');
     my $img_file = $path->child($author);
-    get_file($img, $img_file, "$i. Saved $img_file");
+    get_file($img, $img_file, sprintf('%*d. Saved %s', $field, $i, $img_file));
 
     last if $i >= $max;
 }
