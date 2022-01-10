@@ -40,7 +40,8 @@ my $base = 'https://metacpan.org/author/';
 my $cpan = 'http://www.cpan.org/authors/';
 my $file = '01mailrc.txt.gz';
 
-my @authors;
+my @authors;   # Bucket for all authors
+my @displayed; # Bucket for the displayed authors
 
 # Make a new path if one doesn't exist
 $path = Mojo::File->new($path);
@@ -71,8 +72,6 @@ if ($start ne '-1' && $start =~ /[A-Za-z]/) {
 }
 
 my $i = 0;
-
-my @displayed; # Bucket for the displayed authors
 
 # Fetch the author avatar images
 for my $author ($start == -1 ? shuffle @authors : sort @authors) {
