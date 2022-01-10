@@ -17,6 +17,10 @@ Writeup: L<https://ology.github.io/2022/01/09/an-image-collage-of-cpan-authors/>
 * If you CTRL-C out of a run, you will have to manually clean-up the
 avatars directory.
 
+* Initially I used L<https://metacpan.org/pod/Gravatar::URL> to
+"fetch" metacpan author images. But was is *not* always the metacpan
+image!
+
 =cut
 
 use HTTP::Simple qw(get getstore);
