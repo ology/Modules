@@ -16,8 +16,7 @@ Writeup: L<https://ology.github.io/2022/01/09/an-image-collage-of-cpan-authors/>
 
 * If you CTRL-C out of a run, you will have to manually clean-up the
 avatars directory. If there are any author files in the avatars
-directory, they will possibly be mistakenly used in the generated
-collage.
+directory, they may mistakenly be used in the generated collage.
 
 =cut
 
