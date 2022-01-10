@@ -81,7 +81,7 @@ for my $author ($start == -1 ? shuffle keys %authors : sort keys %authors) {
     # Skip if not random and the count is below the first id
     next if $start > -1 && ($i - 1) < $start;
 
-    sleep 4 unless $i == 1; # play nice
+    sleep 4 if @displayed; # play nice
 
     my $content = get($authors{$author});
     my $dom = Mojo::DOM->new($content);
