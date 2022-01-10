@@ -20,7 +20,7 @@ use Mojo::UserAgent;
 use Parse::CPAN::Authors;
 
 my $side  = shift || 3; # Number of images per side of the collage
-my $start = shift || 1; # Where to begin the collage - index number or author name
+my $start = shift // 0; # Where to begin the collage - index number or author name
 my $path  = shift || $ENV{HOME} . '/tmp/avatars/'; # Where our avatars and the collage live
 
 my $width = 130;            # Fixed avatar side pixel size
