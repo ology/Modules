@@ -10,7 +10,7 @@ Writeup: L<https://ology.github.io/2022/01/09/an-image-collage-of-cpan-authors/>
 
   # Examples:
   perl cpan-avatars 10      # A 10x10 collage starting at author 0
-  perl cpan-avatars 2 1000  # A 2x2 collage starting at author 1000
+  perl cpan-avatars 2 100   # A 2x2 collage starting at author 100
   perl cpan-avatars 3 gene  # A 3x3 collage starting at author GENE
   perl cpan-avatars 4 -1 /Users/you/avatars # A 4x4 collage of random authors
 
