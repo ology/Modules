@@ -148,8 +148,6 @@ for my $author (sort @displayed) {
 
     $i++;
     $x++;
-
-    last if $i >= $max;
 }
 
 # Save the collage image
