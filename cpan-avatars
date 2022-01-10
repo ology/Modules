@@ -47,6 +47,7 @@ my %authors;
 $path = Mojo::File->new($path);
 unless (-d $path) {
     $path->make_path;
+    print "Created new path: $path\n";
 }
 
 # Save the cpan authors file
