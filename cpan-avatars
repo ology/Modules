@@ -78,6 +78,7 @@ my @displayed; # Bucket for the displayed authors
 for my $author ($start == -1 ? shuffle keys %authors : sort keys %authors) {
     $i++;
 
+    # Skip if not random and the count is below the first id
     next if $start > -1 && ($i - 1) < $start;
 
     sleep 4 unless $i == 1; # play nice
