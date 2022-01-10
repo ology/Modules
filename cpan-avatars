@@ -20,13 +20,12 @@ directory, they may mistakenly be used in the generated collage.
 
 =cut
 
-use HTTP::Simple;
+use HTTP::Simple qw(get getstore);
 use Imager;
 use List::SomeUtils 'first_index';
 use List::Util 'shuffle';
 use Mojo::DOM;
 use Mojo::File;
-use Mojo::UserAgent;
 use Parse::CPAN::Authors;
 
 my $side  = shift || 3; # Number of images per side of the collage
@@ -96,9 +95,8 @@ for my $author ($start == -1 ? shuffle keys %authors : sort keys %authors) {
     $i++;
     sleep 4 unless $i == 1; # play nice
 
-    my $ua = Mojo::UserAgent->new;
-    my $tx = $ua->get($authors{$author});
-    my $dom = Mojo::DOM->new($tx->res->body);
+    my $content = get($authors{$author});
+    my $dom = Mojo::DOM->new($content);
     my $img = $dom->find('img[alt="Author image"]')->[0]->attr('src');
 
     my $img_file = $path->child($author);
