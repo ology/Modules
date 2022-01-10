@@ -71,8 +71,7 @@ if ($start > -1) {
     }
 }
 
-die "No authors\n"
-    if keys(%authors) < 1;
+die "No authors\n" unless keys %authors;
 
 my $i = 0;
 
