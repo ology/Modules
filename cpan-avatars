@@ -43,6 +43,9 @@ my $file = '01mailrc.txt.gz';
 
 my %authors;
 
+# Make sure that the avatar path ends with a directory separator
+$path =~ s|^(.+[^/])$|$1/|;
+
 die "Path '$path' does not exist"
     unless -d $path;
 
