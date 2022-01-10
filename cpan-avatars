@@ -147,7 +147,7 @@ for my $author (sort keys %authors) {
     my $x1 = $x0 + $width;
     my $y0 = $y * $width;
     my $y1 = $y0 + $width;
-#    print "[$i,$x,$y] [$x0,$y0] [$x1,$y1]\n";
+#    print "$i: [$x,$y] [$x0,$y0] [$x1,$y1]\n";
 
     $html .= qq|<area shape="rect" coords="$x0,$y0,$x1,$y1" alt="$author" href="$base$author" title="$author">\n|;
 
