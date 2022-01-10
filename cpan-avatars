@@ -35,7 +35,7 @@ my $path  = shift || $ENV{HOME} . '/tmp/avatars/'; # Where our avatars and the c
 
 my $width = 130;            # Fixed avatar side pixel size
 my $size  = $width * $side; # The width of the collage
-my $max   = $side ** 2;     # Number of avatars to fetch
+my $max   = $side * $side;  # Number of avatars to fetch
 
 my $base = 'https://metacpan.org/author/';
 my $cpan = 'http://www.cpan.org/authors/';
