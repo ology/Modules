@@ -3,6 +3,8 @@ use strict;
 use warnings;
 
 # Construct a collage of CPAN author gravatars.
+# Writeup:
+# https://ology.github.io/2022/01/09/an-image-collage-of-cpan-authors/
 
 # Examples:
 # perl cpan-avatars 10      # A 10x10 collage starting at author 0
