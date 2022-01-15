@@ -68,7 +68,7 @@ for my $author ($pca->authors) {
 unlink $file;
 
 # Find the index of the given author name
-if ($start ne '-1' && $start =~ /[A-Za-z]/) {
+if ($start =~ /[A-Za-z]/) {
     my $author = $start;
     $start = first_index { CORE::fc($_) eq CORE::fc($author) } sort @authors;
     die "Author '$author' not found\n"
