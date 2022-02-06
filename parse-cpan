@@ -1,0 +1,31 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use Data::Dumper;
+use HTTP::Simple qw(getstore);
+use MetaCPAN::Client;
+use Parse::CPAN::Packages::Fast;
+
+STDOUT->autoflush;
+
+my $file = $ENV{HOME} . '/.cpanm/sources/http%www.cpan.org/02packages.details.txt.gz';
+
+print "Parsing $file ... ";
+my $p = Parse::CPAN::Packages::Fast->new($file);
+print "Done.\n";
+print "Processing...\n";
+
+my $mcpan = MetaCPAN::Client->new;
+
+my $i = 0;
+
+for my $item ($p->distributions) {
+    my $name = $item->dist;
+    next unless $name && ($name =~ /Music/ || $name =~ /MIDI/);
+    $i++;
+    my $release = eval { $mcpan->release($name) };
+    my $date = eval { $release->date } || '?';
+    my $url = "https://metacpan.org/dist/$name";
+    printf "%d. %s %s %s (%s)\n", $i, $url, $item->version, $date, $item->cpanid;
+}
