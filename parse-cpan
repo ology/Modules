@@ -2,8 +2,6 @@
 use strict;
 use warnings;
 
-use Data::Dumper;
-use HTTP::Simple qw(getstore);
 use MetaCPAN::Client;
 use Parse::CPAN::Packages::Fast;
 
