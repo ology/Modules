@@ -10,7 +10,7 @@ use warnings;
 # $ perl parse-cpan ''        # Show *every* distro!
 # $ perl parse-cpan \\bAI\\b  # Regular expression matching AI distributions
 
-use List::Util qw(any);
+use List::Util qw(all any);
 use MetaCPAN::Client;
 use Parse::CPAN::Packages::Fast;
 
@@ -18,6 +18,9 @@ STDOUT->autoflush;
 
 my $or_query = shift // 'Music,MIDI';
 $or_query = [ split /,/, $or_query ];
+
+my $and_query = shift // '';
+$and_query = [ split /,/, $and_query ];
 
 my $file = $ENV{HOME} . '/.cpanm/sources/http%www.cpan.org/02packages.details.txt.gz';
 
@@ -34,6 +37,7 @@ for my $item ($p->distributions) {
     my $name = $item->dist;
     next unless $name;
     next if @$or_query && !(any { $name =~ /$_/ } @$or_query);
+    next if @$and_query && !(all { $name =~ /$_/ } @$and_query);
     $i++;
     my $release = eval { $mcpan->release($name) };
     my $date = eval { $release->date } || '?';
