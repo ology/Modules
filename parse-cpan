@@ -8,7 +8,7 @@ use Parse::CPAN::Packages::Fast;
 
 STDOUT->autoflush;
 
-my $query = shift || 'Music,MIDI';
+my $query = shift // 'Music,MIDI';
 $query = [ split /,/, $query ];
 
 my $file = $ENV{HOME} . '/.cpanm/sources/http%www.cpan.org/02packages.details.txt.gz';
