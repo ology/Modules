@@ -5,29 +5,36 @@ use warnings;
 # Search CPAN distributions
 #
 # Example:
-# $ perl parse-cpan Math
-# $ perl parse-cpan Music,MIDI
-# $ perl parse-cpan ''        # Show *every* distro!
-# $ perl parse-cpan \\bAI\\b  # Regular expression matching AI distros
-# $ perl parse-cpan Math Geo  # Distros with Math AND Geo in the name
-# $ perl parse-cpan Math Geo,Planar
+# $ perl parse-cpan --or Math
+# $ perl parse-cpan --or Music,MIDI
+# $ perl parse-cpan --or ''        # Show *every* distro!
+# $ perl parse-cpan --or \\bAI\\b  # Regular expression matching
+# $ perl parse-cpan --or Math --and Geo
+# $ perl parse-cpan --or Math --and Geo,Planar
 
+use Getopt::Long;
 use List::Util qw(all any);
 use MetaCPAN::Client;
 use Parse::CPAN::Packages::Fast;
 
 STDOUT->autoflush;
 
-my $or_query = shift // 'Music,MIDI';
-$or_query = [ split /,/, $or_query ];
+my %opts = (
+    file => $ENV{HOME} . '/.cpanm/sources/http%www.cpan.org/02packages.details.txt.gz',
+    or   => 'Music,MIDI',
+    and  => '',
+);
+GetOptions( \%opts,
+    'file=s',
+    'or=s',
+    'and=s',
+) or die("Error in command line arguments\n");
 
-my $and_query = shift // '';
-$and_query = [ split /,/, $and_query ];
+$opts{or}  = [ split /,/, $opts{or} ];
+$opts{and} = [ split /,/, $opts{and} ];
 
-my $file = $ENV{HOME} . '/.cpanm/sources/http%www.cpan.org/02packages.details.txt.gz';
-
-print "Parsing $file ... ";
-my $p = Parse::CPAN::Packages::Fast->new($file);
+print "Parsing $opts{file} ... ";
+my $p = Parse::CPAN::Packages::Fast->new($opts{file});
 print "Done.\n";
 print "Processing...\n";
 
@@ -38,8 +45,8 @@ my $i = 0;
 for my $item ($p->distributions) {
     my $name = $item->dist;
     next unless $name;
-    next if @$or_query && !(any { $name =~ /$_/ } @$or_query);
-    next if @$and_query && !(all { $name =~ /$_/ } @$and_query);
+    next if @{ $opts{or} } && !(any { $name =~ /$_/ } @{ $opts{or} });
+    next if @{ $opts{and} } && !(all { $name =~ /$_/ } @{ $opts{and} });
     $i++;
     my $release = eval { $mcpan->release($name) };
     my $date = eval { $release->date } || '?';
