@@ -9,6 +9,8 @@ use warnings;
 # $ perl parse-cpan Music,MIDI
 # $ perl parse-cpan ''        # Show *every* distro!
 # $ perl parse-cpan \\bAI\\b  # Regular expression matching AI distributions
+# $ perl parse-cpan Math Geo  # Distros with Math AND Geo in the name
+# $ perl parse-cpan Math Geo,Planar
 
 use List::Util qw(all any);
 use MetaCPAN::Client;
