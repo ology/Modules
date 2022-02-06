@@ -2,6 +2,14 @@
 use strict;
 use warnings;
 
+# Search CPAN distributions
+#
+# Example:
+# $ perl parse-cpan Math
+# $ perl parse-cpan Music,MIDI
+# $ perl parse-cpan ''        # Show *every* distro!
+# $ perl parse-cpan \\bAI\\b  # Regular expression matching AI distributions
+
 use List::Util qw(any);
 use MetaCPAN::Client;
 use Parse::CPAN::Packages::Fast;
