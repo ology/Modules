@@ -16,8 +16,8 @@ use Parse::CPAN::Packages::Fast;
 
 STDOUT->autoflush;
 
-my $query = shift // 'Music,MIDI';
-$query = [ split /\s*,\s*/, $query ];
+my $or_query = shift // 'Music,MIDI';
+$or_query = [ split /\s*,\s*/, $or_query ];
 
 my $file = $ENV{HOME} . '/.cpanm/sources/http%www.cpan.org/02packages.details.txt.gz';
 
@@ -33,7 +33,7 @@ my $i = 0;
 for my $item ($p->distributions) {
     my $name = $item->dist;
     next unless $name;
-    next if @$query && !(any { $name =~ /$_/ } @$query);
+    next if @$or_query && !(any { $name =~ /$_/ } @$or_query);
     $i++;
     my $release = eval { $mcpan->release($name) };
     my $date = eval { $release->date } || '?';
