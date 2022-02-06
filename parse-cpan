@@ -13,6 +13,7 @@ use warnings;
 # $ perl parse-cpan --or Math --and Geo,Planar
 
 use Getopt::Long;
+use HTTP::Simple qw(getstore);
 use List::Util qw(all any);
 use MetaCPAN::Client;
 use Parse::CPAN::Packages::Fast;
@@ -20,22 +21,29 @@ use Parse::CPAN::Packages::Fast;
 STDOUT->autoflush;
 
 my %opts = (
-    file => $ENV{HOME} . '/.cpanm/sources/http%www.cpan.org/02packages.details.txt.gz',
-    or   => '',
-    and  => '',
+    or  => '',
+    and => '',
 );
-GetOptions( \%opts,
-    'file=s',
+GetOptions(\%opts,
     'or=s',
     'and=s',
 ) or die("Error in command line arguments\n");
 
+my $base = 'https://www.cpan.org/modules/';
+my $file = '02packages.details.txt.gz';
+
+print "Getting $file ...\n";
+get_file($base . $file, $file, "Saved $file");
+
 $opts{or}  = [ split /,/, $opts{or} ];
 $opts{and} = [ split /,/, $opts{and} ];
 
-print "Parsing $opts{file} ... ";
-my $p = Parse::CPAN::Packages::Fast->new($opts{file});
+print "Parsing $file ... ";
+my $p = Parse::CPAN::Packages::Fast->new($file);
 print "Done.\n";
+
+unlink $file;
+
 print "Processing...\n";
 
 my $mcpan = MetaCPAN::Client->new;
@@ -52,4 +60,16 @@ for my $item ($p->distributions) {
     my $date = eval { $release->date } || '?';
     my $url = "https://metacpan.org/dist/$name";
     printf "%d. %s %s %s %s\n", $i, $url, $item->version, $date, $item->cpanid;
+}
+
+sub get_file {
+    my ($url, $file, $msg) = @_;
+    my $status = getstore($url, $file)
+        or die "Can't getstore $url to $file: $!\n";
+    if ($status == 200) {
+        print "$msg\n";
+    }
+    else {
+        die "Could not get $file from $url\n";
+    }
 }
