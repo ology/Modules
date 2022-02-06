@@ -17,7 +17,7 @@ use Parse::CPAN::Packages::Fast;
 STDOUT->autoflush;
 
 my $or_query = shift // 'Music,MIDI';
-$or_query = [ split /\s*,\s*/, $or_query ];
+$or_query = [ split /,/, $or_query ];
 
 my $file = $ENV{HOME} . '/.cpanm/sources/http%www.cpan.org/02packages.details.txt.gz';
 
