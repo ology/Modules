@@ -30,5 +30,5 @@ for my $item ($p->distributions) {
     my $release = eval { $mcpan->release($name) };
     my $date = eval { $release->date } || '?';
     my $url = "https://metacpan.org/dist/$name";
-    printf "%d. %s %s %s (%s)\n", $i, $url, $item->version, $date, $item->cpanid;
+    printf "%d. %s %s %s %s\n", $i, $url, $item->version, $date, $item->cpanid;
 }
