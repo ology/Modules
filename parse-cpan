@@ -24,7 +24,8 @@ my $i = 0;
 
 for my $item ($p->distributions) {
     my $name = $item->dist;
-    next unless $name && any { $name =~ /$_/ } @$query;
+    next unless $name;
+    next if @$query && !(any { $name =~ /$_/ } @$query);
     $i++;
     my $release = eval { $mcpan->release($name) };
     my $date = eval { $release->date } || '?';
