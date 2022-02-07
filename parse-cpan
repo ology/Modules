@@ -12,6 +12,9 @@ use warnings;
 # $ perl parse-cpan --or Math --and Geo
 # $ perl parse-cpan --or Math --and Geo,Planar
 # $ perl parse-cpan --or Music --id gene
+# $ perl parse-cpan --start 2022-01-01 # Newer than
+# $ perl parse-cpan --end 1999-12-31   # Older than
+# $ perl parse-cpan --start 2021-01-01 --end 2021-12-31 # Range
 
 use Getopt::Long;
 use HTTP::Simple qw(getstore);
@@ -22,14 +25,18 @@ use Parse::CPAN::Packages::Fast;
 STDOUT->autoflush;
 
 my %opts = (
-    or  => '',
-    and => '',
-    id  => '',
+    or    => '',
+    and   => '',
+    id    => '',
+    start => '',
+    end   => '',
 );
 GetOptions(\%opts,
     'or=s',
     'and=s',
     'id=s',
+    'start=s',
+    'end=s',
 ) or die("Error in command line arguments\n");
 
 my $base = 'https://www.cpan.org/modules/';
@@ -61,9 +68,11 @@ for my $item ($p->distributions) {
     next if @{ $opts{or} } && !(any { $name =~ /$_/ } @{ $opts{or} });
     next if @{ $opts{and} } && !(all { $name =~ /$_/ } @{ $opts{and} });
     next if @{ $opts{id} } && !(any { $id =~ /$_/i } @{ $opts{id} });
-    $i++;
     my $release = eval { $mcpan->release($name) };
     my $date = eval { $release->date } || '?';
+    next if $opts{start} && $date lt $opts{start};
+    next if $opts{end} && $date gt $opts{end};
+    $i++;
     my $url = "https://metacpan.org/dist/$name";
     printf "%d. %s %s %s %s\n", $i, $url, $item->version, $date, $id;
 }
