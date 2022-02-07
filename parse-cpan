@@ -59,7 +59,7 @@ for my $item ($p->distributions) {
     next unless $name;
     next if @{ $opts{or} } && !(any { $name =~ /$_/ } @{ $opts{or} });
     next if @{ $opts{and} } && !(all { $name =~ /$_/ } @{ $opts{and} });
-    next if @{ $opts{id} } && !(any { $id =~ /$_/ } @{ $opts{id} });
+    next if @{ $opts{id} } && !(any { $id =~ /$_/i } @{ $opts{id} });
     $i++;
     my $release = eval { $mcpan->release($name) };
     my $date = eval { $release->date } || '?';
