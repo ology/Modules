@@ -11,7 +11,7 @@ use warnings;
 # $ perl parse-cpan --or \\bAI\\b  # Regular expression matching
 # $ perl parse-cpan --or Math --and Geo
 # $ perl parse-cpan --or Math --and Geo,Planar
-# $ perl parse-cpan --id gene
+# $ perl parse-cpan --or Music --id gene
 
 use Getopt::Long;
 use HTTP::Simple qw(getstore);
