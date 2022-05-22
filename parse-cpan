@@ -9,6 +9,7 @@ use warnings;
 # $ perl parse-cpan --or Math
 # $ perl parse-cpan --or Music,MIDI
 # $ perl parse-cpan --or \\bAI\\b  # Regular expression matching
+# $ perl parse-cpan --id \\bGENE\\b
 # $ perl parse-cpan --or Math --and Geo
 # $ perl parse-cpan --or Math --and Geo,Planar
 # $ perl parse-cpan --or Music --id gene
