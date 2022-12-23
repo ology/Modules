@@ -68,15 +68,15 @@ my $i = 0;
 
 for my $item ($p->distributions) {
     my $name = $item->dist;
-    my $id = $item->cpanid;
+    my $id   = $item->cpanid;
     next unless $name;
-    next if @{ $opts{or} } && !(any { $name =~ /$_/ } @{ $opts{or} });
+    next if @{ $opts{or} }  && !(any { $name =~ /$_/ } @{ $opts{or} });
     next if @{ $opts{and} } && !(all { $name =~ /$_/ } @{ $opts{and} });
-    next if @{ $opts{id} } && !(any { $id =~ /$_/i } @{ $opts{id} });
+    next if @{ $opts{id} }  && !(any { $id =~ /$_/i }  @{ $opts{id} });
     my $release = eval { $mcpan->release($name) };
-    my $date = eval { $release->date } || '?';
+    my $date    = eval { $release->date } || '?';
     next if $opts{start} && $date lt $opts{start};
-    next if $opts{end} && $date gt $opts{end};
+    next if $opts{end}   && $date gt $opts{end};
     $i++;
     my $url = "https://metacpan.org/dist/$name";
     printf "%d. %s %s %s %s\n", $i, $url, $item->version, $date, $id;
