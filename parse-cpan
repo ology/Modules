@@ -33,7 +33,6 @@ my %opts = (
     start => '',
     end   => '',
     favs  => 0,
-    size  => 0,
 );
 GetOptions(\%opts,
     'or=s',
@@ -42,7 +41,6 @@ GetOptions(\%opts,
     'start=s',
     'end=s',
     'favs',
-    'size',
 ) or die("Error in command line arguments\n");
 
 my $base = 'https://www.cpan.org/modules/';
@@ -84,10 +82,6 @@ for my $item ($p->distributions) {
     printf "%d. %s %s %s %s\n", $i, $url, $item->version, $date, $id;
     printf "\tFavorite count: %d\n", $helper->dist2favorite_count($name)
         if $opts{favs};
-    if ($opts{size}) {
-        my $size = _fetch_distro_size($name);
-        print "\tSize: $size\n";
-    }
 }
 
 sub get_file {
@@ -97,10 +91,4 @@ sub get_file {
     die "Could not get $file from $url\n"
         unless $status == 200;;
     print "$msg\n";
-}
-
-sub _fetch_distro_size {
-    my ($distro) = @_;
-    my $size = 0;
-    return $size;
 }
