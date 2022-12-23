@@ -17,12 +17,12 @@ use warnings;
 # $ perl parse-cpan --end 1999-12-31   # Older than
 # $ perl parse-cpan --start 2021-01-01 --end 2021-12-31 # Range
 
-use Getopt::Long;
+use Getopt::Long qw(GetOptions);
 use HTTP::Simple qw(getstore);
 use List::Util qw(all any);
-use MetaCPAN::Client;
-use Parse::CPAN::Packages::Fast;
-use MetaCPAN::Helper;
+use MetaCPAN::Client ();
+use Parse::CPAN::Packages::Fast ();
+use MetaCPAN::Helper ();
 
 STDOUT->autoflush;
 
