@@ -22,6 +22,7 @@ use HTTP::Simple qw(getstore);
 use List::Util qw(all any);
 use MetaCPAN::Client;
 use Parse::CPAN::Packages::Fast;
+use MetaCPAN::Helper;
 
 STDOUT->autoflush;
 
@@ -31,6 +32,7 @@ my %opts = (
     id    => '',
     start => '',
     end   => '',
+    favs  => 0,
 );
 GetOptions(\%opts,
     'or=s',
@@ -38,6 +40,7 @@ GetOptions(\%opts,
     'id=s',
     'start=s',
     'end=s',
+    'favs',
 ) or die("Error in command line arguments\n");
 
 my $base = 'https://www.cpan.org/modules/';
@@ -58,7 +61,8 @@ unlink $file;
 
 print "Processing...\n";
 
-my $mcpan = MetaCPAN::Client->new;
+my $mcpan  = MetaCPAN::Client->new;
+my $helper = MetaCPAN::Helper->new;
 
 my $i = 0;
 
@@ -76,6 +80,8 @@ for my $item ($p->distributions) {
     $i++;
     my $url = "https://metacpan.org/dist/$name";
     printf "%d. %s %s %s %s\n", $i, $url, $item->version, $date, $id;
+    printf "\tFavorite count: %d\n", $helper->dist2favorite_count($name)
+        if $opts{favs};
 }
 
 sub get_file {
