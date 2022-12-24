@@ -70,18 +70,18 @@ my $i = 0;
 
 for my $item ($p->distributions) {
     my $name = $item->dist;
-    my $id   = $item->cpanid;
     next unless $name;
+    my $id = $item->cpanid;
     next if @{ $opts{or} }  && !(any { $name =~ /$_/ } @{ $opts{or} });
     next if @{ $opts{and} } && !(all { $name =~ /$_/ } @{ $opts{and} });
     next if @{ $opts{id} }  && !(any { $id =~ /$_/i }  @{ $opts{id} });
     my $release = eval { $mcpan->release($name) };
     my $date    = eval { $release->date } || '?';
+    my $size    = eval { $release->stat->{size} } || '?';
     next if $opts{start} && $date lt $opts{start};
     next if $opts{end}   && $date gt $opts{end};
+    my $url = "https://metacpan.org/dist/$name";
     $i++;
-    my $size = $release->stat->{size};
-    my $url  = "https://metacpan.org/dist/$name";
     printf "%d. %s %s %s %d bytes %s\n", $i, $url, $item->version, $date, $size, $id;
     printf "\tFavorite count: %d\n", $helper->dist2favorite_count($name)
         if $opts{favs};
