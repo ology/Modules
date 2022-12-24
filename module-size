@@ -4,7 +4,7 @@ use warnings;
 
 use Expect::Simple ();
 
-my $module = shift || 'Moo';
+my $module = shift || 'Lingua::EN::Opinion';
 
 my $look = "cpanm --look $module";
 my $du   = 'du -c';
