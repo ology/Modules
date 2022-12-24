@@ -7,7 +7,7 @@ use Expect::Simple ();
 my $module = shift || 'Moo';
 
 my $look = "cpanm --look $module";
-my $du   = 'du -c lib';
+my $du   = 'du -c';
 
 my $exp = Expect::Simple->new({
     Cmd           => $look,
