@@ -5,7 +5,6 @@ use warnings;
 # Search CPAN distributions
 #
 # Example:
-# $ perl parse-cpan # Show *every* distro! No.
 # $ perl parse-cpan --or Math
 # $ perl parse-cpan --or Music,MIDI
 # $ perl parse-cpan --or \\bAI\\b  # Regular expression matching
