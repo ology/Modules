@@ -56,7 +56,6 @@ $opts{id}  = [ split /,/, $opts{id} ];
 print "Parsing $file ... ";
 my $p = Parse::CPAN::Packages::Fast->new($file);
 print "Done.\n";
-
 print "Removing $file\n";
 unlink $file;
 
