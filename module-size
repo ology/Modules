@@ -11,7 +11,7 @@ my $du   = 'du -c';
 
 my $exp = Expect::Simple->new({
     Cmd           => $look,
-    Prompt        => '▸ ',
+    Prompt        => '▸ ', # replace with your prompt
     DisconnectCmd => 'exit',
 });
 
