@@ -1,0 +1,25 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use Expect::Simple ();
+
+my $module = shift || 'Moo';
+
+my $look = "cpanm --look $module";
+my $du   = 'du -c -d 1 lib';
+
+my $exp = Expect::Simple->new({
+    Cmd           => $look,
+    Prompt        => '▸ ',
+    DisconnectCmd => 'exit',
+});
+
+$exp->send($du);
+
+my $output = $exp->before;
+
+$output =~ /(\d+)\s+total/s;
+
+my $size = $1;
+warn __PACKAGE__,' L',__LINE__,' ',,"$size\n";
