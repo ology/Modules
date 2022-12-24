@@ -81,8 +81,7 @@ for my $item ($p->distributions) {
     my $fav = $mcpan->favorite({ distribution => $name });
     $i++;
     printf "%d. %s %s %s %d %s\n", $i, $url, $item->version, $date, $size, $id;
-    printf "\tFavorite count: %d\n", $fav->total
-        if $opts{favs};
+    printf "\tFavorite count: %d\n", $fav->total if $opts{favs};
 }
 
 sub get_file {
