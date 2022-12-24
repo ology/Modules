@@ -82,7 +82,7 @@ for my $item ($p->distributions) {
     next if $opts{end}   && $date gt $opts{end};
     my $url = "https://metacpan.org/dist/$name";
     $i++;
-    printf "%d. %s %s %s %d bytes %s\n", $i, $url, $item->version, $date, $size, $id;
+    printf "%d. %s %s %s %d %s\n", $i, $url, $item->version, $date, $size, $id;
     printf "\tFavorite count: %d\n", $helper->dist2favorite_count($name)
         if $opts{favs};
 }
