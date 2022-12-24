@@ -80,8 +80,9 @@ for my $item ($p->distributions) {
     next if $opts{start} && $date lt $opts{start};
     next if $opts{end}   && $date gt $opts{end};
     $i++;
-    my $url = "https://metacpan.org/dist/$name";
-    printf "%d. %s %s %s %s\n", $i, $url, $item->version, $date, $id;
+    my $size = $release->stat->{size};
+    my $url  = "https://metacpan.org/dist/$name";
+    printf "%d. %s %s %s %d bytes %s\n", $i, $url, $item->version, $date, $size, $id;
     printf "\tFavorite count: %d\n", $helper->dist2favorite_count($name)
         if $opts{favs};
 }
