@@ -2,10 +2,17 @@
 use strict;
 use warnings;
 
-use Expect::Simple ();
+#use Expect::Simple ();
+use MetaCPAN::Client ();
 
-my $module = shift || 'Lingua::EN::Opinion';
+my $distro = shift || 'Lingua-EN-Opinion';
 
+my $mcpan = MetaCPAN::Client->new;
+my $release = $mcpan->release($distro);
+my $size = $release->stat->{size};
+print $size, "\n";
+
+__END__
 my $look = "cpanm --look $module";
 my $du   = 'du -c';
 
