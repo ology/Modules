@@ -90,6 +90,6 @@ sub get_file {
     my $status = getstore($url, $file)
         or die "Can't getstore $url to $file: $!\n";
     die "Could not get $file from $url\n"
-        unless $status == 200;;
+        unless $status == 200;
     print "$msg\n";
 }
