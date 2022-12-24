@@ -74,8 +74,8 @@ for my $item ($p->distributions) {
     next if @{ $opts{and} } && !(all { $name =~ /$_/ } @{ $opts{and} });
     next if @{ $opts{id} }  && !(any { $id =~ /$_/i }  @{ $opts{id} });
     my $release = eval { $mcpan->release($name) };
-    my $size    = eval { $release->stat->{size} } || '?';
-    my $date    = eval { $release->date } || '?';
+    my $size    = $release ? $release->stat->{size} : '?';
+    my $date    = $release ? $release->date         : '?';
     next if $opts{start} && $date lt $opts{start};
     next if $opts{end}   && $date gt $opts{end};
     my $url = "https://metacpan.org/dist/$name";
