@@ -62,7 +62,7 @@ unlink $file;
 
 print "Processing...\n";
 
-my $mcpan  = MetaCPAN::Client->new;
+my $mcpan = MetaCPAN::Client->new;
 
 my $i = 0;
 
