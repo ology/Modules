@@ -21,4 +21,4 @@ my $output = $exp->before;
 
 $output =~ /(\d+)\s+total/s;
 my $size = $1;
-warn __PACKAGE__,' L',__LINE__,' ',,"$size\n";
+print $size, "\n";
