@@ -6,7 +6,6 @@ use warnings;
 use MetaCPAN::Client ();
 
 my $distro = shift || 'Lingua-EN-Opinion';
-
 my $mcpan = MetaCPAN::Client->new;
 my $release = $mcpan->release($distro);
 my $size = $release->stat->{size};
