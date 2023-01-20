@@ -98,7 +98,7 @@ for my $item ($p->distributions) {
 }
 
 print "Total bytes: $totals{size}\n";
-print "Total faves: $totals{faves}\n" if $opts{favs};
+print "Total favs: $totals{favs}\n" if $opts{favs};
 
 sub get_file {
     my ($url, $file, $msg) = @_;
