@@ -63,6 +63,8 @@ print "Processing...\n";
 
 my $mcpan = MetaCPAN::Client->new;
 
+my %totals;
+
 my $i = 0;
 
 for my $item ($p->distributions) {
@@ -77,7 +79,7 @@ for my $item ($p->distributions) {
 
     my $release = eval { $mcpan->release($name) };
 
-    my $size = $release ? $release->stat->{size} : '?';
+    my $size = $release ? $release->stat->{size} : 0;
     my $date = $release ? $release->date         : '?';
 
     next if $opts{start} && $date lt $opts{start};
@@ -90,7 +92,13 @@ for my $item ($p->distributions) {
 
     printf "%d. %s %s %s %d %s\n", $i, $url, $item->version, $date, $size, $id;
     printf "\tFavorite count: %d\n", $fav->total if $opts{favs};
+
+    $totals{size} += $size;
+    $totals{favs} += $fav->total;
 }
+
+print "Total bytes: $totals{size}\n";
+print "Total faves: $totals{faves}\n" if $opts{favs};
 
 sub get_file {
     my ($url, $file, $msg) = @_;
