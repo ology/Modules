@@ -20,6 +20,7 @@ use Getopt::Long                qw(GetOptions);
 use HTTP::Simple                qw(getstore);
 use List::Util                  qw(all any);
 use MetaCPAN::Client            ();
+use Number::Format              ();
 use Parse::CPAN::Packages::Fast ();
 
 STDOUT->autoflush;
@@ -97,8 +98,9 @@ for my $item ($p->distributions) {
     $totals{favs} += $fav->total;
 }
 
-print "Total bytes: $totals{size}\n";
-print "Total favs: $totals{favs}\n" if $opts{favs};
+my $nf = Number::Format->new;
+print 'Total bytes: ', $nf->format_bytes($totals{size}), "\n";
+print 'Total favs: ', $nf->format_number($totals{favs}), "\n" if $opts{favs};
 
 sub get_file {
     my ($url, $file, $msg) = @_;
