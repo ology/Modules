@@ -68,27 +68,38 @@ my $i = 0;
 for my $item ($p->distributions) {
     my $name = $item->dist;
     next unless $name;
+
     my $id = $item->cpanid;
+
     next if @{ $opts{or} }  && !(any { $name =~ /$_/ } @{ $opts{or} });
     next if @{ $opts{and} } && !(all { $name =~ /$_/ } @{ $opts{and} });
     next if @{ $opts{id} }  && !(any { $id =~ /$_/i }  @{ $opts{id} });
+
     my $release = eval { $mcpan->release($name) };
-    my $size    = $release ? $release->stat->{size} : '?';
-    my $date    = $release ? $release->date         : '?';
+
+    my $size = $release ? $release->stat->{size} : '?';
+    my $date = $release ? $release->date         : '?';
+
     next if $opts{start} && $date lt $opts{start};
     next if $opts{end}   && $date gt $opts{end};
+
     my $url = "https://metacpan.org/dist/$name";
     my $fav = $mcpan->favorite({ distribution => $name });
+
     $i++;
+
     printf "%d. %s %s %s %d %s\n", $i, $url, $item->version, $date, $size, $id;
     printf "\tFavorite count: %d\n", $fav->total if $opts{favs};
 }
 
 sub get_file {
     my ($url, $file, $msg) = @_;
+
     my $status = getstore($url, $file)
         or die "Can't getstore $url to $file: $!\n";
+
     die "Could not get $file from $url\n"
         unless $status == 200;
+
     print "$msg\n";
 }
