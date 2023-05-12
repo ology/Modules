@@ -6,6 +6,7 @@ use warnings;
 #
 # Examples (case insensitive):
 # $ perl parse-cpan --or Math
+# $ perl parse-cpan --or Math --fresh
 # $ perl parse-cpan --or Music,MIDI
 # $ perl parse-cpan --or \\bAI\\b  # Regular expression matching
 # $ perl parse-cpan --id \\bGENE\\b
