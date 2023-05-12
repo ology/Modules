@@ -34,6 +34,7 @@ my %opts = (
     start => '',
     end   => '',
     favs  => 0,
+    fresh => 0,
 );
 GetOptions(\%opts,
     'or=s',
@@ -42,13 +43,16 @@ GetOptions(\%opts,
     'start=s',
     'end=s',
     'favs',
+    'fresh!',
 ) or die("Error in command line arguments\n");
 
 my $base = 'https://www.cpan.org/modules/';
 my $file = '02packages.details.txt.gz';
 
-print "Getting $file ...\n";
-get_file($base . $file, $file, "Saved $file");
+if ($opts{fresh} || !-e $file) {
+    print "Getting $file ...\n";
+    get_file($base . $file, $file, "Saved $file");
+}
 
 $opts{or}  = [ split /,/, $opts{or} ];
 $opts{and} = [ split /,/, $opts{and} ];
@@ -57,8 +61,8 @@ $opts{id}  = [ split /,/, $opts{id} ];
 print "Parsing $file ... ";
 my $p = Parse::CPAN::Packages::Fast->new($file);
 print "Done.\n";
-print "Removing $file\n";
-unlink $file;
+#print "Removing $file\n";
+#unlink $file;
 
 print "Processing...\n";
 
