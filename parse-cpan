@@ -74,8 +74,8 @@ for my $item ($p->distributions) {
 
     my $id = $item->cpanid;
 
-    next if @{ $opts{or} }  && !(any { $name =~ /$_/ } @{ $opts{or} });
-    next if @{ $opts{and} } && !(all { $name =~ /$_/ } @{ $opts{and} });
+    next if @{ $opts{or} }  && !(any { $name =~ /$_/i } @{ $opts{or} });
+    next if @{ $opts{and} } && !(all { $name =~ /$_/i } @{ $opts{and} });
     next if @{ $opts{id} }  && !(any { $id =~ /$_/i }  @{ $opts{id} });
 
     my $release = eval { $mcpan->release($name) };
