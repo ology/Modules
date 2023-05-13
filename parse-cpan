@@ -97,7 +97,7 @@ for my $item ($p->distributions) {
     $i++;
 
     printf "%d. %s %s %s %d %s\n", $i, $url, $item->version, $date, $size, $id;
-    printf "\tFavorite count: %d\n", $fav->total if $opts{favs} if $fav->total > 0;
+    printf "\tFavorite count: %d\n", $fav->total if $opts{favs} && $fav->total > 0;
 
     $totals{size} += $size;
     $totals{favs} += $fav->total;
