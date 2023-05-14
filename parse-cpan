@@ -93,15 +93,15 @@ for my $item ($p->distributions) {
     next if $opts{end}   && $date gt $opts{end};
 
     my $url = "https://metacpan.org/dist/$name";
-    my $fav = $mcpan->favorite({ distribution => $name });
+    my $fav = $opts{favs} ? $mcpan->favorite({ distribution => $name }) : undef;
 
     $i++;
 
     printf "%d. %s %s %s %d %s\n", $i, $url, $item->version, $date, $size, $id;
-    printf "\tFavorite count: %d\n", $fav->total if $opts{favs} && $fav->total > 0;
+    printf "\tFavorite count: %d\n", $fav->total if $opts{favs} && $fav && $fav->total > 0;
 
     $totals{size} += $size;
-    $totals{favs} += $fav->total;
+    $totals{favs} += $fav->total if $fav;
 }
 
 my $nf = Number::Format->new;
