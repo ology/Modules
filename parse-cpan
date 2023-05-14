@@ -106,7 +106,7 @@ for my $item ($p->distributions) {
 
 my $nf = Number::Format->new;
 print 'Total bytes: ', $nf->format_bytes($totals{size}), "\n" if defined $totals{size};
-print 'Total favs: ', $nf->format_number($totals{favs}), "\n" if defined $opts{favs};
+print 'Total favs: ', $nf->format_number($totals{favs}), "\n" if $opts{favs} && defined $totals{favs};
 
 sub get_file {
     my ($url, $file, $msg) = @_;
