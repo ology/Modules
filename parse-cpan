@@ -9,11 +9,11 @@ use warnings;
 # $ perl parse-cpan --and math # ^ same
 # $ perl parse-cpan --or math --fresh
 # $ perl parse-cpan --or music,midi
-# $ perl parse-cpan --or \\bai\\b  # Regular expression matching
-# $ perl parse-cpan --id \\bgene\\b
 # $ perl parse-cpan --or math --and geo
 # $ perl parse-cpan --or math --and geo,planar
 # $ perl parse-cpan --or music --id gene
+# $ perl parse-cpan --or \\bai\\b  # Regular expression matching
+# $ perl parse-cpan --id \\bgene\\b
 # $ perl parse-cpan --start 2022-01-01 # Newer than
 # $ perl parse-cpan --end 1999-12-31   # Older than
 # $ perl parse-cpan --start 2021-01-01 --end 2021-12-31 # Range
